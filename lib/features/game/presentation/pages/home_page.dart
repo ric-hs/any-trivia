@@ -17,11 +17,27 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _categoryController = TextEditingController();
+  final List<String> _selectedCategories = [];
   int _rounds = 1;
 
-  void _startGame(BuildContext context, int currentTokens, String userId) {
+  void _addCategory() {
     final category = _categoryController.text.trim();
-    if (category.isEmpty) {
+    if (category.isNotEmpty && !_selectedCategories.contains(category)) {
+      setState(() {
+        _selectedCategories.add(category);
+        _categoryController.clear();
+      });
+    }
+  }
+
+  void _removeCategory(String category) {
+    setState(() {
+      _selectedCategories.remove(category);
+    });
+  }
+
+  void _startGame(BuildContext context, int currentTokens, String userId) {
+    if (_selectedCategories.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(AppLocalizations.of(context)!.pleaseEnterCategory),
@@ -92,7 +108,7 @@ class _HomePageState extends State<HomePage> {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => GamePage(
-          categories: category.split(',').map((e) => e.trim()).toList(),
+          categories: List.from(_selectedCategories),
           language: languageCode,
           rounds: _rounds,
         ),
@@ -164,6 +180,7 @@ class _HomePageState extends State<HomePage> {
                   const SizedBox(height: 16),
                   TextField(
                     controller: _categoryController,
+                    onSubmitted: (_) => _addCategory(),
                     decoration: InputDecoration(
                       labelText: AppLocalizations.of(context)!.enterTopic,
                       filled: true,
@@ -173,8 +190,25 @@ class _HomePageState extends State<HomePage> {
                         borderSide: BorderSide.none,
                       ),
                       prefixIcon: const Icon(Icons.search),
+                      suffixIcon: IconButton(
+                        icon: const Icon(Icons.add),
+                        onPressed: _addCategory,
+                      ),
                     ),
                   ),
+                  const SizedBox(height: 16),
+                  if (_selectedCategories.isNotEmpty)
+                    Wrap(
+                      spacing: 8.0,
+                      runSpacing: 8.0,
+                      children: _selectedCategories.map((category) {
+                        return Chip(
+                          label: Text(category),
+                          onDeleted: () => _removeCategory(category),
+                          deleteIcon: const Icon(Icons.close, size: 18),
+                        );
+                      }).toList(),
+                    ),
                   const SizedBox(height: 24),
 
                   // Rounds Selector
