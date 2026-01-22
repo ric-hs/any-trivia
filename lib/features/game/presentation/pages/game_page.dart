@@ -98,10 +98,31 @@ class _GameView extends StatelessWidget {
                        borderRadius: BorderRadius.circular(16),
                        border: Border.all(color: Theme.of(context).primaryColor, width: 2),
                      ),
-                     child: Text(
-                       q.text, 
-                       style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
-                       textAlign: TextAlign.center,
+                     child: Column(
+                       children: [
+                         Container(
+                           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                           margin: const EdgeInsets.only(bottom: 16),
+                           decoration: BoxDecoration(
+                             color: Theme.of(context).primaryColor.withValues(alpha: 0.2),
+                             borderRadius: BorderRadius.circular(12),
+                           ),
+                           child: Text(
+                             q.category.toUpperCase(),
+                             style: TextStyle(
+                               color: Theme.of(context).primaryColorLight,
+                               fontSize: 12,
+                               fontWeight: FontWeight.bold,
+                               letterSpacing: 1.5,
+                             ),
+                           ),
+                         ),
+                         Text(
+                           q.text, 
+                           style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+                           textAlign: TextAlign.center,
+                         ),
+                       ],
                      ),
                    ),
                    const SizedBox(height: 40),
