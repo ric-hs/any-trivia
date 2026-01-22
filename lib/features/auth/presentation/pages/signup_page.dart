@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:endless_trivia/l10n/app_localizations.dart';
 import 'package:endless_trivia/core/di/injection_container.dart';
 import 'package:endless_trivia/features/auth/presentation/cubit/signup_cubit.dart';
 
@@ -29,14 +30,14 @@ class _SignupFormState extends State<_SignupForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('CREATE ACCOUNT')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.createAccount)),
       body: BlocListener<SignupCubit, SignupState>(
         listener: (context, state) {
           if (state.status == SignupStatus.success) {
             Navigator.of(context).pop(); // Go back to login or let AuthBloc handle auth state change
           } else if (state.status == SignupStatus.failure) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.errorMessage ?? 'Signup Failure')),
+              SnackBar(content: Text(state.errorMessage ?? AppLocalizations.of(context)!.errorSignup)),
             );
           }
         },
@@ -50,7 +51,7 @@ class _SignupFormState extends State<_SignupForm> {
                   TextField(
                     controller: _emailController,
                     decoration: InputDecoration(
-                      labelText: 'EMAIL',
+                      labelText: AppLocalizations.of(context)!.email,
                       filled: true,
                       fillColor: const Color(0xFF2C2C2C),
                       border: OutlineInputBorder(
@@ -66,7 +67,7 @@ class _SignupFormState extends State<_SignupForm> {
                     controller: _passwordController,
                     obscureText: true,
                     decoration: InputDecoration(
-                      labelText: 'PASSWORD',
+                      labelText: AppLocalizations.of(context)!.password,
                       filled: true,
                       fillColor: const Color(0xFF2C2C2C),
                       border: OutlineInputBorder(
@@ -92,7 +93,7 @@ class _SignupFormState extends State<_SignupForm> {
                                   _passwordController.text,
                                 );
                           },
-                          child: const Text('JOIN NOW'),
+                          child: Text(AppLocalizations.of(context)!.joinNow),
                         ),
                       );
                     },

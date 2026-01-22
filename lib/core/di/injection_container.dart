@@ -26,13 +26,20 @@ Future<void> init() async {
   sl.registerFactory(() => GameBloc(gameRepository: sl()));
 
   // Repository
-  sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(firebaseAuth: FirebaseAuth.instance));
-  sl.registerLazySingleton<ProfileRepository>(() => ProfileRepositoryImpl(firestore: FirebaseFirestore.instance));
-  sl.registerLazySingleton<GameRepository>(() => GameRepositoryImpl(geminiService: sl()));
+  sl.registerLazySingleton<AuthRepository>(
+    () => AuthRepositoryImpl(firebaseAuth: FirebaseAuth.instance),
+  );
+  sl.registerLazySingleton<ProfileRepository>(
+    () => ProfileRepositoryImpl(firestore: FirebaseFirestore.instance),
+  );
+  sl.registerLazySingleton<GameRepository>(
+    () => GameRepositoryImpl(geminiService: sl()),
+  );
 
   // Data sources
-  sl.registerLazySingleton<GeminiService>(() => GeminiService());
+  sl.registerLazySingleton<GeminiService>(
+    () => GeminiService(apiKey: "AIzaSyBtCX2eZwU2BCsTctV-RV1ralZBOnDGsI8"),
+  );
 
-  
   // External
 }

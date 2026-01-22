@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:endless_trivia/l10n/app_localizations.dart';
 import 'package:endless_trivia/core/di/injection_container.dart';
 import 'package:endless_trivia/features/auth/presentation/cubit/login_cubit.dart';
 import 'package:endless_trivia/features/auth/presentation/pages/signup_page.dart';
@@ -34,7 +35,7 @@ class _LoginFormState extends State<_LoginForm> {
         listener: (context, state) {
           if (state.status == LoginStatus.failure) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.errorMessage ?? 'Authentication Failure')),
+              SnackBar(content: Text(state.errorMessage ?? AppLocalizations.of(context)!.errorAuth)),
             );
           }
         },
@@ -47,7 +48,7 @@ class _LoginFormState extends State<_LoginForm> {
                 children: [
                   // Title / Logo
                   Text(
-                    'ENDLESS TRIVIA',
+                    AppLocalizations.of(context)!.appTitle.toUpperCase(),
                     style: Theme.of(context).textTheme.displayMedium?.copyWith(
                           color: Theme.of(context).primaryColor,
                           fontWeight: FontWeight.w900,
@@ -60,7 +61,7 @@ class _LoginFormState extends State<_LoginForm> {
                   TextField(
                     controller: _emailController,
                     decoration: InputDecoration(
-                      labelText: 'EMAIL',
+                      labelText: AppLocalizations.of(context)!.email,
                       filled: true,
                       fillColor: const Color(0xFF2C2C2C),
                       border: OutlineInputBorder(
@@ -78,7 +79,7 @@ class _LoginFormState extends State<_LoginForm> {
                     controller: _passwordController,
                     obscureText: true,
                     decoration: InputDecoration(
-                      labelText: 'PASSWORD',
+                      labelText: AppLocalizations.of(context)!.password,
                       filled: true,
                       fillColor: const Color(0xFF2C2C2C),
                       border: OutlineInputBorder(
@@ -106,7 +107,7 @@ class _LoginFormState extends State<_LoginForm> {
                                   _passwordController.text,
                                 );
                           },
-                          child: const Text('START GAME'),
+                          child: Text(AppLocalizations.of(context)!.startGame),
                         ),
                       );
                     },
@@ -120,7 +121,7 @@ class _LoginFormState extends State<_LoginForm> {
                         MaterialPageRoute(builder: (_) => const SignupPage()),
                       );
                     },
-                    child: const Text('CREATE ACCOUNT'),
+                    child: Text(AppLocalizations.of(context)!.createAccount),
                   ),
                 ],
               ),

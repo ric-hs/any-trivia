@@ -1,0 +1,41 @@
+{
+    "appTitle": "Endless Trivia",
+    "login": "LOGIN",
+    "email": "EMAIL",
+    "password": "PASSWORD",
+    "createAccount": "CREATE ACCOUNT",
+    "joinNow": "JOIN NOW",
+    "startGame": "START GAME",
+    "playRound": "PLAY ROUND (1 Token)",
+    "tokens": "TOKENS",
+    "chooseAdventure": "CHOOSE YOUR ADVENTURE",
+    "enterTopic": "Enter a topic (e.g. 80s Movies, Quantum Physics)",
+    "favorites": "FAVORITES",
+    "noFavorites": "No favorites yet.",
+    "pleaseEnterCategory": "Please enter a category",
+    "outOfTokens": "Out of Tokens",
+    "zeroTokensMessage": "You have 0 tokens. Wait for refill!",
+    "generatingQuestion": "Generating Question with AI...",
+    "correct": "CORRECT!",
+    "wrong": "WRONG!",
+    "greatJob": "Great job!",
+    "correctAnswerWas": "The correct answer was: {answer}",
+    "@correctAnswerWas": {
+        "placeholders": {
+            "answer": {
+                "type": "String"
+            }
+        }
+    },
+    "continueBtn": "CONTINUE",
+    "errorAuth": "Authentication Failure",
+    "errorSignup": "Signup Failure",
+    "errorProfile": "Error loading profile: {message}",
+    "@errorProfile": {
+        "placeholders": {
+            "message": {
+                "type": "String"
+            }
+        }
+    }
+}

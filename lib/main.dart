@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:endless_trivia/core/di/injection_container.dart' as di;
 import 'package:endless_trivia/core/theme/app_theme.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:endless_trivia/l10n/app_localizations.dart';
 import 'package:endless_trivia/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:endless_trivia/features/auth/presentation/bloc/auth_event.dart';
 import 'package:endless_trivia/features/auth/presentation/bloc/auth_state.dart';
@@ -33,12 +33,8 @@ class EndlessTriviaApp extends StatelessWidget {
         title: 'Endless Trivia',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.darkTheme,
-        localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: const [Locale('en', ''), Locale('es', '')],
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         home: BlocBuilder<AuthBloc, AuthState>(
           builder: (context, state) {
             if (state.status == AuthStatus.authenticated &&

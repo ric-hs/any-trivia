@@ -5,15 +5,18 @@ import 'package:endless_trivia/features/game/presentation/bloc/game_bloc.dart';
 import 'package:endless_trivia/features/game/presentation/bloc/game_event.dart';
 import 'package:endless_trivia/features/game/presentation/bloc/game_state.dart';
 
+import 'package:endless_trivia/l10n/app_localizations.dart';
+
 class GamePage extends StatelessWidget {
   final String category;
+  final String language;
 
-  const GamePage({super.key, required this.category});
+  const GamePage({super.key, required this.category, required this.language});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => sl<GameBloc>()..add(GetQuestion(category: category)),
+      create: (_) => sl<GameBloc>()..add(GetQuestion(category: category, language: language)),
       child: const _GameView(),
     );
   }
@@ -25,25 +28,25 @@ class _GameView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('TRIVIA')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.appTitle.toUpperCase())),
       body: BlocConsumer<GameBloc, GameState>(
         listener: (context, state) {
            if (state is AnswerSubmitted) {
              showDialog(context: context, builder: (_) => AlertDialog(
                title: Text(
-                 state.isCorrect ? 'CORRECT!' : 'WRONG!',
+                 state.isCorrect ? AppLocalizations.of(context)!.correct : AppLocalizations.of(context)!.wrong,
                  style: TextStyle(color: state.isCorrect ? Colors.green : Colors.red),
                ),
                content: Text(state.isCorrect 
-                   ? 'Great job!' 
-                   : 'The correct answer was: ${state.question.answers[state.question.correctAnswerIndex]}'),
+                   ? AppLocalizations.of(context)!.greatJob 
+                   : AppLocalizations.of(context)!.correctAnswerWas(state.question.answers[state.question.correctAnswerIndex])),
                actions: [
                  TextButton(
                    onPressed: () {
                      Navigator.of(context).pop(); // Close dialog
                      Navigator.of(context).pop(); // Go back to Home
                    },
-                   child: const Text('CONTINUE'),
+                   child: Text(AppLocalizations.of(context)!.continueBtn),
                  )
                ],
              ));
@@ -51,12 +54,12 @@ class _GameView extends StatelessWidget {
         },
         builder: (context, state) {
           if (state is GameInitial || state is QuestionLoading) {
-            return const Center(child: Column(
+            return Center(child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CircularProgressIndicator(),
-                SizedBox(height: 16),
-                Text('Generating Question with AI...'),
+                const CircularProgressIndicator(),
+                const SizedBox(height: 16),
+                Text(AppLocalizations.of(context)!.generatingQuestion),
               ],
             ));
           } else if (state is GameError) {
