@@ -78,7 +78,11 @@ class _HomePageState extends State<HomePage> {
     // I will assume for now valid check is enough and pass rounds to GamePage.
 
     context.read<ProfileBloc>().add(
-      ConsumeToken(userId: userId, currentTokens: currentTokens),
+      ConsumeToken(
+        userId: userId,
+        currentTokens: currentTokens,
+        amount: _rounds,
+      ),
     ); // Keeps existing logic
 
     // Get current language

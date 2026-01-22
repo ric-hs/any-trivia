@@ -6,6 +6,7 @@ import 'package:endless_trivia/features/game/presentation/bloc/game_event.dart';
 import 'package:endless_trivia/features/game/presentation/bloc/game_state.dart';
 
 import 'package:endless_trivia/l10n/app_localizations.dart';
+import 'package:endless_trivia/features/game/presentation/widgets/loading_view.dart';
 
 class GamePage extends StatelessWidget {
   final String category;
@@ -69,14 +70,7 @@ class _GameView extends StatelessWidget {
         },
         builder: (context, state) {
           if (state is GameInitial || state is QuestionLoading) {
-            return Center(child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const CircularProgressIndicator(),
-                const SizedBox(height: 16),
-                Text(AppLocalizations.of(context)!.generatingQuestion),
-              ],
-            ));
+            return const LoadingView();
           } else if (state is GameError) {
              return Center(child: Padding(
                padding: const EdgeInsets.all(16.0),
