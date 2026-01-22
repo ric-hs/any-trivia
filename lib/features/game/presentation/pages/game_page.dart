@@ -9,16 +9,16 @@ import 'package:endless_trivia/l10n/app_localizations.dart';
 import 'package:endless_trivia/features/game/presentation/widgets/loading_view.dart';
 
 class GamePage extends StatelessWidget {
-  final String category;
+  final List<String> categories;
   final String language;
   final int rounds;
 
-  const GamePage({super.key, required this.category, required this.language, this.rounds = 1});
+  const GamePage({super.key, required this.categories, required this.language, this.rounds = 1});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => sl<GameBloc>()..add(GetQuestion(category: category, language: language, rounds: rounds)),
+      create: (_) => sl<GameBloc>()..add(GetQuestion(categories: categories, language: language, rounds: rounds)),
       child: const _GameView(),
     );
   }

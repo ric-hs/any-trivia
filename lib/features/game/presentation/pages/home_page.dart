@@ -92,7 +92,7 @@ class _HomePageState extends State<HomePage> {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => GamePage(
-          category: category,
+          categories: category.split(',').map((e) => e.trim()).toList(),
           language: languageCode,
           rounds: _rounds,
         ),

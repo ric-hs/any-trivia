@@ -10,13 +10,13 @@ class GameRepositoryImpl implements GameRepository {
       : _geminiService = geminiService;
 
   @override
-  Stream<Question> getQuestions(String category, String language, int count) async* {
+  Stream<Question> getQuestions(List<String> categories, String language, int count) async* {
     if (count <= 0) return;
 
     if (count <= kBatchGenerationThreshold) {
       // Small game: Generate all questions in one batch
       try {
-        final batchQuestions = await _geminiService.generateQuestionsBatch(category, language, count);
+        final batchQuestions = await _geminiService.generateQuestionsBatch(categories, language, count);
         for (final question in batchQuestions) {
           yield question;
         }
@@ -27,7 +27,7 @@ class GameRepositoryImpl implements GameRepository {
       // Large game: Generate first question instantly, then stream the rest
       // 1. Generate the first question instantly
       try {
-        final firstQuestion = await _geminiService.generateQuestion(category, language);
+        final firstQuestion = await _geminiService.generateQuestion(categories, language);
         yield firstQuestion;
       } catch (e) {
         // If the first one fails, we can't start the game.
@@ -37,7 +37,7 @@ class GameRepositoryImpl implements GameRepository {
       // 2. Generate the rest in the background
       try {
         final remainingCount = count - 1;
-        final batchQuestions = await _geminiService.generateQuestionsBatch(category, language, remainingCount);
+        final batchQuestions = await _geminiService.generateQuestionsBatch(categories, language, remainingCount);
         for (final question in batchQuestions) {
           yield question;
         }

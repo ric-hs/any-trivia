@@ -17,7 +17,7 @@ class MockGeminiService extends GeminiService {
   MockGeminiService() : super(apiKey: 'fake-api-key');
 
   @override
-  Future<Question> generateQuestion(String category, String language) async {
+  Future<Question> generateQuestion(List<String> categories, String language) async {
     calls['generateQuestion'] = (calls['generateQuestion'] ?? 0) + 1;
     return initialQuestion ?? 
         const Question(
@@ -29,7 +29,7 @@ class MockGeminiService extends GeminiService {
   }
 
   @override
-  Future<List<Question>> generateQuestionsBatch(String category, String language, int count) async {
+  Future<List<Question>> generateQuestionsBatch(List<String> categories, String language, int count) async {
     calls['generateQuestionsBatch'] = (calls['generateQuestionsBatch'] ?? 0) + 1;
     calls['lastBatchCount'] = count;
     
@@ -58,7 +58,7 @@ void main() {
   });
 
   test('getQuestions uses batch generation for 5 questions (<= threshold)', () async {
-    final stream = repository.getQuestions('General', 'en', 5);
+    final stream = repository.getQuestions(['General'], 'en', 5);
     final questions = await stream.toList();
 
     expect(questions.length, 5);
@@ -70,22 +70,22 @@ void main() {
     expect(mockGeminiService.calls['lastBatchCount'], 5);
   });
 
-  test('getQuestions splits generation for 15 questions (> threshold)', () async {
-    final stream = repository.getQuestions('General', 'en', 15);
+  test('getQuestions splits generation for 51 questions (> threshold)', () async {
+    final stream = repository.getQuestions(['General'], 'en', 51);
     final questions = await stream.toList();
 
-    expect(questions.length, 15);
+    expect(questions.length, 51);
     expect(questions.first.text, 'Single Q');
     expect(questions[1].text, contains('Batch Q'));
     
     // Verify interactions
     expect(mockGeminiService.calls['generateQuestion'], 1, reason: 'Should generate first question singly');
     expect(mockGeminiService.calls['generateQuestionsBatch'], 1, reason: 'Should generate remaining batch');
-    expect(mockGeminiService.calls['lastBatchCount'], 14, reason: 'Batch count should be 15 - 1');
+    expect(mockGeminiService.calls['lastBatchCount'], 50, reason: 'Batch count should be 51 - 1');
   });
 
   test('getQuestions respects threshold boundary (exactly 10)', () async {
-    final stream = repository.getQuestions('General', 'en', 10);
+    final stream = repository.getQuestions(['General'], 'en', 10);
     final questions = await stream.toList();
 
     expect(questions.length, 10);

@@ -12,14 +12,17 @@ class GeminiService {
           generationConfig: GenerationConfig(responseMimeType: 'application/json'),
         );
 
-  Future<Question> generateQuestion(String category, String language) async {
+  Future<Question> generateQuestion(List<String> categories, String language) async {
+    final categoriesStr = categories.join(', ');
     final prompt = '''
-      Generate a trivia question about "$category" in "$language".
+      Generate a trivia question. Randomly select one category from this list: [$categoriesStr].
+      The question should be in "$language".
       Return a JSON object with the following schema:
       {
         "question": "The question text",
         "answers": ["Answer 1", "Answer 2", "Answer 3", "Answer 4"],
-        "correctIndex": 0 // Index of the correct answer (0-3)
+        "correctIndex": 0, // Index of the correct answer (0-3)
+        "category": "The selected category"
       }
       Ensure there is exactly one correct answer and 3 incorrect ones.
       Make the question challenging but fun.
@@ -36,7 +39,7 @@ class GeminiService {
         text: json['question'],
         answers: List<String>.from(json['answers']),
         correctAnswerIndex: json['correctIndex'],
-        category: category,
+        category: json['category'] ?? categories.first, // Fallback if AI misses it
       );
     } catch (e) {
       // Fallback or rethrow? Rethrow for now.
@@ -44,14 +47,17 @@ class GeminiService {
     }
   }
 
-  Future<List<Question>> generateQuestionsBatch(String category, String language, int count) async {
+  Future<List<Question>> generateQuestionsBatch(List<String> categories, String language, int count) async {
+    final categoriesStr = categories.join(', ');
     final prompt = '''
-      Generate $count trivia questions about "$category" in "$language".
+      Generate $count trivia questions. For each question, randomly select one category from this list: [$categoriesStr].
+      The questions should be in "$language".
       Return a JSON array of objects, where each object has the following schema:
       {
         "question": "The question text",
         "answers": ["Answer 1", "Answer 2", "Answer 3", "Answer 4"],
-        "correctIndex": 0 // Index of the correct answer (0-3)
+        "correctIndex": 0, // Index of the correct answer (0-3)
+        "category": "The selected category"
       }
       Ensure there is exactly one correct answer and 3 incorrect ones for each question.
       Make the questions challenging but fun.
@@ -68,7 +74,7 @@ class GeminiService {
         text: json['question'],
         answers: List<String>.from(json['answers']),
         correctAnswerIndex: json['correctIndex'],
-        category: category,
+        category: json['category'] ?? categories.first,
       )).toList();
     } catch (e) {
       throw Exception('Failed to generate questions batch: $e');

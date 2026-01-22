@@ -37,7 +37,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     emit(QuestionLoading());
 
     _questionsSubscription = _gameRepository
-        .getQuestions(event.category, event.language, event.rounds)
+        .getQuestions(event.categories, event.language, event.rounds)
         .listen(
       (question) => add(QuestionReceived(question)),
       onError: (error) {
