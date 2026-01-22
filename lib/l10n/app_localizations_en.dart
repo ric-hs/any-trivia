@@ -99,4 +99,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String notEnoughTokens(int rounds, int tokens) {
     return 'You selected $rounds rounds but only have $tokens tokens.';
   }
+
+  @override
+  String roundProgress(int current, int total) {
+    return 'Round $current / $total';
+  }
+
+  @override
+  String get numberOfRounds => 'Number of Rounds';
+
+  @override
+  String get maxRounds => '(max. 30)';
 }

@@ -90,6 +90,14 @@ class _GameView extends StatelessWidget {
                  crossAxisAlignment: CrossAxisAlignment.stretch,
                  children: [
                    Container(
+                     margin: const EdgeInsets.only(bottom: 20),
+                     child: Text(
+                       AppLocalizations.of(context)!.roundProgress(state.currentRound, state.totalRounds),
+                       style: const TextStyle(fontSize: 18, color: Colors.grey),
+                       textAlign: TextAlign.center,
+                     ),
+                   ),
+                   Container(
                      padding: const EdgeInsets.all(20),
                      decoration: BoxDecoration(
                        color: const Color(0xFF2C2C2C),

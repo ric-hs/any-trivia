@@ -55,5 +55,18 @@
                 "type": "int"
             }
         }
-    }
+    },
+    "roundProgress": "Round {current} / {total}",
+    "@roundProgress": {
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "numberOfRounds": "Number of Rounds",
+    "maxRounds": "(max. 30)"
 }

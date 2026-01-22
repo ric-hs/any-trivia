@@ -101,4 +101,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String notEnoughTokens(int rounds, int tokens) {
     return 'Seleccionaste $rounds rondas pero solo tienes $tokens fichas.';
   }
+
+  @override
+  String roundProgress(int current, int total) {
+    return 'Ronda $current / $total';
+  }
+
+  @override
+  String get numberOfRounds => 'Número de Rondas';
+
+  @override
+  String get maxRounds => '(máx. 30)';
 }

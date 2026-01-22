@@ -253,6 +253,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You selected {rounds} rounds but only have {tokens} tokens.'**
   String notEnoughTokens(int rounds, int tokens);
+
+  /// No description provided for @roundProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Round {current} / {total}'**
+  String roundProgress(int current, int total);
+
+  /// No description provided for @numberOfRounds.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of Rounds'**
+  String get numberOfRounds;
+
+  /// No description provided for @maxRounds.
+  ///
+  /// In en, this message translates to:
+  /// **'(max. 30)'**
+  String get maxRounds;
 }
 
 class _AppLocalizationsDelegate

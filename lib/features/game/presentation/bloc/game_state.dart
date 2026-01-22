@@ -14,26 +14,32 @@ final class QuestionLoading extends GameState {}
 
 final class QuestionLoaded extends GameState {
   final Question question;
+  final int currentRound;
+  final int totalRounds;
 
-  const QuestionLoaded(this.question);
+  const QuestionLoaded({required this.question, required this.currentRound, required this.totalRounds});
 
   @override
-  List<Object?> get props => [question];
+  List<Object?> get props => [question, currentRound, totalRounds];
 }
 
 final class AnswerSubmitted extends GameState {
   final Question question;
   final int selectedIndex;
   final bool isCorrect;
+  final int currentRound;
+  final int totalRounds;
 
   const AnswerSubmitted({
     required this.question,
     required this.selectedIndex,
     required this.isCorrect,
+    required this.currentRound,
+    required this.totalRounds,
   });
 
   @override
-  List<Object?> get props => [question, selectedIndex, isCorrect];
+  List<Object?> get props => [question, selectedIndex, isCorrect, currentRound, totalRounds];
 }
 
 final class GameError extends GameState {

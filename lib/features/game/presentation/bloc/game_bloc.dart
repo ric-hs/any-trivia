@@ -10,6 +10,9 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   final List<Question> _questionsQueue = [];
   StreamSubscription<Question>? _questionsSubscription;
 
+  int _currentRound = 0;
+  int _totalRounds = 0;
+
   GameBloc({required GameRepository gameRepository})
       : _gameRepository = gameRepository,
         super(GameInitial()) {
@@ -29,6 +32,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   Future<void> _onGetQuestion(GetQuestion event, Emitter<GameState> emit) async {
     _questionsQueue.clear();
     await _questionsSubscription?.cancel();
+    _currentRound = 1;
+    _totalRounds = event.rounds;
     emit(QuestionLoading());
 
     _questionsSubscription = _gameRepository
@@ -36,34 +41,20 @@ class GameBloc extends Bloc<GameEvent, GameState> {
         .listen(
       (question) => add(QuestionReceived(question)),
       onError: (error) {
-        // Handle error: emit loop or separate error event?
-        // Since we are in listen, we can't emit. Adding event is safer.
-        // For simplicity reusing GameError but via an internal mechanism if needed. 
-        // Or just re-throwing? 
-        // Let's assume error terminates stream.
-         // Actually, I can't easily emit error from here without an event.
-         // Let's add a generic error event or handle it.
-         // For now, I'll let it slide or add a QuestionError event if strictly needed.
-         // Given complexities, I'll log or ignore for MVP or add simple error handling:
-         // add(QuestionERROR(error)) -> requires new event.
+        // Handle error if needed
       },
-      onDone: () {
-        // Stream completed. 
-      },
+      onDone: () {},
     );
   }
 
   void _onQuestionReceived(QuestionReceived event, Emitter<GameState> emit) {
-    // If we are waiting for a question (Loading or previous was answered and we are waiting),
-    // show it immediately.
-    // However, the flow is: GetQuestion -> Loading -> (stream starts) -> Received -> Loaded.
-    // If user answers -> AnswerSubmitted. User clicks Next -> NextQuestion.
-    
-    // So if state is QuestionLoading, it means we are waiting for the VERY FIRST question (or a buffered one).
     if (state is QuestionLoading) {
-       emit(QuestionLoaded(event.question));
+       emit(QuestionLoaded(
+         question: event.question, 
+         currentRound: _currentRound, 
+         totalRounds: _totalRounds
+       ));
     } else {
-      // Otherwise, queue it up.
       _questionsQueue.add(event.question);
     }
   }
@@ -71,23 +62,23 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   void _onNextQuestion(NextQuestion event, Emitter<GameState> emit) {
     if (_questionsQueue.isNotEmpty) {
       final nextQuestion = _questionsQueue.removeAt(0);
-      emit(QuestionLoaded(nextQuestion));
+      _currentRound++;
+      emit(QuestionLoaded(
+        question: nextQuestion, 
+        currentRound: _currentRound, 
+        totalRounds: _totalRounds
+      ));
     } else {
-      // Queue empty. 
-      // Are we done? Check subscription? 
-      // If subscription is done, game over. 
-      // But subscription !isPaused checks active.
-      // Simplest: if subscription is done and queue empty -> GameFinished.
-      // But how do we know if stream is done? 
-      // Let's add flag?
-      // Actually, if queue is empty, we set state to Loading? 
-      // If more come, Received will trigger Loaded.
-      // IF stream is done, we won't get more.
-      
-      // Let's assume for now if queue is empty we wait (Loading). 
-      // Real robust solution needs IsStreamDone flag. 
-      
-      emit(QuestionLoading());
+      // Logic for stream finished or waiting...
+      // For now assuming if queue empty and stream done -> finished.
+      // But we simplified to wait if queue empty (loading) or finish if we tracked it.
+      // Let's stick to "wait for more" (Loading) if we expect more, 
+      // OR Finish if we hit total rounds.
+      if (_currentRound >= _totalRounds) {
+        emit(GameFinished());
+      } else {
+        emit(QuestionLoading());
+      }
     }
   }
 
@@ -99,6 +90,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
         question: currentQuestion,
         selectedIndex: event.selectedIndex,
         isCorrect: isCorrect,
+        currentRound: _currentRound,
+        totalRounds: _totalRounds,
       ));
     }
   }
