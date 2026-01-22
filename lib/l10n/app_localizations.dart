@@ -143,8 +143,8 @@ abstract class AppLocalizations {
   /// No description provided for @playRound.
   ///
   /// In en, this message translates to:
-  /// **'PLAY ROUND (1 Token)'**
-  String get playRound;
+  /// **'{count, plural, =1{START GAME (1 Token)} other{START GAME ({count} Tokens)}}'**
+  String playRound(int count);
 
   /// No description provided for @tokens.
   ///

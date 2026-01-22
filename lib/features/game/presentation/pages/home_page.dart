@@ -225,7 +225,7 @@ class _HomePageState extends State<HomePage> {
                     child: ElevatedButton(
                       onPressed: () =>
                           _startGame(context, profile.tokens, profile.userId),
-                      child: Text(AppLocalizations.of(context)!.playRound),
+                      child: Text(AppLocalizations.of(context)!.playRound(_rounds)),
                     ),
                   ),
 

@@ -6,7 +6,7 @@
     "createAccount": "CREAR CUENTA",
     "joinNow": "UNIRSE",
     "startGame": "INICIAR JUEGO",
-    "playRound": "JUGAR RONDA (1 Ficha)",
+    "playRound": "{count, plural, =1{INICIAR PARTIDA (1 Ficha)} other{INICIAR PARTIDA ({count} Fichas)}}",
     "tokens": "FICHAS",
     "chooseAdventure": "ELIGE TU AVENTURA",
     "enterTopic": "Ingresa un tema (ej. Películas de los 80, Física Cuántica)",

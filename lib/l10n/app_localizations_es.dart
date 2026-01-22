@@ -30,7 +30,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get startGame => 'INICIAR JUEGO';
 
   @override
-  String get playRound => 'JUGAR RONDA (1 Ficha)';
+  String playRound(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'INICIAR PARTIDA ($count Fichas)',
+      one: 'INICIAR PARTIDA (1 Ficha)',
+    );
+    return '$_temp0';
+  }
 
   @override
   String get tokens => 'FICHAS';

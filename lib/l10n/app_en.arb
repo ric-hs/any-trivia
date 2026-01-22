@@ -6,7 +6,14 @@
     "createAccount": "CREATE ACCOUNT",
     "joinNow": "JOIN NOW",
     "startGame": "START GAME",
-    "playRound": "PLAY ROUND (1 Token)",
+    "playRound": "{count, plural, =1{START GAME (1 Token)} other{START GAME ({count} Tokens)}}",
+    "@playRound": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "tokens": "TOKENS",
     "chooseAdventure": "CHOOSE YOUR ADVENTURE",
     "enterTopic": "Enter a topic (e.g. 80s Movies, Quantum Physics)",
