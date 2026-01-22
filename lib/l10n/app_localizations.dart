@@ -247,6 +247,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error loading profile: {message}'**
   String errorProfile(String message);
+
+  /// No description provided for @notEnoughTokens.
+  ///
+  /// In en, this message translates to:
+  /// **'You selected {rounds} rounds but only have {tokens} tokens.'**
+  String notEnoughTokens(int rounds, int tokens);
 }
 
 class _AppLocalizationsDelegate

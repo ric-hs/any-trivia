@@ -10,13 +10,14 @@ import 'package:endless_trivia/l10n/app_localizations.dart';
 class GamePage extends StatelessWidget {
   final String category;
   final String language;
+  final int rounds;
 
-  const GamePage({super.key, required this.category, required this.language});
+  const GamePage({super.key, required this.category, required this.language, this.rounds = 1});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => sl<GameBloc>()..add(GetQuestion(category: category, language: language)),
+      create: (_) => sl<GameBloc>()..add(GetQuestion(category: category, language: language, rounds: rounds)),
       child: const _GameView(),
     );
   }
@@ -44,9 +45,23 @@ class _GameView extends StatelessWidget {
                  TextButton(
                    onPressed: () {
                      Navigator.of(context).pop(); // Close dialog
-                     Navigator.of(context).pop(); // Go back to Home
+                     context.read<GameBloc>().add(NextQuestion());
                    },
                    child: Text(AppLocalizations.of(context)!.continueBtn),
+                 )
+               ],
+             ));
+           } else if (state is GameFinished) {
+             showDialog(context: context, builder: (_) => AlertDialog(
+               title: const Text('Game Over'),
+               content: const Text('You have completed all rounds!'),
+               actions: [
+                 TextButton(
+                   onPressed: () {
+                     Navigator.of(context).pop(); // Close dialog
+                     Navigator.of(context).pop(); // Go back to Home
+                   },
+                   child: const Text('Main Menu'),
                  )
                ],
              ));

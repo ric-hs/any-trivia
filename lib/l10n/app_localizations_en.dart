@@ -86,4 +86,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String errorProfile(String message) {
     return 'Error loading profile: $message';
   }
+
+  @override
+  String notEnoughTokens(int rounds, int tokens) {
+    return 'You selected $rounds rounds but only have $tokens tokens.';
+  }
 }

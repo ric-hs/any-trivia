@@ -37,5 +37,16 @@
                 "type": "String"
             }
         }
+    },
+    "notEnoughTokens": "You selected {rounds} rounds but only have {tokens} tokens.",
+    "@notEnoughTokens": {
+        "placeholders": {
+            "rounds": {
+                "type": "int"
+            },
+            "tokens": {
+                "type": "int"
+            }
+        }
     }
 }

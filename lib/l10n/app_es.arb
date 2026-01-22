@@ -23,5 +23,6 @@
     "continueBtn": "CONTINUAR",
     "errorAuth": "Error de Autenticación",
     "errorSignup": "Error de Registro",
-    "errorProfile": "Error cargando perfil: {message}"
+    "errorProfile": "Error cargando perfil: {message}",
+    "notEnoughTokens": "Seleccionaste {rounds} rondas pero solo tienes {tokens} fichas."
 }

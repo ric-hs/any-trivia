@@ -44,3 +44,5 @@ final class GameError extends GameState {
   @override
   List<Object?> get props => [message];
 }
+
+final class GameFinished extends GameState {}

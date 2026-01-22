@@ -43,4 +43,35 @@ class GeminiService {
       throw Exception('Failed to generate question: $e');
     }
   }
+
+  Future<List<Question>> generateQuestionsBatch(String category, String language, int count) async {
+    final prompt = '''
+      Generate $count trivia questions about "$category" in "$language".
+      Return a JSON array of objects, where each object has the following schema:
+      {
+        "question": "The question text",
+        "answers": ["Answer 1", "Answer 2", "Answer 3", "Answer 4"],
+        "correctIndex": 0 // Index of the correct answer (0-3)
+      }
+      Ensure there is exactly one correct answer and 3 incorrect ones for each question.
+      Make the questions challenging but fun.
+    ''';
+
+    final content = [Content.text(prompt)];
+    try {
+      final response = await _model.generateContent(content);
+      
+      if (response.text == null) throw Exception('Empty response from AI');
+
+      final List<dynamic> jsonList = jsonDecode(response.text!);
+      return jsonList.map((json) => Question(
+        text: json['question'],
+        answers: List<String>.from(json['answers']),
+        correctAnswerIndex: json['correctIndex'],
+        category: category,
+      )).toList();
+    } catch (e) {
+      throw Exception('Failed to generate questions batch: $e');
+    }
+  }
 }
