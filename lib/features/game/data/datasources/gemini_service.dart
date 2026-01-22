@@ -39,7 +39,7 @@ class GeminiService {
         text: json['question'],
         answers: List<String>.from(json['answers']),
         correctAnswerIndex: json['correctIndex'],
-        category: json['category'] ?? categories.first, // Fallback if AI misses it
+        category: json['category'] ?? "", // Fallback if AI misses it
       );
     } catch (e) {
       // Fallback or rethrow? Rethrow for now.
@@ -74,7 +74,7 @@ class GeminiService {
         text: json['question'],
         answers: List<String>.from(json['answers']),
         correctAnswerIndex: json['correctIndex'],
-        category: json['category'] ?? categories.first,
+        category: json['category'] ?? "",
       )).toList();
     } catch (e) {
       throw Exception('Failed to generate questions batch: $e');
