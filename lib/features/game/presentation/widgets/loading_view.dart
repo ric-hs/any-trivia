@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import '../constants/loading_messages.dart';
 
 class LoadingView extends StatefulWidget {
   const LoadingView({super.key});
@@ -13,23 +14,22 @@ class _LoadingViewState extends State<LoadingView> {
   int _currentIndex = 0;
   late Timer _timer;
 
-  final List<String> _messages = [
-    "Summoning the trivia gods...",
-    "Polishing the trophies...",
-    "Consulting the oracle...",
-    "Loading knowledge crystals...",
-    "Sharpening the questions...",
-    "Preparing your challenge...",
-    "Rolling the dice in the cloud...",
-    "Gathering intelligence..."
-  ];
+  List<String> get _messages {
+    final locale = Localizations.localeOf(context).languageCode;
+    return LoadingMessages.getMessages(locale);
+  }
 
   @override
   void initState() {
     super.initState();
-    // Pick an initial random message
-    _currentIndex = Random().nextInt(_messages.length);
     _startTimer();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Pick an initial random message once we have context for the locale
+    _currentIndex = Random().nextInt(_messages.length);
   }
 
   void _startTimer() {
