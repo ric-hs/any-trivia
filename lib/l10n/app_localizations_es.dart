@@ -121,4 +121,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get endGame => 'TERMINAR JUEGO';
+
+  @override
+  String get validatorRequiredEmail => 'Por favor ingresa un correo';
+
+  @override
+  String get validatorInvalidEmail => 'Por favor ingresa un correo válido';
 }

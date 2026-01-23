@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:endless_trivia/l10n/app_localizations.dart';
 import 'package:endless_trivia/core/di/injection_container.dart';
 import 'package:endless_trivia/features/auth/presentation/cubit/signup_cubit.dart';
+import 'package:endless_trivia/core/utils/validators.dart';
 
 class SignupPage extends StatelessWidget {
   const SignupPage({super.key});
@@ -26,6 +27,7 @@ class _SignupForm extends StatefulWidget {
 class _SignupFormState extends State<_SignupForm> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -45,60 +47,66 @@ class _SignupFormState extends State<_SignupForm> {
           padding: const EdgeInsets.all(24.0),
           child: Center(
             child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextField(
-                    controller: _emailController,
-                    decoration: InputDecoration(
-                      labelText: AppLocalizations.of(context)!.email,
-                      filled: true,
-                      fillColor: const Color(0xFF2C2C2C),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
-                      ),
-                      prefixIcon: const Icon(Icons.email),
-                    ),
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-                  const SizedBox(height: 16),
-                  TextField(
-                    controller: _passwordController,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      labelText: AppLocalizations.of(context)!.password,
-                      filled: true,
-                      fillColor: const Color(0xFF2C2C2C),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
-                      ),
-                      prefixIcon: const Icon(Icons.lock),
-                    ),
-                  ),
-                  const SizedBox(height: 32),
-                  BlocBuilder<SignupCubit, SignupState>(
-                    builder: (context, state) {
-                      if (state.status == SignupStatus.submitting) {
-                         return const CircularProgressIndicator();
-                      }
-                      return SizedBox(
-                        width: double.infinity,
-                        height: 50,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            context.read<SignupCubit>().signupWithCredentials(
-                                  _emailController.text,
-                                  _passwordController.text,
-                                );
-                          },
-                          child: Text(AppLocalizations.of(context)!.joinNow),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextFormField(
+                      controller: _emailController,
+                      validator: (value) => Validators.emailValidator(context, value),
+                      decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.email,
+                        filled: true,
+                        fillColor: const Color(0xFF2C2C2C),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide.none,
                         ),
-                      );
-                    },
-                  ),
-                ],
+                        prefixIcon: const Icon(Icons.email),
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _passwordController,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.password,
+                        filled: true,
+                        fillColor: const Color(0xFF2C2C2C),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide.none,
+                        ),
+                        prefixIcon: const Icon(Icons.lock),
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+                    BlocBuilder<SignupCubit, SignupState>(
+                      builder: (context, state) {
+                        if (state.status == SignupStatus.submitting) {
+                           return const CircularProgressIndicator();
+                        }
+                        return SizedBox(
+                          width: double.infinity,
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                context.read<SignupCubit>().signupWithCredentials(
+                                      _emailController.text,
+                                      _passwordController.text,
+                                    );
+                              }
+                            },
+                            child: Text(AppLocalizations.of(context)!.joinNow),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

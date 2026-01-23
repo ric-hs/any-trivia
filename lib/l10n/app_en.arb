@@ -71,5 +71,7 @@
     "maxRounds": "(max. 30)",
     "removeFromFavorites": "Remove from favorites",
     "addToGame": "Add to game",
-    "endGame": "END GAME"
+    "endGame": "END GAME",
+    "validatorRequiredEmail": "Please enter an email address",
+    "validatorInvalidEmail": "Please enter a valid email address"
 }

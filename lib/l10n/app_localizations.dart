@@ -289,6 +289,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'END GAME'**
   String get endGame;
+
+  /// No description provided for @validatorRequiredEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter an email address'**
+  String get validatorRequiredEmail;
+
+  /// No description provided for @validatorInvalidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email address'**
+  String get validatorInvalidEmail;
 }
 
 class _AppLocalizationsDelegate
