@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:endless_trivia/features/game/domain/entities/question.dart';
 
 sealed class GameEvent extends Equatable {
   const GameEvent();

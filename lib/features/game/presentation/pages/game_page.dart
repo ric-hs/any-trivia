@@ -7,13 +7,24 @@ import 'package:endless_trivia/features/game/presentation/bloc/game_state.dart';
 
 import 'package:endless_trivia/l10n/app_localizations.dart';
 import 'package:endless_trivia/features/game/presentation/widgets/loading_view.dart';
+import 'package:endless_trivia/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:endless_trivia/features/profile/presentation/bloc/profile_state.dart';
+import 'package:endless_trivia/features/profile/presentation/bloc/profile_event.dart';
 
 class GamePage extends StatelessWidget {
   final List<String> categories;
+
   final String language;
   final int rounds;
+  final String userId;
 
-  const GamePage({super.key, required this.categories, required this.language, this.rounds = 1});
+  const GamePage({
+    super.key,
+    required this.categories,
+    required this.language,
+    required this.userId,
+    this.rounds = 1,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +58,18 @@ class _GameView extends StatelessWidget {
                  )
                ],
              ));
+           } else if (state is QuestionLoaded) {
+             if (state.currentRound == 1) {
+               // Deduct tokens only when the first question is successfully loaded
+               final profileState = context.read<ProfileBloc>().state;
+               if (profileState is ProfileLoaded) {
+                  context.read<ProfileBloc>().add(ConsumeToken(
+                    userId: (context.widget as GamePage).userId,
+                    currentTokens: profileState.profile.tokens,
+                    amount: (context.widget as GamePage).rounds,
+                  ));
+               }
+             }
            }
         },
         builder: (context, state) {

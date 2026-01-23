@@ -93,14 +93,6 @@ class _HomePageState extends State<HomePage> {
     // The previous code `ConsumeToken` usage is ambiguous without seeing Bloc.
     // I will assume for now valid check is enough and pass rounds to GamePage.
 
-    context.read<ProfileBloc>().add(
-      ConsumeToken(
-        userId: userId,
-        currentTokens: currentTokens,
-        amount: _rounds,
-      ),
-    ); // Keeps existing logic
-
     // Get current language
     final languageCode = Localizations.localeOf(context).languageCode;
 
@@ -111,6 +103,7 @@ class _HomePageState extends State<HomePage> {
           categories: List.from(_selectedCategories),
           language: languageCode,
           rounds: _rounds,
+          userId: userId,
         ),
       ),
     );
