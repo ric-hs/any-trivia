@@ -29,7 +29,7 @@ class MockGeminiService extends GeminiService {
   }
 
   @override
-  Future<List<Question>> generateQuestionsBatch(List<String> categories, String language, int count) async {
+  Future<List<Question>> generateQuestions(List<String> categories, String language, int count) async {
     calls['generateQuestionsBatch'] = (calls['generateQuestionsBatch'] ?? 0) + 1;
     calls['lastBatchCount'] = count;
     
