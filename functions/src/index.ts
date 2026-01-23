@@ -71,7 +71,8 @@ export const generateQuestion = functions.runWith({
 
     return JSON.parse(cleanText);
   } catch (e) {
-    console.error("Error generating question:", e);
+    functions.logger.error("Error generating question:", e);
+    functions.logger.log("Payload when error occurred:", data);
     throw new functions.https.HttpsError("internal", "Failed to generate question", e);
   }
 });
