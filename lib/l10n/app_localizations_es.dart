@@ -112,4 +112,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get maxRounds => '(máx. 30)';
+
+  @override
+  String get removeFromFavorites => 'Eliminar de favoritos';
+
+  @override
+  String get addToGame => 'Agregar al juego';
 }

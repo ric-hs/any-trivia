@@ -68,5 +68,7 @@
         }
     },
     "numberOfRounds": "Number of Rounds",
-    "maxRounds": "(max. 30)"
+    "maxRounds": "(max. 30)",
+    "removeFromFavorites": "Remove from favorites",
+    "addToGame": "Add to game"
 }

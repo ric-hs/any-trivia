@@ -271,6 +271,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'(max. 30)'**
   String get maxRounds;
+
+  /// No description provided for @removeFromFavorites.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from favorites'**
+  String get removeFromFavorites;
+
+  /// No description provided for @addToGame.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to game'**
+  String get addToGame;
 }
 
 class _AppLocalizationsDelegate

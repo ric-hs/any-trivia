@@ -27,5 +27,7 @@
     "notEnoughTokens": "Seleccionaste {rounds} rondas pero solo tienes {tokens} fichas.",
     "roundProgress": "Ronda {current} / {total}",
     "numberOfRounds": "Número de Rondas",
-    "maxRounds": "(máx. 30)"
+    "maxRounds": "(máx. 30)",
+    "removeFromFavorites": "Eliminar de favoritos",
+    "addToGame": "Agregar al juego"
 }

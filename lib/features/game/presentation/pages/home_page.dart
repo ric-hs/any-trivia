@@ -202,10 +202,30 @@ class _HomePageState extends State<HomePage> {
                       spacing: 8.0,
                       runSpacing: 8.0,
                       children: _selectedCategories.map((category) {
-                        return Chip(
+                        final isFavorite = profile.favoriteCategories.contains(category);
+                        return InputChip(
                           label: Text(category),
                           onDeleted: () => _removeCategory(category),
                           deleteIcon: const Icon(Icons.close, size: 18),
+                          onPressed: () {
+                              final newFavorites = List<String>.from(profile.favoriteCategories);
+                              if (isFavorite) {
+                                newFavorites.remove(category);
+                              } else {
+                                newFavorites.add(category);
+                              }
+                              context.read<ProfileBloc>().add(
+                                UpdateFavoriteCategories(
+                                  userId: profile.userId,
+                                  categories: newFavorites,
+                                ),
+                              );
+                          },
+                          avatar: Icon(
+                            isFavorite ? Icons.star : Icons.star_border,
+                            color: isFavorite ? Colors.amber : Colors.grey,
+                            size: 18,
+                          ),
                         );
                       }).toList(),
                     ),
@@ -295,7 +315,29 @@ class _HomePageState extends State<HomePage> {
                     Wrap(
                       spacing: 8,
                       children: profile.favoriteCategories
-                          .map((cat) => Chip(label: Text(cat)))
+                          .map((cat) => InputChip(
+                                label: Text(cat),
+                                avatar: const Icon(Icons.star, size: 16, color: Colors.amber),
+                                onPressed: () {
+                                  if (!_selectedCategories.contains(cat)) {
+                                    setState(() {
+                                      _selectedCategories.add(cat);
+                                    });
+                                  }
+                                },
+                                onDeleted: () {
+                                  final newFavorites = List<String>.from(profile.favoriteCategories)..remove(cat);
+                                  context.read<ProfileBloc>().add(
+                                    UpdateFavoriteCategories(
+                                      userId: profile.userId,
+                                      categories: newFavorites,
+                                    ),
+                                  );
+                                },
+                                deleteIcon: const Icon(Icons.close, size: 16),
+                                deleteButtonTooltipMessage: AppLocalizations.of(context)!.removeFromFavorites,
+                                tooltip: AppLocalizations.of(context)!.addToGame,
+                              ))
                           .toList(),
                     ),
                 ],
