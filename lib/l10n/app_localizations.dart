@@ -307,6 +307,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to load questions, please try again later.'**
   String get errorLoadQuestions;
+
+  /// No description provided for @iHaveAnAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'I have an account'**
+  String get iHaveAnAccount;
+
+  /// No description provided for @back.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get back;
 }
 
 class _AppLocalizationsDelegate

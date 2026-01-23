@@ -16,7 +16,7 @@ class AuthRepositoryImpl implements AuthRepository {
       }
       return UserEntity(
         id: firebaseUser.uid,
-        email: firebaseUser.email!,
+        email: firebaseUser.email,
         displayName: firebaseUser.displayName,
       );
     });
@@ -55,6 +55,21 @@ class AuthRepositoryImpl implements AuthRepository {
       );
     } catch (e) {
       throw Exception('Login failed: ${e.toString()}');
+    }
+  }
+
+  @override
+  Future<UserEntity> logInAnonymously() async {
+    try {
+      final userCredential = await _firebaseAuth.signInAnonymously();
+      final firebaseUser = userCredential.user!;
+      return UserEntity(
+          id: firebaseUser.uid,
+          email: firebaseUser.email ?? 'Anonymous',
+          displayName: firebaseUser.displayName ?? 'Guest',
+      );
+    } catch (e) {
+      throw Exception('Anonymous login failed: ${e.toString()}');
     }
   }
 

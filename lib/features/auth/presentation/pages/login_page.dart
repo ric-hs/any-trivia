@@ -37,7 +37,11 @@ class _LoginFormState extends State<_LoginForm> {
         listener: (context, state) {
           if (state.status == LoginStatus.failure) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.errorMessage ?? AppLocalizations.of(context)!.errorAuth)),
+              SnackBar(
+                content: Text(
+                  state.errorMessage ?? AppLocalizations.of(context)!.errorAuth,
+                ),
+              ),
             );
           }
         },
@@ -53,83 +57,43 @@ class _LoginFormState extends State<_LoginForm> {
                     // Title / Logo
                     Text(
                       AppLocalizations.of(context)!.appTitle.toUpperCase(),
-                      style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                      style: Theme.of(context).textTheme.displayMedium
+                          ?.copyWith(
                             color: Theme.of(context).primaryColor,
                             fontWeight: FontWeight.w900,
                             letterSpacing: 2.0,
                           ),
                     ),
                     const SizedBox(height: 48),
-                    
-                    // Email Input
-                    TextFormField(
-                      controller: _emailController,
-                      validator: (value) => Validators.emailValidator(context, value),
-                      decoration: InputDecoration(
-                        labelText: AppLocalizations.of(context)!.email,
-                        filled: true,
-                        fillColor: const Color(0xFF2C2C2C),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide.none,
-                        ),
-                        prefixIcon: const Icon(Icons.email),
-                      ),
-                      keyboardType: TextInputType.emailAddress,
-                    ),
-                    const SizedBox(height: 16),
-                    
-                    // Password Input
-                    TextFormField(
-                      controller: _passwordController,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        labelText: AppLocalizations.of(context)!.password,
-                        filled: true,
-                        fillColor: const Color(0xFF2C2C2C),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide.none,
-                        ),
-                        prefixIcon: const Icon(Icons.lock),
-                      ),
-                    ),
-                    const SizedBox(height: 32),
-                    
-                    // Login Button
+
                     BlocBuilder<LoginCubit, LoginState>(
                       builder: (context, state) {
                         if (state.status == LoginStatus.submitting) {
-                           return const CircularProgressIndicator();
+                          return const CircularProgressIndicator();
                         }
                         return SizedBox(
                           width: double.infinity,
-                          height: 50,
+                          height: 60,
                           child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Theme.of(context).primaryColor,
+                              foregroundColor: Colors.black,
+                              textStyle: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                             onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                context.read<LoginCubit>().logInWithCredentials(
-                                      _emailController.text,
-                                      _passwordController.text,
-                                    );
-                              }
+                              context.read<LoginCubit>().logInAnonymously();
                             },
-                            child: Text(AppLocalizations.of(context)!.startGame),
+                            child: Text(
+                              AppLocalizations.of(context)!.startGame,
+                            ),
                           ),
                         );
                       },
                     ),
-                    const SizedBox(height: 16),
-                    
-                    // Signup Link
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => const SignupPage()),
-                        );
-                      },
-                      child: Text(AppLocalizations.of(context)!.createAccount),
-                    ),
+                    const SizedBox(height: 24),
                   ],
                 ),
               ),

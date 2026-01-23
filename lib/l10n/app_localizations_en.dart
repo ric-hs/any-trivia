@@ -129,4 +129,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errorLoadQuestions =>
       'Failed to load questions, please try again later.';
+
+  @override
+  String get iHaveAnAccount => 'I have an account';
+
+  @override
+  String get back => 'Back';
 }

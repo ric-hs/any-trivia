@@ -131,4 +131,10 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get errorLoadQuestions =>
       'Error al cargar las preguntas, por favor intenta de nuevo más tarde.';
+
+  @override
+  String get iHaveAnAccount => 'Ya tengo una cuenta';
+
+  @override
+  String get back => 'Atrás';
 }

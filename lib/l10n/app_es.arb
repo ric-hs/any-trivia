@@ -33,5 +33,7 @@
     "endGame": "TERMINAR JUEGO",
     "validatorRequiredEmail": "Por favor ingresa un correo",
     "validatorInvalidEmail": "Por favor ingresa un correo válido",
-    "errorLoadQuestions": "Error al cargar las preguntas, por favor intenta de nuevo más tarde."
+    "errorLoadQuestions": "Error al cargar las preguntas, por favor intenta de nuevo más tarde.",
+    "iHaveAnAccount": "Ya tengo una cuenta",
+    "back": "Atrás"
 }

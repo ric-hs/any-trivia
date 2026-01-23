@@ -74,5 +74,7 @@
     "endGame": "END GAME",
     "validatorRequiredEmail": "Please enter an email address",
     "validatorInvalidEmail": "Please enter a valid email address",
-    "errorLoadQuestions": "Failed to load questions, please try again later."
+    "errorLoadQuestions": "Failed to load questions, please try again later.",
+    "iHaveAnAccount": "I have an account",
+    "back": "Back"
 }
