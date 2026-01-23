@@ -44,7 +44,7 @@ export const generateQuestion = functions.runWith({
     prompt = `
       Generate a trivia question. Randomly select one category from this list: [${categoriesStr}].
       The question should be in "${language}".
-      Return a JSON object with the following schema:
+      Return a JSON object inside an array with the following schema:
       {
         "question": "The question text",
         "answers": ["Answer 1", "Answer 2", "Answer 3", "Answer 4"],
