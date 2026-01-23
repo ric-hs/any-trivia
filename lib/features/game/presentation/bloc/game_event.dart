@@ -32,11 +32,4 @@ final class AnswerQuestion extends GameEvent {
   List<Object> get props => [selectedIndex];
 }
 
-final class QuestionReceived extends GameEvent {
-  final Question question;
-  
-  const QuestionReceived(this.question);
 
-  @override
-  List<Object> get props => [question];
-}

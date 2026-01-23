@@ -9,22 +9,19 @@ class GameRepositoryImpl implements GameRepository {
     : _geminiService = geminiService;
 
   @override
-  Stream<Question> getQuestions(
+  Future<List<Question>> getQuestions(
     List<String> categories,
     String language,
     int count,
-  ) async* {
-    if (count <= 0) return;
+  ) async {
+    if (count <= 0) return [];
 
     try {
-      final batchQuestions = await _geminiService.generateQuestions(
+      return await _geminiService.generateQuestions(
         categories,
         language,
         count,
       );
-      for (final question in batchQuestions) {
-        yield question;
-      }
     } catch (e) {
       throw Exception('Failed to load questions: $e');
     }

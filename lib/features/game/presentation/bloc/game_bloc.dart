@@ -8,7 +8,7 @@ import 'package:endless_trivia/features/game/presentation/bloc/game_state.dart';
 class GameBloc extends Bloc<GameEvent, GameState> {
   final GameRepository _gameRepository;
   final List<Question> _questionsQueue = [];
-  StreamSubscription<Question>? _questionsSubscription;
+
 
   int _currentRound = 0;
   int _totalRounds = 0;
@@ -18,46 +18,46 @@ class GameBloc extends Bloc<GameEvent, GameState> {
         super(GameInitial()) {
     on<StartGame>((event, emit) => emit(GameInitial()));
     on<GetQuestion>(_onGetQuestion);
-    on<QuestionReceived>(_onQuestionReceived);
+
     on<NextQuestion>(_onNextQuestion);
     on<AnswerQuestion>(_onAnswerQuestion);
   }
 
-  @override
-  Future<void> close() {
-    _questionsSubscription?.cancel();
-    return super.close();
-  }
-
   Future<void> _onGetQuestion(GetQuestion event, Emitter<GameState> emit) async {
     _questionsQueue.clear();
-    await _questionsSubscription?.cancel();
     _currentRound = 1;
     _totalRounds = event.rounds;
     emit(QuestionLoading());
 
-    _questionsSubscription = _gameRepository
-        .getQuestions(event.categories, event.language, event.rounds)
-        .listen(
-      (question) => add(QuestionReceived(question)),
-      onError: (error) {
-        // Handle error if needed
-      },
-      onDone: () {},
-    );
-  }
+    try {
+      final questions = await _gameRepository.getQuestions(
+        event.categories,
+        event.language,
+        event.rounds,
+      );
 
-  void _onQuestionReceived(QuestionReceived event, Emitter<GameState> emit) {
-    if (state is QuestionLoading) {
-       emit(QuestionLoaded(
-         question: event.question, 
-         currentRound: _currentRound, 
-         totalRounds: _totalRounds
-       ));
-    } else {
-      _questionsQueue.add(event.question);
+      if (questions.isNotEmpty) {
+        _questionsQueue.addAll(questions);
+        final firstQuestion = _questionsQueue.removeAt(0);
+        emit(QuestionLoaded(
+          question: firstQuestion,
+          currentRound: _currentRound,
+          totalRounds: _totalRounds,
+        ));
+      } else {
+        // Handle empty list if necessary, maybe emit failure or finish
+        emit(GameFinished());
+      }
+    } catch (e) {
+       // Ideally emit GameError or similar, but for now just log or stay in Loading/Init?
+       // Based on existing code, it didn't strictly handle error state emission explicitly in the listener onError block shown.
+       // We'll emit GameFinished for safety or maybe GameInitial.
+       // Let's assume we should at least not be stuck in Loading.
+       emit(GameFinished()); 
     }
   }
+
+
 
   void _onNextQuestion(NextQuestion event, Emitter<GameState> emit) {
     if (_questionsQueue.isNotEmpty) {
