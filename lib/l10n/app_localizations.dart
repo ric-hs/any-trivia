@@ -283,6 +283,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add to game'**
   String get addToGame;
+
+  /// No description provided for @endGame.
+  ///
+  /// In en, this message translates to:
+  /// **'END GAME'**
+  String get endGame;
 }
 
 class _AppLocalizationsDelegate

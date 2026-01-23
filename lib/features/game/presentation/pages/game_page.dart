@@ -186,10 +186,16 @@ class _GameView extends StatelessWidget {
                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                        ),
                        onPressed: () {
-                         context.read<GameBloc>().add(NextQuestion());
+                         if (currentRound == totalRounds) {
+                           Navigator.of(context).pop(); // Go to Home
+                         } else {
+                           context.read<GameBloc>().add(NextQuestion());
+                         }
                        }, 
                        child: Text(
-                         AppLocalizations.of(context)!.continueBtn, 
+                         currentRound == totalRounds 
+                            ? AppLocalizations.of(context)!.endGame
+                            : AppLocalizations.of(context)!.continueBtn, 
                          style: const TextStyle(fontSize: 18, color: Colors.white)
                        ),
                      ),

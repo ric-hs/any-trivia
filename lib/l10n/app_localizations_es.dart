@@ -118,4 +118,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get addToGame => 'Agregar al juego';
+
+  @override
+  String get endGame => 'TERMINAR JUEGO';
 }

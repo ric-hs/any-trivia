@@ -29,5 +29,6 @@
     "numberOfRounds": "Número de Rondas",
     "maxRounds": "(máx. 30)",
     "removeFromFavorites": "Eliminar de favoritos",
-    "addToGame": "Agregar al juego"
+    "addToGame": "Agregar al juego",
+    "endGame": "TERMINAR JUEGO"
 }

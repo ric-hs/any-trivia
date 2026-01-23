@@ -116,4 +116,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get addToGame => 'Add to game';
+
+  @override
+  String get endGame => 'END GAME';
 }
