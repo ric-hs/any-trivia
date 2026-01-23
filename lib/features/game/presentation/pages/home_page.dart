@@ -334,7 +334,7 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   );
                                 },
-                                deleteIcon: const Icon(Icons.close, size: 16),
+                                deleteIcon: const Icon(Icons.delete_outline, size: 16),
                                 deleteButtonTooltipMessage: AppLocalizations.of(context)!.removeFromFavorites,
                                 tooltip: AppLocalizations.of(context)!.addToGame,
                               ))

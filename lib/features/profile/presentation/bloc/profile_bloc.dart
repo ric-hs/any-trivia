@@ -27,11 +27,23 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }
 
   Future<void> _onUpdateFavorites(UpdateFavoriteCategories event, Emitter<ProfileState> emit) async {
+    final currentState = state;
+    if (currentState is ProfileLoaded) {
+      // Optimistic Update
+      final optimisticProfile = currentState.profile.copyWith(
+        favoriteCategories: event.categories,
+      );
+      emit(ProfileLoaded(optimisticProfile));
+    }
+
      try {
        await _profileRepository.updateFavoriteCategories(event.userId, event.categories);
+       // Confirm sync with server
        add(LoadProfile(event.userId, showLoading: false));
      } catch(e) {
-       emit(ProfileError(e.toString()));
+       // Revert to server state on error
+       add(LoadProfile(event.userId, showLoading: false));
+       // Optional: Could emit a transient error message or snackbar event here if we had a way to do so without replacing state
      }
   }
 
