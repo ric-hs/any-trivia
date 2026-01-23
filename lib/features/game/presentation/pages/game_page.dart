@@ -76,9 +76,12 @@ class _GameView extends StatelessWidget {
           if (state is GameInitial || state is QuestionLoading) {
             return const LoadingView();
           } else if (state is GameError) {
+             final message = state.message == 'errorLoadQuestions'
+                 ? AppLocalizations.of(context)!.errorLoadQuestions
+                 : state.message;
              return Center(child: Padding(
                padding: const EdgeInsets.all(16.0),
-               child: Text('Error: ${state.message}', textAlign: TextAlign.center),
+               child: Text('Error: $message', textAlign: TextAlign.center),
              ));
           } else if (state is QuestionLoaded || state is AnswerSubmitted) {
              final q = (state is QuestionLoaded) 

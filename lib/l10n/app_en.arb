@@ -73,5 +73,6 @@
     "addToGame": "Add to game",
     "endGame": "END GAME",
     "validatorRequiredEmail": "Please enter an email address",
-    "validatorInvalidEmail": "Please enter a valid email address"
+    "validatorInvalidEmail": "Please enter a valid email address",
+    "errorLoadQuestions": "Failed to load questions, please try again later."
 }

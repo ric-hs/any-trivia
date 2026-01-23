@@ -127,4 +127,8 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get validatorInvalidEmail => 'Por favor ingresa un correo válido';
+
+  @override
+  String get errorLoadQuestions =>
+      'Error al cargar las preguntas, por favor intenta de nuevo más tarde.';
 }

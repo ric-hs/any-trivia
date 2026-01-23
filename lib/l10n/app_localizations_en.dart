@@ -125,4 +125,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get validatorInvalidEmail => 'Please enter a valid email address';
+
+  @override
+  String get errorLoadQuestions =>
+      'Failed to load questions, please try again later.';
 }

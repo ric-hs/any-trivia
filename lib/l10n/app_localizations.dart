@@ -301,6 +301,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please enter a valid email address'**
   String get validatorInvalidEmail;
+
+  /// No description provided for @errorLoadQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load questions, please try again later.'**
+  String get errorLoadQuestions;
 }
 
 class _AppLocalizationsDelegate
