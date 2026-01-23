@@ -9,10 +9,12 @@ sealed class ProfileEvent extends Equatable {
 
 final class LoadProfile extends ProfileEvent {
   final String userId;
-  const LoadProfile(this.userId);
+  final bool showLoading;
+
+  const LoadProfile(this.userId, {this.showLoading = true});
 
   @override
-  List<Object> get props => [userId];
+  List<Object> get props => [userId, showLoading];
 }
 
 final class UpdateFavoriteCategories extends ProfileEvent {

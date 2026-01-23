@@ -15,7 +15,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }
 
   Future<void> _onLoadProfile(LoadProfile event, Emitter<ProfileState> emit) async {
-    emit(ProfileLoading());
+    if (event.showLoading) {
+      emit(ProfileLoading());
+    }
     try {
       final profile = await _profileRepository.getProfile(event.userId);
       emit(ProfileLoaded(profile));
@@ -27,7 +29,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   Future<void> _onUpdateFavorites(UpdateFavoriteCategories event, Emitter<ProfileState> emit) async {
      try {
        await _profileRepository.updateFavoriteCategories(event.userId, event.categories);
-       add(LoadProfile(event.userId));
+       add(LoadProfile(event.userId, showLoading: false));
      } catch(e) {
        emit(ProfileError(e.toString()));
      }
@@ -40,7 +42,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     }
     try {
       await _profileRepository.updateTokens(event.userId, event.currentTokens - event.amount);
-       add(LoadProfile(event.userId));
+       add(LoadProfile(event.userId, showLoading: false));
     } catch (e) {
        emit(ProfileError(e.toString()));
     }
