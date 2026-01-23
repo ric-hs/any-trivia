@@ -33,26 +33,7 @@ class _GameView extends StatelessWidget {
       appBar: AppBar(title: Text(AppLocalizations.of(context)!.appTitle.toUpperCase())),
       body: BlocConsumer<GameBloc, GameState>(
         listener: (context, state) {
-           if (state is AnswerSubmitted) {
-             showDialog(context: context, builder: (_) => AlertDialog(
-               title: Text(
-                 state.isCorrect ? AppLocalizations.of(context)!.correct : AppLocalizations.of(context)!.wrong,
-                 style: TextStyle(color: state.isCorrect ? Colors.green : Colors.red),
-               ),
-               content: Text(state.isCorrect 
-                   ? AppLocalizations.of(context)!.greatJob 
-                   : AppLocalizations.of(context)!.correctAnswerWas(state.question.answers[state.question.correctAnswerIndex])),
-               actions: [
-                 TextButton(
-                   onPressed: () {
-                     Navigator.of(context).pop(); // Close dialog
-                     context.read<GameBloc>().add(NextQuestion());
-                   },
-                   child: Text(AppLocalizations.of(context)!.continueBtn),
-                 )
-               ],
-             ));
-           } else if (state is GameFinished) {
+           if (state is GameFinished) {
              showDialog(context: context, builder: (_) => AlertDialog(
                title: const Text('Game Over'),
                content: const Text('You have completed all rounds!'),
@@ -76,8 +57,27 @@ class _GameView extends StatelessWidget {
                padding: const EdgeInsets.all(16.0),
                child: Text('Error: ${state.message}', textAlign: TextAlign.center),
              ));
-          } else if (state is QuestionLoaded) {
-             final q = state.question;
+          } else if (state is QuestionLoaded || state is AnswerSubmitted) {
+             final q = (state is QuestionLoaded) 
+                 ? state.question 
+                 : (state as AnswerSubmitted).question;
+             
+             final currentRound = (state is QuestionLoaded)
+                 ? state.currentRound
+                 : (state as AnswerSubmitted).currentRound;
+
+             final totalRounds = (state is QuestionLoaded)
+                 ? state.totalRounds
+                 : (state as AnswerSubmitted).totalRounds;
+
+             int? selectedIndex;
+             bool? isCorrect;
+
+             if (state is AnswerSubmitted) {
+               selectedIndex = state.selectedIndex;
+               isCorrect = state.isCorrect;
+             }
+
              return Padding(
                padding: const EdgeInsets.all(20.0),
                child: Column(
@@ -86,7 +86,7 @@ class _GameView extends StatelessWidget {
                    Container(
                      margin: const EdgeInsets.only(bottom: 20),
                      child: Text(
-                       AppLocalizations.of(context)!.roundProgress(state.currentRound, state.totalRounds),
+                       AppLocalizations.of(context)!.roundProgress(currentRound, totalRounds),
                        style: const TextStyle(fontSize: 18, color: Colors.grey),
                        textAlign: TextAlign.center,
                      ),
@@ -127,21 +127,73 @@ class _GameView extends StatelessWidget {
                    ),
                    const SizedBox(height: 40),
                    ...List.generate(4, (index) {
+                     Color backgroundColor = const Color(0xFF424242);
+                     if (state is AnswerSubmitted) {
+                       if (index == q.correctAnswerIndex) {
+                         backgroundColor = Colors.green;
+                       } else if (index == selectedIndex && !isCorrect!) {
+                         backgroundColor = Colors.red;
+                       } else {
+                         backgroundColor = Colors.grey.shade800;
+                       }
+                     }
+
                      return Padding(
                        padding: const EdgeInsets.only(bottom: 16.0),
                        child: ElevatedButton(
                          style: ElevatedButton.styleFrom(
                            padding: const EdgeInsets.symmetric(vertical: 20),
-                           backgroundColor: const Color(0xFF424242),
+                           backgroundColor: backgroundColor,
+                           disabledBackgroundColor: backgroundColor,
+                           disabledForegroundColor: Colors.white,
                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                          ),
-                         onPressed: () {
-                           context.read<GameBloc>().add(AnswerQuestion(index));
-                         }, 
+                         onPressed: state is AnswerSubmitted 
+                             ? null 
+                             : () {
+                                 context.read<GameBloc>().add(AnswerQuestion(index));
+                               }, 
                          child: Text(q.answers[index], style: const TextStyle(fontSize: 18, color: Colors.white)),
                        ),
                      );
                    }),
+                   if (state is AnswerSubmitted) ...[
+                     const SizedBox(height: 20),
+                     Text(
+                       state.isCorrect 
+                           ? AppLocalizations.of(context)!.correct 
+                           : AppLocalizations.of(context)!.wrong,
+                       style: TextStyle(
+                         fontSize: 24, 
+                         fontWeight: FontWeight.bold, 
+                         color: state.isCorrect ? Colors.green : Colors.red
+                       ),
+                       textAlign: TextAlign.center,
+                     ),
+                     if (!state.isCorrect) ...[
+                        const SizedBox(height: 8),
+                        Text(
+                          AppLocalizations.of(context)!.correctAnswerWas(q.answers[q.correctAnswerIndex]),
+                          style: const TextStyle(fontSize: 16, color: Colors.white70),
+                          textAlign: TextAlign.center,
+                        ),
+                     ],
+                     const SizedBox(height: 20),
+                     ElevatedButton(
+                       style: ElevatedButton.styleFrom(
+                         padding: const EdgeInsets.symmetric(vertical: 16),
+                         backgroundColor: Theme.of(context).primaryColor,
+                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                       ),
+                       onPressed: () {
+                         context.read<GameBloc>().add(NextQuestion());
+                       }, 
+                       child: Text(
+                         AppLocalizations.of(context)!.continueBtn, 
+                         style: const TextStyle(fontSize: 18, color: Colors.white)
+                       ),
+                     ),
+                   ],
                  ],
                ),
              );
