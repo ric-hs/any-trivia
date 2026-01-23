@@ -1,0 +1,11 @@
+# Compiled JavaScript files
+lib/
+lib.dom.d.ts
+
+# Node modules
+node_modules/
+package-lock.json
+
+# Logs
+firebase-debug.log*
+firebase-debug.*.log*

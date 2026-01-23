@@ -1,80 +1,46 @@
-import 'dart:convert';
-import 'package:google_generative_ai/google_generative_ai.dart';
+
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:endless_trivia/features/game/domain/entities/question.dart';
 
 class GeminiService {
-  final GenerativeModel _model;
+  final FirebaseFunctions _functions;
 
-  GeminiService({String? apiKey}) 
-      : _model = GenerativeModel(
-          model: 'gemini-3-flash-preview', 
-          apiKey: apiKey ?? const String.fromEnvironment('GEMINI_API_KEY'),
-          generationConfig: GenerationConfig(responseMimeType: 'application/json'),
-        );
+  GeminiService() : _functions = FirebaseFunctions.instance;
 
   Future<Question> generateQuestion(List<String> categories, String language) async {
-    final categoriesStr = categories.join(', ');
-    final prompt = '''
-      Generate a trivia question. Randomly select one category from this list: [$categoriesStr].
-      The question should be in "$language".
-      Return a JSON object with the following schema:
-      {
-        "question": "The question text",
-        "answers": ["Answer 1", "Answer 2", "Answer 3", "Answer 4"],
-        "correctIndex": 0, // Index of the correct answer (0-3)
-        "category": "The selected category"
-      }
-      Ensure there is exactly one correct answer and 3 incorrect ones.
-      Make the question challenging but fun.
-    ''';
-
-    final content = [Content.text(prompt)];
     try {
-      final response = await _model.generateContent(content);
-      
-      if (response.text == null) throw Exception('Empty response from AI');
+      final result = await _functions.httpsCallable('generateQuestion').call({
+        'categories': categories,
+        'language': language,
+        'count': 1,
+      });
 
-      final json = jsonDecode(response.text!);
+      final json = Map<String, dynamic>.from(result.data);
       return Question(
         text: json['question'],
         answers: List<String>.from(json['answers']),
         correctAnswerIndex: json['correctIndex'],
-        category: json['category'] ?? "", // Fallback if AI misses it
+        category: json['category'] ?? categories.first,
       );
     } catch (e) {
-      // Fallback or rethrow? Rethrow for now.
       throw Exception('Failed to generate question: $e');
     }
   }
 
   Future<List<Question>> generateQuestionsBatch(List<String> categories, String language, int count) async {
-    final categoriesStr = categories.join(', ');
-    final prompt = '''
-      Generate $count trivia questions. For each question, randomly select one category from this list: [$categoriesStr].
-      The questions should be in "$language".
-      Return a JSON array of objects, where each object has the following schema:
-      {
-        "question": "The question text",
-        "answers": ["Answer 1", "Answer 2", "Answer 3", "Answer 4"],
-        "correctIndex": 0, // Index of the correct answer (0-3)
-        "category": "The selected category"
-      }
-      Ensure there is exactly one correct answer and 3 incorrect ones for each question.
-      Make the questions challenging but fun.
-    ''';
-
-    final content = [Content.text(prompt)];
     try {
-      final response = await _model.generateContent(content);
-      
-      if (response.text == null) throw Exception('Empty response from AI');
+      final result = await _functions.httpsCallable('generateQuestion').call({
+        'categories': categories,
+        'language': language,
+        'count': count,
+      });
 
-      final List<dynamic> jsonList = jsonDecode(response.text!);
+      final List<dynamic> jsonList = result.data;
       return jsonList.map((json) => Question(
         text: json['question'],
         answers: List<String>.from(json['answers']),
         correctAnswerIndex: json['correctIndex'],
-        category: json['category'] ?? "",
+        category: json['category'] ?? categories.first,
       )).toList();
     } catch (e) {
       throw Exception('Failed to generate questions batch: $e');

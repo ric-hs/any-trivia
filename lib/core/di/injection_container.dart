@@ -38,7 +38,7 @@ Future<void> init() async {
 
   // Data sources
   sl.registerLazySingleton<GeminiService>(
-    () => GeminiService(apiKey: "AIzaSyBtCX2eZwU2BCsTctV-RV1ralZBOnDGsI8"),
+    () => GeminiService(),
   );
 
   // External

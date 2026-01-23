@@ -14,7 +14,7 @@ class MockGeminiService extends GeminiService {
   Question? initialQuestion;
   List<Question>? batchQuestions;
   
-  MockGeminiService() : super(apiKey: 'fake-api-key');
+  MockGeminiService() : super();
 
   @override
   Future<Question> generateQuestion(List<String> categories, String language) async {
