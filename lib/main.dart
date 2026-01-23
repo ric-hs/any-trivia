@@ -1,3 +1,4 @@
+import 'package:endless_trivia/multi_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:endless_trivia/core/di/injection_container.dart' as di;
@@ -19,7 +20,7 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await di.init();
 
-  runApp(const EndlessTriviaApp());
+  runApp(MultiProvider(child: const EndlessTriviaApp()));
 }
 
 class EndlessTriviaApp extends StatelessWidget {
@@ -35,15 +36,16 @@ class EndlessTriviaApp extends StatelessWidget {
         theme: AppTheme.darkTheme,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        home: BlocBuilder<AuthBloc, AuthState>(
-          builder: (context, state) {
+        home: BlocConsumer<AuthBloc, AuthState>(
+          listener: (context, state) {
             if (state.status == AuthStatus.authenticated &&
                 state.user != null) {
-              return BlocProvider(
-                create: (_) =>
-                    di.sl<ProfileBloc>()..add(LoadProfile(state.user!.id)),
-                child: const HomePage(),
-              );
+              context.read<ProfileBloc>().add(LoadProfile(state.user!.id));
+            }
+          },
+          builder: (context, state) {
+            if (state.status == AuthStatus.authenticated) {
+              return const HomePage();
             } else if (state.status == AuthStatus.unauthenticated) {
               return const LoginPage();
             }
