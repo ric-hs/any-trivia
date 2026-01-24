@@ -7,7 +7,7 @@ class UserProfile extends Equatable {
 
   const UserProfile({
     required this.userId,
-    this.tokens = 5, // Default starting tokens
+    this.tokens = 0,
     this.favoriteCategories = const [],
   });
 

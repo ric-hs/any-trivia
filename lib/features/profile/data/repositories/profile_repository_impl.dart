@@ -7,7 +7,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
   final FirebaseFirestore _firestore;
 
   ProfileRepositoryImpl({FirebaseFirestore? firestore})
-      : _firestore = firestore ?? FirebaseFirestore.instance;
+    : _firestore = firestore ?? FirebaseFirestore.instance;
 
   @override
   Future<UserProfile> getProfile(String userId) async {
@@ -18,7 +18,9 @@ class ProfileRepositoryImpl implements ProfileRepository {
         return UserProfile(
           userId: userId,
           tokens: data['tokens'] as int? ?? 0,
-          favoriteCategories: List<String>.from(data['favoriteCategories'] ?? []),
+          favoriteCategories: List<String>.from(
+            data['favoriteCategories'] ?? [],
+          ),
         );
       } else {
         // Create default profile if not found
@@ -35,7 +37,6 @@ class ProfileRepositoryImpl implements ProfileRepository {
   Future<void> createProfile(String userId) async {
     try {
       await _firestore.collection('users').doc(userId).set({
-        'tokens': 5,
         'favoriteCategories': [],
       }, SetOptions(merge: true));
     } catch (e) {
@@ -46,10 +47,9 @@ class ProfileRepositoryImpl implements ProfileRepository {
   @override
   Future<void> consumeTokens(String userId, int numberOfTokens) async {
     try {
-      final result = await FirebaseFunctions.instance.httpsCallable('consumeTokens').call({
-        'userId': userId,
-        'numberOfTokens': numberOfTokens,
-      });
+      final result = await FirebaseFunctions.instance
+          .httpsCallable('consumeTokens')
+          .call({'userId': userId, 'numberOfTokens': numberOfTokens});
 
       final data = result.data as Map<dynamic, dynamic>;
       if (data['status'] == 'insufficient_balance') {
@@ -61,7 +61,10 @@ class ProfileRepositoryImpl implements ProfileRepository {
   }
 
   @override
-  Future<void> updateFavoriteCategories(String userId, List<String> categories) async {
+  Future<void> updateFavoriteCategories(
+    String userId,
+    List<String> categories,
+  ) async {
     try {
       await _firestore.collection('users').doc(userId).update({
         'favoriteCategories': categories,
