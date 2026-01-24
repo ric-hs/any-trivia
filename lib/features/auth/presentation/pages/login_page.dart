@@ -3,8 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:endless_trivia/l10n/app_localizations.dart';
 import 'package:endless_trivia/core/di/injection_container.dart';
 import 'package:endless_trivia/features/auth/presentation/cubit/login_cubit.dart';
-import 'package:endless_trivia/features/auth/presentation/pages/signup_page.dart';
-import 'package:endless_trivia/core/utils/validators.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -26,8 +24,6 @@ class _LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<_LoginForm> {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
