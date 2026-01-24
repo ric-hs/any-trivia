@@ -68,30 +68,10 @@ class _HomePageState extends State<HomePage> {
       return;
     }
 
-    // Consume Token (Assuming 1 token per round or 1 token per game?
-    // User: "check if available tokens are enough to play the selected number of rounds"
-    // implies cost scales with rounds. I'll deduct `_rounds` tokens.)
-    // Note: ProfileBloc.ConsumeToken might need update if it only consumes 1.
-    // Let's assume ConsumeToken takes strict amount or just deducts 1.
-    // Checking ProfileBloc event...
-    // "ConsumeToken(userId: userId, currentTokens: currentTokens)" implies it sets the NEW token count?
-    // Or just triggers consumption?
-    // Taking a look at `ProfileBloc` event might be wise, but I'll assume I can just send the event.
-    // Wait, `ConsumeToken` signature in line 39 passes `currentTokens`.
-    // If logic is inside Bloc, I need to check it.
-    // For now, I'll pass the event as is, but maybe I should send `_rounds` as cost?
-    // Current code: `context.read<ProfileBloc>().add(ConsumeToken(userId: userId, currentTokens: currentTokens));`
-    // This looks like it might just verify or update based on current?
-    // I'll stick to original call but verify `GamePage` passes `_rounds`.
-
-    // Actually, to be safe, I should update the BLOC to handle amount.
-    // But for this task, I'll update logic to pass `rounds` to GamePage.
-    // And I'll update the ConsumeToken call if I can see it.
-    // Let's stick to the UI changes first.
-
-    // Calculate new tokens locally for optimistic/event ?
-    // The previous code `ConsumeToken` usage is ambiguous without seeing Bloc.
-    // I will assume for now valid check is enough and pass rounds to GamePage.
+    // Token consumption is now handled by the Cloud Function consumeTokens,
+    // which is called from the GameBloc when the game starts.
+    // If there are not enough tokens, the Cloud Function will return an error status,
+    // and the GameBloc will emit a GameError.
 
     // Get current language
     final languageCode = Localizations.localeOf(context).languageCode;

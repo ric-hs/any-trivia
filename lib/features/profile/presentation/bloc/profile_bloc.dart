@@ -48,15 +48,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }
 
   Future<void> _onConsumeToken(ConsumeToken event, Emitter<ProfileState> emit) async {
-    if (event.currentTokens < event.amount) {
-      emit(const ProfileError("No tokens left!"));
-      return;
-    }
     try {
-      await _profileRepository.updateTokens(event.userId, event.currentTokens - event.amount);
-       add(LoadProfile(event.userId, showLoading: false));
+      await _profileRepository.consumeTokens(event.userId, event.amount);
+      add(LoadProfile(event.userId, showLoading: false));
     } catch (e) {
-       emit(ProfileError(e.toString()));
+      emit(ProfileError(e.toString()));
     }
   }
 }

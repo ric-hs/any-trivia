@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:endless_trivia/features/profile/domain/entities/user_profile.dart';
 import 'package:endless_trivia/features/profile/domain/repositories/profile_repository.dart';
 
@@ -43,13 +44,19 @@ class ProfileRepositoryImpl implements ProfileRepository {
   }
 
   @override
-  Future<void> updateTokens(String userId, int newTokens) async {
+  Future<void> consumeTokens(String userId, int numberOfTokens) async {
     try {
-      await _firestore.collection('users').doc(userId).update({
-        'tokens': newTokens,
+      final result = await FirebaseFunctions.instance.httpsCallable('consumeTokens').call({
+        'userId': userId,
+        'numberOfTokens': numberOfTokens,
       });
+
+      final data = result.data as Map<dynamic, dynamic>;
+      if (data['status'] == 'insufficient_balance') {
+        throw Exception(data['message']);
+      }
     } catch (e) {
-      throw Exception('Error updating tokens: $e');
+      throw Exception('Error consuming tokens: $e');
     }
   }
 

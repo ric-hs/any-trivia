@@ -45,15 +45,9 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       if (questions.isNotEmpty) {
         // Questions were retrieved successfully, now try to consume token
         try {
-          final profile = await _profileRepository.getProfile(event.userId);
-          if (profile.tokens < event.rounds) {
-            emit(const GameError('notEnoughTokens')); // or actual localized key if available
-            return;
-          }
-
-          await _profileRepository.updateTokens(
+          await _profileRepository.consumeTokens(
             event.userId,
-            profile.tokens - event.rounds,
+            event.rounds,
           );
 
           // Token consumed successfully, proceed with game
