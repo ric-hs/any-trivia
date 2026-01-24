@@ -1,20 +1,24 @@
-import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:endless_trivia/features/game/domain/entities/question.dart';
 import 'package:endless_trivia/features/game/domain/repositories/game_repository.dart';
 import 'package:endless_trivia/features/game/presentation/bloc/game_event.dart';
 import 'package:endless_trivia/features/game/presentation/bloc/game_state.dart';
+import 'package:endless_trivia/features/profile/domain/repositories/profile_repository.dart';
 
 class GameBloc extends Bloc<GameEvent, GameState> {
   final GameRepository _gameRepository;
+  final ProfileRepository _profileRepository;
   final List<Question> _questionsQueue = [];
 
   int _currentRound = 0;
   int _totalRounds = 0;
 
-  GameBloc({required GameRepository gameRepository})
-    : _gameRepository = gameRepository,
-      super(GameInitial()) {
+  GameBloc({
+    required GameRepository gameRepository,
+    required ProfileRepository profileRepository,
+  }) : _gameRepository = gameRepository,
+       _profileRepository = profileRepository,
+       super(GameInitial()) {
     on<StartGame>((event, emit) => emit(GameInitial()));
     on<GetQuestion>(_onGetQuestion);
 
@@ -39,25 +43,38 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       );
 
       if (questions.isNotEmpty) {
-        _questionsQueue.addAll(questions);
-        final firstQuestion = _questionsQueue.removeAt(0);
-        emit(
-          QuestionLoaded(
-            question: firstQuestion,
-            currentRound: _currentRound,
-            totalRounds: _totalRounds,
-          ),
-        );
+        // Questions were retrieved successfully, now try to consume token
+        try {
+          final profile = await _profileRepository.getProfile(event.userId);
+          if (profile.tokens < event.rounds) {
+            emit(const GameError('notEnoughTokens')); // or actual localized key if available
+            return;
+          }
+
+          await _profileRepository.updateTokens(
+            event.userId,
+            profile.tokens - event.rounds,
+          );
+
+          // Token consumed successfully, proceed with game
+          _questionsQueue.addAll(questions);
+          final firstQuestion = _questionsQueue.removeAt(0);
+          emit(
+            QuestionLoaded(
+              question: firstQuestion,
+              currentRound: _currentRound,
+              totalRounds: _totalRounds,
+            ),
+          );
+        } catch (e) {
+          // Failure during token retrieval or update
+          emit(const GameError('unableToRetrieveTokens'));
+        }
       } else {
-        // Handle empty list if necessary, maybe emit failure or finish
         emit(GameFinished());
       }
     } catch (e) {
-      // Ideally emit GameError or similar, but for now just log or stay in Loading/Init?
-      // Based on existing code, it didn't strictly handle error state emission explicitly in the listener onError block shown.
-      // We'll emit GameFinished for safety or maybe GameInitial.
-      // Let's assume we should at least not be stuck in Loading.
-      emit(GameError('errorLoadQuestions'));
+      emit(const GameError('errorLoadQuestions'));
     }
   }
 

@@ -75,6 +75,7 @@
     "validatorRequiredEmail": "Please enter an email address",
     "validatorInvalidEmail": "Please enter a valid email address",
     "errorLoadQuestions": "Failed to load questions, please try again later.",
+    "unableToRetrieveTokens": "Unable to consume tokens to start the game. Please try again.",
     "iHaveAnAccount": "I have an account",
     "back": "Back"
 }

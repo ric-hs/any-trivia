@@ -23,7 +23,7 @@ Future<void> init() async {
   sl.registerFactory(() => LoginCubit(sl()));
   sl.registerFactory(() => SignupCubit(sl()));
   sl.registerFactory(() => ProfileBloc(profileRepository: sl()));
-  sl.registerFactory(() => GameBloc(gameRepository: sl()));
+  sl.registerFactory(() => GameBloc(gameRepository: sl(), profileRepository: sl()));
 
   // Repository
   sl.registerLazySingleton<AuthRepository>(

@@ -34,6 +34,7 @@
     "validatorRequiredEmail": "Por favor ingresa un correo",
     "validatorInvalidEmail": "Por favor ingresa un correo válido",
     "errorLoadQuestions": "Error al cargar las preguntas, por favor intenta de nuevo más tarde.",
+    "unableToRetrieveTokens": "No fue posible consumir las fichas para iniciar el juego. Por favor intenta de nuevo.",
     "iHaveAnAccount": "Ya tengo una cuenta",
     "back": "Atrás"
 }

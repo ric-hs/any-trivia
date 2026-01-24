@@ -131,6 +131,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Failed to load questions, please try again later.';
 
   @override
+  String get unableToRetrieveTokens =>
+      'Unable to consume tokens to start the game. Please try again.';
+
+  @override
   String get iHaveAnAccount => 'I have an account';
 
   @override

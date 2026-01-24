@@ -32,19 +32,21 @@ class GamePage extends StatelessWidget {
       create: (_) => sl<GameBloc>()
         ..add(
           GetQuestion(
+            userId: userId,
             categories: categories,
             language: language,
             rounds: rounds,
           ),
         ),
-      child: _GameView(rounds: rounds),
+      child: _GameView(rounds: rounds, userId: userId),
     );
   }
 }
 
 class _GameView extends StatelessWidget {
   final int rounds;
-  const _GameView({this.rounds = 1});
+  final String userId;
+  const _GameView({required this.rounds, required this.userId});
 
   @override
   Widget build(BuildContext context) {
@@ -73,17 +75,10 @@ class _GameView extends StatelessWidget {
             );
           } else if (state is QuestionLoaded) {
             if (state.currentRound == 1) {
-              // Deduct tokens only when the first question is successfully loaded
-              final profileState = context.read<ProfileBloc>().state;
-              if (profileState is ProfileLoaded) {
-                context.read<ProfileBloc>().add(
-                  ConsumeToken(
-                    userId: profileState.profile.userId,
-                    currentTokens: profileState.profile.tokens,
-                    amount: rounds,
-                  ),
-                );
-              }
+              // Sync UI tokens count after consumption
+              context.read<ProfileBloc>().add(
+                LoadProfile(userId, showLoading: false),
+              );
             }
           }
         },
@@ -93,7 +88,11 @@ class _GameView extends StatelessWidget {
           } else if (state is GameError) {
             final message = state.message == 'errorLoadQuestions'
                 ? AppLocalizations.of(context)!.errorLoadQuestions
-                : state.message;
+                : state.message == 'unableToRetrieveTokens'
+                    ? AppLocalizations.of(context)!.unableToRetrieveTokens
+                    : state.message == 'notEnoughTokens'
+                        ? AppLocalizations.of(context)!.notEnoughTokens(rounds, 0) // tokens count is tricky here, maybe just generic
+                        : state.message;
             return Center(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),

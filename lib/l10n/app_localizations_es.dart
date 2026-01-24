@@ -133,6 +133,10 @@ class AppLocalizationsEs extends AppLocalizations {
       'Error al cargar las preguntas, por favor intenta de nuevo más tarde.';
 
   @override
+  String get unableToRetrieveTokens =>
+      'No fue posible consumir las fichas para iniciar el juego. Por favor intenta de nuevo.';
+
+  @override
   String get iHaveAnAccount => 'Ya tengo una cuenta';
 
   @override

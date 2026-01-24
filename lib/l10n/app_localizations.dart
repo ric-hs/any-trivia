@@ -308,6 +308,12 @@ abstract class AppLocalizations {
   /// **'Failed to load questions, please try again later.'**
   String get errorLoadQuestions;
 
+  /// No description provided for @unableToRetrieveTokens.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to consume tokens to start the game. Please try again.'**
+  String get unableToRetrieveTokens;
+
   /// No description provided for @iHaveAnAccount.
   ///
   /// In en, this message translates to:

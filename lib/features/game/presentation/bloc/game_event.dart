@@ -10,14 +10,20 @@ sealed class GameEvent extends Equatable {
 final class StartGame extends GameEvent {}
 
 final class GetQuestion extends GameEvent {
+  final String userId;
   final List<String> categories;
   final String language;
   final int rounds;
 
-  const GetQuestion({required this.categories, this.language = 'en', this.rounds = 1});
+  const GetQuestion({
+    required this.userId,
+    required this.categories,
+    this.language = 'en',
+    this.rounds = 1,
+  });
 
   @override
-  List<Object> get props => [categories, language, rounds];
+  List<Object> get props => [userId, categories, language, rounds];
 }
 
 final class NextQuestion extends GameEvent {}
