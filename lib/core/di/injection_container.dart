@@ -13,6 +13,7 @@ import 'package:endless_trivia/features/game/data/datasources/gemini_service.dar
 import 'package:endless_trivia/features/game/data/repositories/game_repository_impl.dart';
 import 'package:endless_trivia/features/game/domain/repositories/game_repository.dart';
 import 'package:endless_trivia/features/game/presentation/bloc/game_bloc.dart';
+import 'package:endless_trivia/core/services/device_info_service.dart';
 
 final sl = GetIt.instance;
 
@@ -30,7 +31,10 @@ Future<void> init() async {
     () => AuthRepositoryImpl(firebaseAuth: FirebaseAuth.instance),
   );
   sl.registerLazySingleton<ProfileRepository>(
-    () => ProfileRepositoryImpl(firestore: FirebaseFirestore.instance),
+    () => ProfileRepositoryImpl(
+      firestore: FirebaseFirestore.instance,
+      deviceInfoService: sl(),
+    ),
   );
   sl.registerLazySingleton<GameRepository>(
     () => GameRepositoryImpl(geminiService: sl()),
@@ -42,4 +46,5 @@ Future<void> init() async {
   );
 
   // External
+  sl.registerLazySingleton(() => DeviceInfoService());
 }

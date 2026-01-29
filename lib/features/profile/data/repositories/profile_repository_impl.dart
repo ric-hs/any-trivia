@@ -1,13 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:endless_trivia/core/services/device_info_service.dart';
 import 'package:endless_trivia/features/profile/domain/entities/user_profile.dart';
 import 'package:endless_trivia/features/profile/domain/repositories/profile_repository.dart';
 
 class ProfileRepositoryImpl implements ProfileRepository {
   final FirebaseFirestore _firestore;
+  final DeviceInfoService _deviceInfoService;
 
-  ProfileRepositoryImpl({FirebaseFirestore? firestore})
-    : _firestore = firestore ?? FirebaseFirestore.instance;
+  ProfileRepositoryImpl({
+    FirebaseFirestore? firestore,
+    required DeviceInfoService deviceInfoService,
+  }) : _firestore = firestore ?? FirebaseFirestore.instance,
+       _deviceInfoService = deviceInfoService;
 
   @override
   Future<UserProfile> getProfile(String userId) async {
@@ -39,6 +44,20 @@ class ProfileRepositoryImpl implements ProfileRepository {
       await _firestore.collection('users').doc(userId).set({
         'favoriteCategories': [],
       }, SetOptions(merge: true));
+
+      // Grant initial tokens if on iOS or Android
+      final hardwareId = await _deviceInfoService.getHardwareId();
+      if (hardwareId != null) {
+        try {
+          await FirebaseFunctions.instance
+              .httpsCallable('grantInitialTokens')
+              .call({'deviceId': hardwareId});
+        } catch (e) {
+          // Log error but don't fail profile creation
+          // This might happen if tokens were already claimed for this device
+          print('Error granting initial tokens: $e');
+        }
+      }
     } catch (e) {
       throw Exception('Error creating profile: $e');
     }
