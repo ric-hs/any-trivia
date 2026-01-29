@@ -33,18 +33,14 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
   @override
   Stream<UserProfile> getProfileStream(String userId) {
-    return _firestore
-        .collection('users')
-        .doc(userId)
-        .snapshots()
-        .map((doc) {
-          if (!doc.exists) {
-            // Note: createProfile is handled elsewhere or via getProfile first call
-            // Returning default profile for now if it doesn't exist yet
-            return UserProfile(userId: userId);
-          }
-          return _mapSnapshotToUserProfile(doc);
-        });
+    return _firestore.collection('users').doc(userId).snapshots().map((doc) {
+      if (!doc.exists) {
+        throw Exception(
+          'Error fetching profile stream: Document does not exist',
+        );
+      }
+      return _mapSnapshotToUserProfile(doc);
+    });
   }
 
   UserProfile _mapSnapshotToUserProfile(DocumentSnapshot doc) {
@@ -52,9 +48,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
     return UserProfile(
       userId: doc.id,
       tokens: data['tokens'] as int? ?? 0,
-      favoriteCategories: List<String>.from(
-        data['favoriteCategories'] ?? [],
-      ),
+      favoriteCategories: List<String>.from(data['favoriteCategories'] ?? []),
     );
   }
 
