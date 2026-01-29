@@ -139,4 +139,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get back => 'Back';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get userIdLabel => 'User ID';
+
+  @override
+  String get deviceIdLabel => 'Device ID';
+
+  @override
+  String get language => 'Language';
+
+  @override
+  String get english => 'English';
+
+  @override
+  String get spanish => 'Spanish';
+
+  @override
+  String get signOut => 'Sign Out';
+
+  @override
+  String get settingsTitle => 'SETTINGS';
 }

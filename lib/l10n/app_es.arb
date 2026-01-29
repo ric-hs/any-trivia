@@ -36,5 +36,13 @@
     "errorLoadQuestions": "Error al cargar las preguntas, por favor intenta de nuevo más tarde.",
     "unableToRetrieveTokens": "No fue posible consumir las fichas para iniciar el juego. Por favor intenta de nuevo.",
     "iHaveAnAccount": "Ya tengo una cuenta",
-    "back": "Atrás"
+    "back": "Atrás",
+    "settings": "Ajustes",
+    "userIdLabel": "ID de Usuario",
+    "deviceIdLabel": "ID de Dispositivo",
+    "language": "Idioma",
+    "english": "Inglés",
+    "spanish": "Español",
+    "signOut": "Cerrar Sesión",
+    "settingsTitle": "AJUSTES"
 }

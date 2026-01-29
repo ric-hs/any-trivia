@@ -77,5 +77,13 @@
     "errorLoadQuestions": "Failed to load questions, please try again later.",
     "unableToRetrieveTokens": "Unable to consume tokens to start the game. Please try again.",
     "iHaveAnAccount": "I have an account",
-    "back": "Back"
+    "back": "Back",
+    "settings": "Settings",
+    "userIdLabel": "User ID",
+    "deviceIdLabel": "Device ID",
+    "language": "Language",
+    "english": "English",
+    "spanish": "Spanish",
+    "signOut": "Sign Out",
+    "settingsTitle": "SETTINGS"
 }

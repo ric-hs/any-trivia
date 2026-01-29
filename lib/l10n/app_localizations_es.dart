@@ -141,4 +141,28 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get back => 'Atrás';
+
+  @override
+  String get settings => 'Ajustes';
+
+  @override
+  String get userIdLabel => 'ID de Usuario';
+
+  @override
+  String get deviceIdLabel => 'ID de Dispositivo';
+
+  @override
+  String get language => 'Idioma';
+
+  @override
+  String get english => 'Inglés';
+
+  @override
+  String get spanish => 'Español';
+
+  @override
+  String get signOut => 'Cerrar Sesión';
+
+  @override
+  String get settingsTitle => 'AJUSTES';
 }

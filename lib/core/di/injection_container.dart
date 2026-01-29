@@ -14,6 +14,9 @@ import 'package:endless_trivia/features/game/data/repositories/game_repository_i
 import 'package:endless_trivia/features/game/domain/repositories/game_repository.dart';
 import 'package:endless_trivia/features/game/presentation/bloc/game_bloc.dart';
 import 'package:endless_trivia/core/services/device_info_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:endless_trivia/core/services/locale_service.dart';
+import 'package:endless_trivia/core/localization/bloc/locale_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -25,6 +28,7 @@ Future<void> init() async {
   sl.registerFactory(() => SignupCubit(sl()));
   sl.registerFactory(() => ProfileBloc(profileRepository: sl()));
   sl.registerFactory(() => GameBloc(gameRepository: sl(), profileRepository: sl()));
+  sl.registerFactory(() => LocaleBloc(sl()));
 
   // Repository
   sl.registerLazySingleton<AuthRepository>(
@@ -47,4 +51,7 @@ Future<void> init() async {
 
   // External
   sl.registerLazySingleton(() => DeviceInfoService());
+  final sharedPreferences = await SharedPreferences.getInstance();
+  sl.registerLazySingleton(() => sharedPreferences);
+  sl.registerLazySingleton(() => LocaleService(sl()));
 }

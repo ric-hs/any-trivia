@@ -11,6 +11,7 @@ import 'package:endless_trivia/features/auth/presentation/pages/login_page.dart'
 import 'package:endless_trivia/features/game/presentation/pages/home_page.dart';
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_event.dart';
+import 'package:endless_trivia/core/localization/bloc/locale_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
@@ -28,32 +29,44 @@ class EndlessTriviaApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => di.sl<AuthBloc>()..add(AuthSubscriptionRequested()),
-      child: MaterialApp(
-        title: 'Endless Trivia',
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.darkTheme,
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        home: BlocConsumer<AuthBloc, AuthState>(
-          listener: (context, state) {
-            if (state.status == AuthStatus.authenticated &&
-                state.user != null) {
-              context.read<ProfileBloc>().add(LoadProfile(state.user!.id));
-            }
-          },
-          builder: (context, state) {
-            if (state.status == AuthStatus.authenticated) {
-              return const HomePage();
-            } else if (state.status == AuthStatus.unauthenticated) {
-              return const LoginPage();
-            }
-            return const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
-            );
-          },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => di.sl<AuthBloc>()..add(AuthSubscriptionRequested()),
         ),
+        BlocProvider(
+          create: (_) => di.sl<LocaleBloc>()..add(LoadLocale()),
+        ),
+      ],
+      child: BlocBuilder<LocaleBloc, LocaleState>(
+        builder: (context, localeState) {
+          return MaterialApp(
+            title: 'Endless Trivia',
+            debugShowCheckedModeBanner: false,
+            theme: AppTheme.darkTheme,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: localeState.locale,
+            home: BlocConsumer<AuthBloc, AuthState>(
+              listener: (context, state) {
+                if (state.status == AuthStatus.authenticated &&
+                    state.user != null) {
+                  context.read<ProfileBloc>().add(LoadProfile(state.user!.id));
+                }
+              },
+              builder: (context, state) {
+                if (state.status == AuthStatus.authenticated) {
+                  return const HomePage();
+                } else if (state.status == AuthStatus.unauthenticated) {
+                  return const LoginPage();
+                }
+                return const Scaffold(
+                  body: Center(child: CircularProgressIndicator()),
+                );
+              },
+            ),
+          );
+        },
       ),
     );
   }

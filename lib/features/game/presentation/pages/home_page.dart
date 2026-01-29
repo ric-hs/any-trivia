@@ -7,6 +7,7 @@ import 'package:endless_trivia/features/profile/presentation/bloc/profile_bloc.d
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_event.dart';
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_state.dart';
 import 'package:endless_trivia/features/game/presentation/pages/game_page.dart';
+import 'package:endless_trivia/features/settings/presentation/pages/settings_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -95,10 +96,21 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.appTitle.toUpperCase()),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () {
-              context.read<AuthBloc>().add(AuthLogoutRequested());
+          BlocBuilder<ProfileBloc, ProfileState>(
+            builder: (context, state) {
+              if (state is ProfileLoaded) {
+                return IconButton(
+                  icon: const Icon(Icons.settings),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => SettingsPage(userId: state.profile.userId),
+                      ),
+                    );
+                  },
+                );
+              }
+              return const SizedBox.shrink();
             },
           ),
         ],

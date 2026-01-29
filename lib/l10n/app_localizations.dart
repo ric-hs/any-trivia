@@ -325,6 +325,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Back'**
   String get back;
+
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// No description provided for @userIdLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'User ID'**
+  String get userIdLabel;
+
+  /// No description provided for @deviceIdLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Device ID'**
+  String get deviceIdLabel;
+
+  /// No description provided for @language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
+  /// No description provided for @english.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get english;
+
+  /// No description provided for @spanish.
+  ///
+  /// In en, this message translates to:
+  /// **'Spanish'**
+  String get spanish;
+
+  /// No description provided for @signOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Out'**
+  String get signOut;
+
+  /// No description provided for @settingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'SETTINGS'**
+  String get settingsTitle;
 }
 
 class _AppLocalizationsDelegate
