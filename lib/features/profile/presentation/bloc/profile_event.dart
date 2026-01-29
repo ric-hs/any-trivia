@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:endless_trivia/features/profile/domain/entities/user_profile.dart';
 
 sealed class ProfileEvent extends Equatable {
   const ProfileEvent();
@@ -38,4 +39,11 @@ final class ConsumeToken extends ProfileEvent {
 
    @override
    List<Object> get props => [userId, amount];
+}
+
+final class ProfileUpdated extends ProfileEvent {
+  final UserProfile profile;
+  const ProfileUpdated(this.profile);
+  @override
+  List<Object> get props => [profile];
 }

@@ -19,14 +19,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
     try {
       final doc = await _firestore.collection('users').doc(userId).get();
       if (doc.exists) {
-        final data = doc.data()!;
-        return UserProfile(
-          userId: userId,
-          tokens: data['tokens'] as int? ?? 0,
-          favoriteCategories: List<String>.from(
-            data['favoriteCategories'] ?? [],
-          ),
-        );
+        return _mapSnapshotToUserProfile(doc);
       } else {
         // Create default profile if not found
         final newProfile = UserProfile(userId: userId);
@@ -36,6 +29,33 @@ class ProfileRepositoryImpl implements ProfileRepository {
     } catch (e) {
       throw Exception('Error fetching profile: $e');
     }
+  }
+
+  @override
+  Stream<UserProfile> getProfileStream(String userId) {
+    return _firestore
+        .collection('users')
+        .doc(userId)
+        .snapshots()
+        .map((doc) {
+          if (!doc.exists) {
+            // Note: createProfile is handled elsewhere or via getProfile first call
+            // Returning default profile for now if it doesn't exist yet
+            return UserProfile(userId: userId);
+          }
+          return _mapSnapshotToUserProfile(doc);
+        });
+  }
+
+  UserProfile _mapSnapshotToUserProfile(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>? ?? {};
+    return UserProfile(
+      userId: doc.id,
+      tokens: data['tokens'] as int? ?? 0,
+      favoriteCategories: List<String>.from(
+        data['favoriteCategories'] ?? [],
+      ),
+    );
   }
 
   @override
