@@ -77,22 +77,31 @@ class _SettingsPageState extends State<SettingsPage> {
           const SizedBox(height: 16),
           BlocBuilder<LocaleBloc, LocaleState>(
             builder: (context, state) {
-              final currentLocale = state.locale ?? Localizations.localeOf(context);
-              return Column(
-                children: [
-                   _buildLanguageOption(
-                    context,
-                    l10n.english,
-                    'en',
-                    currentLocale.languageCode == 'en',
-                  ),
-                  _buildLanguageOption(
-                    context,
-                    l10n.spanish,
-                    'es',
-                    currentLocale.languageCode == 'es',
-                  ),
-                ],
+              final currentLocale =
+                  state.locale ?? Localizations.localeOf(context);
+              return RadioGroup<String>(
+                groupValue: currentLocale.languageCode,
+                onChanged: (value) {
+                  if (value != null) {
+                    context.read<LocaleBloc>().add(ChangeLocale(value));
+                  }
+                },
+                child: Column(
+                  children: [
+                    RadioListTile<String>(
+                      title: Text(l10n.english),
+                      value: 'en',
+                      contentPadding: EdgeInsets.zero,
+                      activeColor: const Color(0xFFBB86FC),
+                    ),
+                    RadioListTile<String>(
+                      title: Text(l10n.spanish),
+                      value: 'es',
+                      contentPadding: EdgeInsets.zero,
+                      activeColor: const Color(0xFFBB86FC),
+                    ),
+                  ],
+                ),
               );
             },
           ),
@@ -150,26 +159,6 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildLanguageOption(
-    BuildContext context,
-    String label,
-    String code,
-    bool isSelected,
-  ) {
-    return RadioListTile<String>(
-      title: Text(label),
-      value: code,
-      groupValue: isSelected ? code : null,
-      onChanged: (value) {
-        if (value != null) {
-          context.read<LocaleBloc>().add(ChangeLocale(value));
-        }
-      },
-      contentPadding: EdgeInsets.zero,
-      activeColor: const Color(0xFFBB86FC),
     );
   }
 }
