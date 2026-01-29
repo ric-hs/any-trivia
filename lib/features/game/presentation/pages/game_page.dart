@@ -8,7 +8,6 @@ import 'package:endless_trivia/features/game/presentation/bloc/game_state.dart';
 import 'package:endless_trivia/l10n/app_localizations.dart';
 import 'package:endless_trivia/features/game/presentation/widgets/loading_view.dart';
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_bloc.dart';
-import 'package:endless_trivia/features/profile/presentation/bloc/profile_state.dart';
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_event.dart';
 
 class GamePage extends StatelessWidget {

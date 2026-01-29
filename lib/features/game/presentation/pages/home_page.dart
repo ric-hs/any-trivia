@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:endless_trivia/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:endless_trivia/features/auth/presentation/bloc/auth_event.dart';
 import 'package:endless_trivia/l10n/app_localizations.dart';
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_event.dart';

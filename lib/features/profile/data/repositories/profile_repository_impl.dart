@@ -69,6 +69,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
         } catch (e) {
           // Log error but don't fail profile creation
           // This might happen if tokens were already claimed for this device
+          // TODO: Add warning log here
           print('Error granting initial tokens: $e');
         }
       }
