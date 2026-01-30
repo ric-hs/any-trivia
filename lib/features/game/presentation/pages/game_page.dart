@@ -313,38 +313,38 @@ class _GameView extends StatelessWidget {
                                 ),
                               );
                             }),
-                            if (state is AnswerSubmitted) ...[
-                              const SizedBox(height: 20),
-                              Text(
-                                state.isCorrect
-                                    ? AppLocalizations.of(context)!.correct
-                                    : AppLocalizations.of(context)!.wrong,
-                                style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                  color: state.isCorrect
-                                      ? Colors.green
-                                      : Colors.red,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              if (!state.isCorrect) ...[
-                                const SizedBox(height: 8),
-                                Text(
-                                  AppLocalizations.of(
-                                    context,
-                                  )!.correctAnswerWas(
-                                    q.answers[q.correctAnswerIndex],
-                                  ),
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.white70,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                              const SizedBox(height: 20),
-                            ],
+                            // if (state is AnswerSubmitted) ...[
+                            //   const SizedBox(height: 20),
+                            //   Text(
+                            //     state.isCorrect
+                            //         ? AppLocalizations.of(context)!.correct
+                            //         : AppLocalizations.of(context)!.wrong,
+                            //     style: TextStyle(
+                            //       fontSize: 24,
+                            //       fontWeight: FontWeight.bold,
+                            //       color: state.isCorrect
+                            //           ? Colors.green
+                            //           : Colors.red,
+                            //     ),
+                            //     textAlign: TextAlign.center,
+                            //   ),
+                            //   if (!state.isCorrect) ...[
+                            //     const SizedBox(height: 8),
+                            //     Text(
+                            //       AppLocalizations.of(
+                            //         context,
+                            //       )!.correctAnswerWas(
+                            //         q.answers[q.correctAnswerIndex],
+                            //       ),
+                            //       style: const TextStyle(
+                            //         fontSize: 16,
+                            //         color: Colors.white70,
+                            //       ),
+                            //       textAlign: TextAlign.center,
+                            //     ),
+                            //   ],
+                            //   const SizedBox(height: 20),
+                            // ],
                           ],
                         ),
                       ),
