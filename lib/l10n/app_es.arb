@@ -45,5 +45,7 @@
     "spanish": "Español",
     "signOut": "Cerrar Sesión",
     "settingsTitle": "AJUSTES",
-    "suggestionsTitle": "IDEAS PARA TI"
+    "suggestionsTitle": "IDEAS PARA TI",
+    "suggestionsSpecificTitle": "TEMAS ESPECIALIZADOS",
+    "suggestionsFunTitle": "CURIOSOS Y DIVERTIDOS"
 }

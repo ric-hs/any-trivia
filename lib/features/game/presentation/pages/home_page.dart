@@ -189,24 +189,34 @@ class _HomePageState extends State<HomePage> {
                   ),
                   const SizedBox(height: 12),
                   
-                  // Category Suggestions Carousel
-                  Text(
-                    AppLocalizations.of(context)!.suggestionsTitle,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
+                  // Category Suggestions - General
+                  _buildSectionTitle(context, AppLocalizations.of(context)!.suggestionsTitle),
                   CategorySuggestionCarousel(
                     suggestions: CategorySuggestions.getSuggestions(
                       Localizations.localeOf(context).languageCode,
+                      type: SuggestionType.general,
+                    ),
+                    onCategorySelected: _addCategoryWithName,
+                  ),
+
+                  // Category Suggestions - Specialized
+                  CategorySuggestionCarousel(
+                    suggestions: CategorySuggestions.getSuggestions(
+                      Localizations.localeOf(context).languageCode,
+                      type: SuggestionType.specialized,
+                    ),
+                    onCategorySelected: _addCategoryWithName,
+                  ),
+
+                  // Category Suggestions - Quirky
+                  CategorySuggestionCarousel(
+                    suggestions: CategorySuggestions.getSuggestions(
+                      Localizations.localeOf(context).languageCode,
+                      type: SuggestionType.quirky,
                     ),
                     onCategorySelected: _addCategoryWithName,
                   ),
                   
-                  const SizedBox(height: 16),
                   if (_selectedCategories.isNotEmpty)
                     Wrap(
                       spacing: 8.0,
@@ -362,6 +372,20 @@ class _HomePageState extends State<HomePage> {
           }
           return const Center(child: Text('Loading Profile...'));
         },
+      ),
+    );
+  }
+
+  Widget _buildSectionTitle(BuildContext context, String title) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 14,
+          color: Colors.grey,
+          fontWeight: FontWeight.w500,
+        ),
       ),
     );
   }

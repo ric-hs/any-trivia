@@ -86,5 +86,7 @@
     "spanish": "Spanish",
     "signOut": "Sign Out",
     "settingsTitle": "SETTINGS",
-    "suggestionsTitle": "IDEAS FOR YOU"
+    "suggestionsTitle": "IDEAS FOR YOU",
+    "suggestionsSpecificTitle": "SPECIALIZED TOPICS",
+    "suggestionsFunTitle": "QUIRKY & FUN"
 }

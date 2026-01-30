@@ -379,6 +379,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'IDEAS FOR YOU'**
   String get suggestionsTitle;
+
+  /// No description provided for @suggestionsSpecificTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'SPECIALIZED TOPICS'**
+  String get suggestionsSpecificTitle;
+
+  /// No description provided for @suggestionsFunTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'QUIRKY & FUN'**
+  String get suggestionsFunTitle;
 }
 
 class _AppLocalizationsDelegate

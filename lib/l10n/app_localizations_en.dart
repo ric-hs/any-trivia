@@ -166,4 +166,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get suggestionsTitle => 'IDEAS FOR YOU';
+
+  @override
+  String get suggestionsSpecificTitle => 'SPECIALIZED TOPICS';
+
+  @override
+  String get suggestionsFunTitle => 'QUIRKY & FUN';
 }
