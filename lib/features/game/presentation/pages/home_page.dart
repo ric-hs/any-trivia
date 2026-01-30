@@ -197,6 +197,7 @@ class _HomePageState extends State<HomePage> {
                       type: SuggestionType.general,
                     ),
                     onCategorySelected: _addCategoryWithName,
+                    speed: 30.0,
                   ),
 
                   // Category Suggestions - Specialized
@@ -206,6 +207,7 @@ class _HomePageState extends State<HomePage> {
                       type: SuggestionType.specialized,
                     ),
                     onCategorySelected: _addCategoryWithName,
+                    speed: 45.0,
                   ),
 
                   // Category Suggestions - Quirky
@@ -215,6 +217,7 @@ class _HomePageState extends State<HomePage> {
                       type: SuggestionType.quirky,
                     ),
                     onCategorySelected: _addCategoryWithName,
+                    speed: 35.0,
                   ),
                   
                   if (_selectedCategories.isNotEmpty)

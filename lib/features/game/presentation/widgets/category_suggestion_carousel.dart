@@ -4,11 +4,13 @@ import 'package:flutter/scheduler.dart';
 class CategorySuggestionCarousel extends StatefulWidget {
   final List<String> suggestions;
   final Function(String) onCategorySelected;
+  final double speed;
 
   const CategorySuggestionCarousel({
     super.key,
     required this.suggestions,
     required this.onCategorySelected,
+    this.speed = 40.0,
   });
 
   @override
@@ -19,7 +21,6 @@ class _CategorySuggestionCarouselState extends State<CategorySuggestionCarousel>
   late ScrollController _scrollController;
   late Ticker _ticker;
   bool _userInteracting = false;
-  final double _pixelsPerSecond = 40.0;
 
   @override
   void initState() {
@@ -44,7 +45,7 @@ class _CategorySuggestionCarouselState extends State<CategorySuggestionCarousel>
     // Calculate displacement since last tick would be better, 
     // but for 60fps marquee, a small constant works well too.
     // However, to be precise:
-    double offset = _scrollController.offset + (_pixelsPerSecond / 60.0);
+    double offset = _scrollController.offset + (widget.speed / 60.0);
     
     if (offset >= maxScroll) {
       offset = 0;
