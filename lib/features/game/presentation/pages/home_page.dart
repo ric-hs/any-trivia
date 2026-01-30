@@ -99,295 +99,321 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.appTitle.toUpperCase()),
-        actions: [
-          BlocBuilder<ProfileBloc, ProfileState>(
-            builder: (context, state) {
-              if (state is ProfileLoaded) {
-                return IconButton(
-                  icon: const Icon(Icons.settings),
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => SettingsPage(userId: state.profile.userId),
-                      ),
-                    );
-                  },
-                );
-              }
-              return const SizedBox.shrink();
-            },
-          ),
-        ],
-      ),
-      body: BlocBuilder<ProfileBloc, ProfileState>(
-        builder: (context, state) {
-          if (state is ProfileLoading) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (state is ProfileLoaded) {
-            final profile = state.profile;
-            return Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Token Display
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF6200EA).withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: const Color(0xFF6200EA)),
-                    ),
-                    child: Row(
+      body: SafeArea(
+        child: BlocBuilder<ProfileBloc, ProfileState>(
+          builder: (context, state) {
+            if (state is ProfileLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is ProfileLoaded) {
+              final profile = state.profile;
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // Header: Tokens (Left) and Settings (Right)
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          AppLocalizations.of(context)!.tokens,
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          '${profile.tokens}',
-                          style: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFFBB86FC),
+                        // Tokens Display
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF6200EA).withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(color: const Color(0xFF6200EA)),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 32),
-
-                  // Category Input
-                  Text(
-                    AppLocalizations.of(context)!.chooseAdventure,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  TextField(
-                    controller: _categoryController,
-                    onSubmitted: (_) => _addCategory(),
-                    decoration: InputDecoration(
-                      labelText: AppLocalizations.of(context)!.enterTopic,
-                      filled: true,
-                      fillColor: const Color(0xFF2C2C2C),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
-                      ),
-                      prefixIcon: const Icon(Icons.search),
-                      suffixIcon: IconButton(
-                        icon: const Icon(Icons.add),
-                        onPressed: _addCategory,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  
-                  // Category Suggestions - General
-                  _buildSectionTitle(context, AppLocalizations.of(context)!.suggestionsTitle),
-                  CategorySuggestionCarousel(
-                    suggestions: CategorySuggestions.getSuggestions(
-                      Localizations.localeOf(context).languageCode,
-                      type: SuggestionType.general,
-                    ),
-                    onCategorySelected: _addCategoryWithName,
-                    speed: 30.0,
-                  ),
-
-                  // Category Suggestions - Specialized
-                  CategorySuggestionCarousel(
-                    suggestions: CategorySuggestions.getSuggestions(
-                      Localizations.localeOf(context).languageCode,
-                      type: SuggestionType.specialized,
-                    ),
-                    onCategorySelected: _addCategoryWithName,
-                    speed: 45.0,
-                  ),
-
-                  // Category Suggestions - Quirky
-                  CategorySuggestionCarousel(
-                    suggestions: CategorySuggestions.getSuggestions(
-                      Localizations.localeOf(context).languageCode,
-                      type: SuggestionType.quirky,
-                    ),
-                    onCategorySelected: _addCategoryWithName,
-                    speed: 35.0,
-                  ),
-                  
-                  if (_selectedCategories.isNotEmpty)
-                    Wrap(
-                      spacing: 8.0,
-                      runSpacing: 8.0,
-                      children: _selectedCategories.map((category) {
-                        final isFavorite = profile.favoriteCategories.contains(category);
-                        return InputChip(
-                          label: Text(category),
-                          onDeleted: () => _removeCategory(category),
-                          deleteIcon: const Icon(Icons.close, size: 18),
-                          onPressed: () {
-                              final newFavorites = List<String>.from(profile.favoriteCategories);
-                              if (isFavorite) {
-                                newFavorites.remove(category);
-                              } else {
-                                newFavorites.add(category);
-                              }
-                              context.read<ProfileBloc>().add(
-                                UpdateFavoriteCategories(
-                                  userId: profile.userId,
-                                  categories: newFavorites,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(Icons.monetization_on, color: Color(0xFFBB86FC), size: 20),
+                              const SizedBox(width: 8),
+                              Text(
+                                '${profile.tokens}',
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFFBB86FC),
                                 ),
-                              );
+                              ),
+                            ],
+                          ),
+                        ),
+                        // Settings Button
+                        IconButton(
+                          icon: const Icon(Icons.settings),
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => SettingsPage(userId: state.profile.userId),
+                              ),
+                            );
                           },
-                          avatar: Icon(
-                            isFavorite ? Icons.star : Icons.star_border,
-                            color: isFavorite ? Colors.amber : Colors.grey,
-                            size: 18,
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  const SizedBox(height: 24),
-
-                  // Rounds Selector
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        AppLocalizations.of(context)!.numberOfRounds,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        AppLocalizations.of(context)!.maxRounds,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
-                    ),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF2C2C2C),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.remove, color: Colors.white),
-                          onPressed: _rounds > 1
-                              ? () => setState(() => _rounds--)
-                              : null,
-                        ),
-                        Text(
-                          '$_rounds',
-                          style: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.add, color: Colors.white),
-                          onPressed: _rounds < 30
-                              ? () => setState(() => _rounds++)
-                              : null,
                         ),
                       ],
                     ),
-                  ),
-                  const SizedBox(height: 24),
+                    const SizedBox(height: 16),
 
-                  // Start Game Button
-                  SizedBox(
-                    width: double.infinity,
-                    height: 56,
-                    child: ElevatedButton(
-                      onPressed: () =>
-                          _startGame(context, profile.tokens, profile.userId),
-                      child: Text(AppLocalizations.of(context)!.playRound(_rounds)),
-                    ),
-                  ),
+                    // Main Content Area (Flexible to fit screen)
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            // Category Input
+                            TextField(
+                              controller: _categoryController,
+                              onSubmitted: (_) => _addCategory(),
+                              decoration: InputDecoration(
+                                hintText: AppLocalizations.of(context)!.enterTopic, // Updated hint
+                                filled: true,
+                                fillColor: const Color(0xFF2C2C2C),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide.none,
+                                ),
+                                prefixIcon: const Icon(Icons.search),
+                                suffixIcon: IconButton(
+                                  icon: const Icon(Icons.add),
+                                  onPressed: _addCategory,
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                              ),
+                            ),
+                            const SizedBox(height: 12),
 
-                  const SizedBox(height: 32),
-                  // Favorites (Placeholder for now)
-                  Text(
-                    AppLocalizations.of(context)!.favorites,
-                    style: const TextStyle(fontSize: 16, color: Colors.grey),
-                  ),
-                  const SizedBox(height: 8),
-                  if (profile.favoriteCategories.isEmpty)
-                    Text(
-                      AppLocalizations.of(context)!.noFavorites,
-                      style: const TextStyle(color: Colors.grey),
-                    )
-                  else
-                    Wrap(
-                      spacing: 8,
-                      children: profile.favoriteCategories
-                          .map((cat) => InputChip(
-                                label: Text(cat),
-                                avatar: const Icon(Icons.star, size: 16, color: Colors.amber),
-                                onPressed: () {
-                                  if (!_selectedCategories.contains(cat)) {
-                                    setState(() {
-                                      _selectedCategories.add(cat);
-                                    });
-                                  }
-                                },
-                                onDeleted: () {
-                                  final newFavorites = List<String>.from(profile.favoriteCategories)..remove(cat);
-                                  context.read<ProfileBloc>().add(
-                                    UpdateFavoriteCategories(
-                                      userId: profile.userId,
-                                      categories: newFavorites,
+                            // Selected Categories
+                            if (_selectedCategories.isNotEmpty) ...[
+                              Wrap(
+                                spacing: 8.0,
+                                runSpacing: 2.0,
+                                children: _selectedCategories.map((category) {
+                                  final isFavorite = profile.favoriteCategories.contains(category);
+                                  return InputChip(
+                                    label: Text(category),
+                                    onDeleted: () => _removeCategory(category),
+                                    deleteIcon: const Icon(Icons.close, size: 18),
+                                    onPressed: () {
+                                      final newFavorites = List<String>.from(profile.favoriteCategories);
+                                      if (isFavorite) {
+                                        newFavorites.remove(category);
+                                      } else {
+                                        newFavorites.add(category);
+                                      }
+                                      context.read<ProfileBloc>().add(
+                                        UpdateFavoriteCategories(
+                                          userId: profile.userId,
+                                          categories: newFavorites,
+                                        ),
+                                      );
+                                    },
+                                    avatar: Icon(
+                                      isFavorite ? Icons.star : Icons.star_border,
+                                      color: isFavorite ? Colors.amber : Colors.grey,
+                                      size: 18,
                                     ),
                                   );
-                                },
-                                deleteIcon: const Icon(Icons.delete_outline, size: 16),
-                                deleteButtonTooltipMessage: AppLocalizations.of(context)!.removeFromFavorites,
-                                tooltip: AppLocalizations.of(context)!.addToGame,
-                              ))
-                          .toList(),
-                    ),
-                ],
-              ),
-            );
-          } else if (state is ProfileError) {
-            return Center(
-              child: Text(
-                AppLocalizations.of(context)!.errorProfile(state.message),
-              ),
-            );
-          }
-          return const Center(child: Text('Loading Profile...'));
-        },
-      ),
-    );
-  }
+                                }).toList(),
+                              ),
+                              const SizedBox(height: 16),
+                            ],
 
-  Widget _buildSectionTitle(BuildContext context, String title) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: Text(
-        title,
-        style: const TextStyle(
-          fontSize: 14,
-          color: Colors.grey,
-          fontWeight: FontWeight.w500,
+                            // Recommendations
+                            Text(
+                              AppLocalizations.of(context)!.suggestionsTitle,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                             // Stack or List Carousels tightly
+                            CategorySuggestionCarousel(
+                              suggestions: CategorySuggestions.getSuggestions(
+                                Localizations.localeOf(context).languageCode,
+                                type: SuggestionType.general,
+                              ),
+                              onCategorySelected: _addCategoryWithName,
+                              speed: 30.0,
+                            ),
+                            CategorySuggestionCarousel(
+                              suggestions: CategorySuggestions.getSuggestions(
+                                Localizations.localeOf(context).languageCode,
+                                type: SuggestionType.specialized,
+                              ),
+                              onCategorySelected: _addCategoryWithName,
+                              speed: 45.0,
+                            ),
+                            CategorySuggestionCarousel(
+                              suggestions: CategorySuggestions.getSuggestions(
+                                Localizations.localeOf(context).languageCode,
+                                type: SuggestionType.quirky,
+                              ),
+                              onCategorySelected: _addCategoryWithName,
+                              speed: 35.0,
+                            ),
+                            const SizedBox(height: 16),
+
+                            // Favorites (Horizontal Scroll)
+                            if (profile.favoriteCategories.isNotEmpty) ...[
+                              Text(
+                                AppLocalizations.of(context)!.favorites,
+                                style: const TextStyle(fontSize: 14, color: Colors.grey, fontWeight: FontWeight.w500),
+                              ),
+                              const SizedBox(height: 8),
+                              SizedBox(
+                                height: 40,
+                                child: ListView.separated(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: profile.favoriteCategories.length,
+                                  separatorBuilder: (context, index) => const SizedBox(width: 8),
+                                  itemBuilder: (context, index) {
+                                    final cat = profile.favoriteCategories[index];
+                                    return Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey[800],
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: Material(
+                                        color: Colors.transparent,
+                                        child: InkWell(
+                                          borderRadius: BorderRadius.circular(20),
+                                          onTap: () {
+                                            if (!_selectedCategories.contains(cat)) {
+                                              setState(() {
+                                                _selectedCategories.add(cat);
+                                              });
+                                            }
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    final newFavorites = List<String>.from(profile.favoriteCategories)..remove(cat);
+                                                    context.read<ProfileBloc>().add(
+                                                      UpdateFavoriteCategories(
+                                                        userId: profile.userId,
+                                                        categories: newFavorites,
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: const Icon(Icons.star, size: 18, color: Colors.amber),
+                                                ),
+                                                const SizedBox(width: 8),
+                                                Text(
+                                                  cat,
+                                                  style: const TextStyle(color: Colors.white, fontSize: 13),
+                                                ),
+                                                const SizedBox(width: 4),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ] else ...[
+                               Text(
+                                AppLocalizations.of(context)!.favorites,
+                                style: const TextStyle(fontSize: 14, color: Colors.grey, fontWeight: FontWeight.w500),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                AppLocalizations.of(context)!.noFavorites,
+                                style: const TextStyle(color: Colors.grey, fontStyle: FontStyle.italic),
+                              ),
+                            ],
+                             const SizedBox(height: 16),
+
+                            // Round Counter
+                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  AppLocalizations.of(context)!.numberOfRounds,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFF2C2C2C),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      IconButton(
+                                        visualDensity: VisualDensity.compact,
+                                        icon: const Icon(Icons.remove, size: 20, color: Colors.white),
+                                        onPressed: _rounds > 1
+                                            ? () => setState(() => _rounds--)
+                                            : null,
+                                      ),
+                                      Text(
+                                        '$_rounds',
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      IconButton(
+                                        visualDensity: VisualDensity.compact,
+                                        icon: const Icon(Icons.add, size: 20, color: Colors.white),
+                                        onPressed: _rounds < 30
+                                            ? () => setState(() => _rounds++)
+                                            : null,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Start Game Button (Fixed at bottom)
+                    SizedBox(
+                      width: double.infinity,
+                      height: 56,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF6200EA),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          elevation: 4,
+                        ),
+                        onPressed: () =>
+                            _startGame(context, profile.tokens, profile.userId),
+                        child: Text(
+                          AppLocalizations.of(context)!.playRound(_rounds),
+                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            } else if (state is ProfileError) {
+              return Center(
+                child: Text(
+                  AppLocalizations.of(context)!.errorProfile(state.message),
+                ),
+              );
+            }
+            return const Center(child: Text('Loading Profile...'));
+          },
         ),
       ),
     );
