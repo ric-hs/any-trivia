@@ -21,6 +21,33 @@ class _HomePageState extends State<HomePage> {
   final List<String> _selectedCategories = [];
   int _rounds = 1;
 
+  // Cached suggestions to prevent reshuffling on state changes
+  List<String> _generalSuggestions = [];
+  List<String> _specializedSuggestions = [];
+  List<String> _quirkySuggestions = [];
+  String? _currentLanguageCode;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final languageCode = Localizations.localeOf(context).languageCode;
+    if (_currentLanguageCode != languageCode) {
+      _currentLanguageCode = languageCode;
+      _generalSuggestions = CategorySuggestions.getSuggestions(
+        languageCode,
+        type: SuggestionType.general,
+      );
+      _specializedSuggestions = CategorySuggestions.getSuggestions(
+        languageCode,
+        type: SuggestionType.specialized,
+      );
+      _quirkySuggestions = CategorySuggestions.getSuggestions(
+        languageCode,
+        type: SuggestionType.quirky,
+      );
+    }
+  }
+
   void _addCategory() {
     final category = _categoryController.text.trim();
     if (category.isNotEmpty) {
@@ -119,7 +146,7 @@ class _HomePageState extends State<HomePage> {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF6200EA).withOpacity(0.2),
+                            color: const Color(0x336200EA),
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(color: const Color(0xFF6200EA)),
                           ),
@@ -228,28 +255,19 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                             const SizedBox(height: 8),
-                             // Stack or List Carousels tightly
+                            // Stack or List Carousels tightly
                             CategorySuggestionCarousel(
-                              suggestions: CategorySuggestions.getSuggestions(
-                                Localizations.localeOf(context).languageCode,
-                                type: SuggestionType.general,
-                              ),
+                              suggestions: _generalSuggestions,
                               onCategorySelected: _addCategoryWithName,
                               speed: 30.0,
                             ),
                             CategorySuggestionCarousel(
-                              suggestions: CategorySuggestions.getSuggestions(
-                                Localizations.localeOf(context).languageCode,
-                                type: SuggestionType.specialized,
-                              ),
+                              suggestions: _specializedSuggestions,
                               onCategorySelected: _addCategoryWithName,
                               speed: 45.0,
                             ),
                             CategorySuggestionCarousel(
-                              suggestions: CategorySuggestions.getSuggestions(
-                                Localizations.localeOf(context).languageCode,
-                                type: SuggestionType.quirky,
-                              ),
+                              suggestions: _quirkySuggestions,
                               onCategorySelected: _addCategoryWithName,
                               speed: 35.0,
                             ),
