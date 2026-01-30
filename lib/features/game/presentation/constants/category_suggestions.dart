@@ -36,12 +36,7 @@ class CategorySuggestions {
   ];
 
   static List<String> getSuggestions(String languageCode) {
-    switch (languageCode) {
-      case 'es':
-        return es;
-      case 'en':
-      default:
-        return en;
-    }
+    final List<String> originalSuggestions = languageCode == 'es' ? es : en;
+    return List<String>.from(originalSuggestions)..shuffle();
   }
 }
