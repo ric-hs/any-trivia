@@ -124,10 +124,7 @@ class _GameView extends StatelessWidget {
                   ).animate(animation);
 
                   if (child.key == ValueKey(currentRound)) {
-                    return SlideTransition(
-                      position: inAnimation,
-                      child: child,
-                    );
+                    return SlideTransition(position: inAnimation, child: child);
                   } else {
                     return SlideTransition(
                       position: outAnimation,
@@ -175,20 +172,6 @@ class _GameView extends StatelessWidget {
                               ),
                             ),
                           ),
-                          // Category (Top Center)
-                          Expanded(
-                            child: Text(
-                              q.category.toUpperCase(),
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Theme.of(context).primaryColorLight,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 1.2,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
                           // Quit Button (Top Right)
                           IconButton(
                             onPressed: () {
@@ -205,16 +188,20 @@ class _GameView extends StatelessWidget {
                                   ),
                                   actions: [
                                     TextButton(
-                                      onPressed:
-                                          () => Navigator.of(context).pop(),
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(),
                                       child: Text(
                                         AppLocalizations.of(context)!.cancel,
                                       ),
                                     ),
                                     TextButton(
                                       onPressed: () {
-                                        Navigator.of(context).pop(); // Close dialog
-                                        Navigator.of(context).pop(); // Go to Home
+                                        Navigator.of(
+                                          context,
+                                        ).pop(); // Close dialog
+                                        Navigator.of(
+                                          context,
+                                        ).pop(); // Go to Home
                                       },
                                       child: Text(
                                         AppLocalizations.of(context)!.confirm,
@@ -234,7 +221,10 @@ class _GameView extends StatelessWidget {
                     // Content
                     Expanded(
                       child: SingleChildScrollView(
-                        padding: const EdgeInsets.all(20.0),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 2.0,
+                          horizontal: 20.0,
+                        ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
@@ -248,17 +238,36 @@ class _GameView extends StatelessWidget {
                                   width: 2,
                                 ),
                               ),
-                              child: Text(
-                                q.text,
-                                style: const TextStyle(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                                textAlign: TextAlign.center,
+                              child: Column(
+                                children: [
+                                  // Category (Top Center)
+                                  Text(
+                                    q.category.toUpperCase(),
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Theme.of(
+                                        context,
+                                      ).primaryColorLight,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 1.2,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  SizedBox(height: 4),
+                                  Text(
+                                    q.text,
+                                    style: const TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
                               ),
                             ),
-                            const SizedBox(height: 40),
+                            const SizedBox(height: 28),
                             ...List.generate(4, (index) {
                               Color backgroundColor = const Color(0xFF424242);
                               if (state is AnswerSubmitted) {
@@ -322,7 +331,9 @@ class _GameView extends StatelessWidget {
                               if (!state.isCorrect) ...[
                                 const SizedBox(height: 8),
                                 Text(
-                                  AppLocalizations.of(context)!.correctAnswerWas(
+                                  AppLocalizations.of(
+                                    context,
+                                  )!.correctAnswerWas(
                                     q.answers[q.correctAnswerIndex],
                                   ),
                                   style: const TextStyle(
