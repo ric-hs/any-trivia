@@ -51,4 +51,12 @@ final class GameError extends GameState {
   List<Object?> get props => [message];
 }
 
-final class GameFinished extends GameState {}
+final class GameFinished extends GameState {
+  final int score;
+  final int totalQuestions;
+
+  const GameFinished({required this.score, required this.totalQuestions});
+
+  @override
+  List<Object?> get props => [score, totalQuestions];
+}

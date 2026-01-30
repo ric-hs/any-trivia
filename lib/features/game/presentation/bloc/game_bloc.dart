@@ -13,6 +13,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   int _currentRound = 0;
   int _totalRounds = 0;
 
+  int _score = 0;
+
   GameBloc({
     required GameRepository gameRepository,
     required ProfileRepository profileRepository,
@@ -33,6 +35,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     _questionsQueue.clear();
     _currentRound = 1;
     _totalRounds = event.rounds;
+    _score = 0;
     emit(QuestionLoading());
 
     try {
@@ -65,7 +68,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
           emit(const GameError('unableToRetrieveTokens'));
         }
       } else {
-        emit(GameFinished());
+        emit(GameFinished(score: _score, totalQuestions: _totalRounds));
       }
     } catch (e) {
       emit(const GameError('errorLoadQuestions'));
@@ -90,7 +93,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       // Let's stick to "wait for more" (Loading) if we expect more,
       // OR Finish if we hit total rounds.
       if (_currentRound >= _totalRounds) {
-        emit(GameFinished());
+        emit(GameFinished(score: _score, totalQuestions: _totalRounds));
       } else {
         emit(QuestionLoading());
       }
@@ -101,6 +104,11 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     if (state is QuestionLoaded) {
       final currentQuestion = (state as QuestionLoaded).question;
       final isCorrect = currentQuestion.isCorrect(event.selectedIndex);
+      
+      if (isCorrect) {
+        _score++;
+      }
+
       emit(
         AnswerSubmitted(
           question: currentQuestion,

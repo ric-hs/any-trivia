@@ -93,5 +93,9 @@
     "quitGameContent": "This will finish the game and the used tokens will be lost. Are you sure you want to proceed?",
     "confirm": "Confirm",
     "cancel": "Cancel",
-    "contactSupport": "Contact Support"
+    "contactSupport": "Contact Support",
+    "resultsTitle": "RESULTS",
+    "scoreLabel": "Score",
+    "playAgain": "Play Again",
+    "backToMenu": "Back to Menu"
 }

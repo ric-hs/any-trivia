@@ -7,6 +7,7 @@ import 'package:endless_trivia/features/game/presentation/bloc/game_state.dart';
 
 import 'package:endless_trivia/l10n/app_localizations.dart';
 import 'package:endless_trivia/features/game/presentation/widgets/loading_view.dart';
+import 'package:endless_trivia/features/game/presentation/widgets/game_results_view.dart';
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_event.dart';
 
@@ -53,24 +54,7 @@ class _GameView extends StatelessWidget {
       body: SafeArea(
         child: BlocConsumer<GameBloc, GameState>(
           listener: (context, state) {
-            if (state is GameFinished) {
-              showDialog(
-                context: context,
-                builder: (_) => AlertDialog(
-                  title: const Text('Game Over'),
-                  content: const Text('You have completed all rounds!'),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop(); // Close dialog
-                        Navigator.of(context).pop(); // Go back to Home
-                      },
-                      child: const Text('Main Menu'),
-                    ),
-                  ],
-                ),
-              );
-            } else if (state is QuestionLoaded) {
+            if (state is QuestionLoaded) {
               if (state.currentRound == 1) {
                 // Sync UI tokens count after consumption
                 context.read<ProfileBloc>().add(
@@ -98,6 +82,12 @@ class _GameView extends StatelessWidget {
                   padding: const EdgeInsets.all(16.0),
                   child: Text('Error: $message', textAlign: TextAlign.center),
                 ),
+              );
+            } else if (state is GameFinished) {
+              return GameResultsView(
+                score: state.score,
+                totalQuestions: state.totalQuestions,
+                onBackToMenu: () => Navigator.of(context).pop(),
               );
             } else if (state is QuestionLoaded || state is AnswerSubmitted) {
               final q = (state is QuestionLoaded)
@@ -173,7 +163,6 @@ class _GameView extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        // Quit Button (Top Right)
                         // Quit Button (Top Right)
                         IconButton(
                           onPressed: () {
@@ -280,6 +269,7 @@ class _GameView extends StatelessWidget {
                                       },
                                 child: Text(
                                   q.answers[index],
+                                  textAlign: TextAlign.center,
                                   style: const TextStyle(
                                     fontSize: 18,
                                     color: Colors.white,
@@ -335,7 +325,8 @@ class _GameView extends StatelessWidget {
                         ),
                         onPressed: () {
                           if (currentRound == totalRounds) {
-                            Navigator.of(context).pop(); // Go to Home
+                            // If last round, next action should trigger finishing
+                            context.read<GameBloc>().add(NextQuestion());
                           } else {
                             context.read<GameBloc>().add(NextQuestion());
                           }
@@ -345,7 +336,7 @@ class _GameView extends StatelessWidget {
                           children: [
                             Text(
                               currentRound == totalRounds
-                                  ? AppLocalizations.of(context)!.endGame
+                                  ? AppLocalizations.of(context)!.resultsTitle
                                   : AppLocalizations.of(context)!.continueBtn,
                               style: const TextStyle(
                                 fontSize: 18,

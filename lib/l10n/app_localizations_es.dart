@@ -189,4 +189,16 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get contactSupport => 'Contactar Soporte';
+
+  @override
+  String get resultsTitle => 'RESULTADOS';
+
+  @override
+  String get scoreLabel => 'Puntaje';
+
+  @override
+  String get playAgain => 'Jugar de nuevo';
+
+  @override
+  String get backToMenu => 'Volver al Menú';
 }
