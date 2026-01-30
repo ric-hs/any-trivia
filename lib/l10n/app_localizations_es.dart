@@ -47,8 +47,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get chooseAdventure => 'ELIGE TU AVENTURA';
 
   @override
-  String get enterTopic =>
-      'Ingresa un tema (ej. Películas de los 80, Física Cuántica)';
+  String get enterTopic => 'Ingresa una categoría';
 
   @override
   String get favorites => 'FAVORITOS';

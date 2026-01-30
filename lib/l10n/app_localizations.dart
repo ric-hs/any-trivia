@@ -161,7 +161,7 @@ abstract class AppLocalizations {
   /// No description provided for @enterTopic.
   ///
   /// In en, this message translates to:
-  /// **'Enter a topic (e.g. 80s Movies, Quantum Physics)'**
+  /// **'Enter a topic'**
   String get enterTopic;
 
   /// No description provided for @favorites.

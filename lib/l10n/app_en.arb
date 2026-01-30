@@ -16,7 +16,7 @@
     },
     "tokens": "TOKENS",
     "chooseAdventure": "CHOOSE YOUR ADVENTURE",
-    "enterTopic": "Enter a topic (e.g. 80s Movies, Quantum Physics)",
+    "enterTopic": "Enter a topic",
     "favorites": "FAVORITES",
     "noFavorites": "No favorites yet.",
     "pleaseEnterCategory": "Please enter a category",

@@ -9,7 +9,7 @@
     "playRound": "{count, plural, =1{INICIAR PARTIDA (1 Ficha)} other{INICIAR PARTIDA ({count} Fichas)}}",
     "tokens": "FICHAS",
     "chooseAdventure": "ELIGE TU AVENTURA",
-    "enterTopic": "Ingresa un tema (ej. Películas de los 80, Física Cuántica)",
+    "enterTopic": "Ingresa una categoría",
     "favorites": "FAVORITOS",
     "noFavorites": "Sin favoritos aún.",
     "pleaseEnterCategory": "Por favor ingresa una categoría",
