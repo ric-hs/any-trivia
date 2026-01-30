@@ -200,18 +200,14 @@ class _GameView extends StatelessWidget {
                                 width: 2,
                               ),
                             ),
-                            child: Column(
-                              children: [
-                                Text(
-                                  q.text,
-                                  style: const TextStyle(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
+                            child: Text(
+                              q.text,
+                              style: const TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                              textAlign: TextAlign.center,
                             ),
                           ),
                           const SizedBox(height: 40),
@@ -294,34 +290,37 @@ class _GameView extends StatelessWidget {
                     ),
                   ),
                   if (state is AnswerSubmitted) ...[
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        backgroundColor: Theme.of(context).primaryColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      onPressed: () {
-                        if (currentRound == totalRounds) {
-                          Navigator.of(context).pop(); // Go to Home
-                        } else {
-                          context.read<GameBloc>().add(NextQuestion());
-                        }
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            currentRound == totalRounds
-                                ? AppLocalizations.of(context)!.endGame
-                                : AppLocalizations.of(context)!.continueBtn,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              color: Colors.white,
-                            ),
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          backgroundColor: Theme.of(context).primaryColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
                           ),
-                        ],
+                        ),
+                        onPressed: () {
+                          if (currentRound == totalRounds) {
+                            Navigator.of(context).pop(); // Go to Home
+                          } else {
+                            context.read<GameBloc>().add(NextQuestion());
+                          }
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              currentRound == totalRounds
+                                  ? AppLocalizations.of(context)!.endGame
+                                  : AppLocalizations.of(context)!.continueBtn,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
