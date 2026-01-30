@@ -373,6 +373,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'SETTINGS'**
   String get settingsTitle;
+
+  /// No description provided for @suggestionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'IDEAS FOR YOU'**
+  String get suggestionsTitle;
 }
 
 class _AppLocalizationsDelegate

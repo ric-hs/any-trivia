@@ -6,6 +6,8 @@ import 'package:endless_trivia/features/profile/presentation/bloc/profile_event.
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_state.dart';
 import 'package:endless_trivia/features/game/presentation/pages/game_page.dart';
 import 'package:endless_trivia/features/settings/presentation/pages/settings_page.dart';
+import 'package:endless_trivia/features/game/presentation/widgets/category_suggestion_carousel.dart';
+import 'package:endless_trivia/features/game/presentation/constants/category_suggestions.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -21,10 +23,16 @@ class _HomePageState extends State<HomePage> {
 
   void _addCategory() {
     final category = _categoryController.text.trim();
+    if (category.isNotEmpty) {
+      _addCategoryWithName(category);
+      _categoryController.clear();
+    }
+  }
+
+  void _addCategoryWithName(String category) {
     if (category.isNotEmpty && !_selectedCategories.contains(category)) {
       setState(() {
         _selectedCategories.add(category);
-        _categoryController.clear();
       });
     }
   }
@@ -179,6 +187,25 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 12),
+                  
+                  // Category Suggestions Carousel
+                  Text(
+                    AppLocalizations.of(context)!.suggestionsTitle,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  CategorySuggestionCarousel(
+                    suggestions: CategorySuggestions.getSuggestions(
+                      Localizations.localeOf(context).languageCode,
+                    ),
+                    onCategorySelected: _addCategoryWithName,
+                  ),
+                  
                   const SizedBox(height: 16),
                   if (_selectedCategories.isNotEmpty)
                     Wrap(

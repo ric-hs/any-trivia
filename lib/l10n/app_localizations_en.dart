@@ -163,4 +163,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsTitle => 'SETTINGS';
+
+  @override
+  String get suggestionsTitle => 'IDEAS FOR YOU';
 }

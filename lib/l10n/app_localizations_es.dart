@@ -165,4 +165,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get settingsTitle => 'AJUSTES';
+
+  @override
+  String get suggestionsTitle => 'IDEAS PARA TI';
 }
