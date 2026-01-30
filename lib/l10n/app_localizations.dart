@@ -359,7 +359,7 @@ abstract class AppLocalizations {
   /// No description provided for @spanish.
   ///
   /// In en, this message translates to:
-  /// **'Spanish'**
+  /// **'Español'**
   String get spanish;
 
   /// No description provided for @signOut.

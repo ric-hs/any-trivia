@@ -156,7 +156,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get english => 'English';
 
   @override
-  String get spanish => 'Spanish';
+  String get spanish => 'Español';
 
   @override
   String get signOut => 'Sign Out';
