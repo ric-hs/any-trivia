@@ -391,6 +391,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'QUIRKY & FUN'**
   String get suggestionsFunTitle;
+
+  /// No description provided for @quitGameTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Quit Game?'**
+  String get quitGameTitle;
+
+  /// No description provided for @quitGameContent.
+  ///
+  /// In en, this message translates to:
+  /// **'This will finish the game and the used tokens will be lost. Are you sure you want to proceed?'**
+  String get quitGameContent;
+
+  /// No description provided for @confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
 }
 
 class _AppLocalizationsDelegate

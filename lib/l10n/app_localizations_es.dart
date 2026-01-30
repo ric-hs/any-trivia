@@ -173,4 +173,17 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get suggestionsFunTitle => 'CURIOSOS Y DIVERTIDOS';
+
+  @override
+  String get quitGameTitle => '¿Salir del juego?';
+
+  @override
+  String get quitGameContent =>
+      'Esto finalizará el juego y las fichas usadas se perderán. ¿Estás seguro de que quieres continuar?';
+
+  @override
+  String get confirm => 'Confirmar';
+
+  @override
+  String get cancel => 'Cancelar';
 }

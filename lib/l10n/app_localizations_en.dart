@@ -172,4 +172,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get suggestionsFunTitle => 'QUIRKY & FUN';
+
+  @override
+  String get quitGameTitle => 'Quit Game?';
+
+  @override
+  String get quitGameContent =>
+      'This will finish the game and the used tokens will be lost. Are you sure you want to proceed?';
+
+  @override
+  String get confirm => 'Confirm';
+
+  @override
+  String get cancel => 'Cancel';
 }

@@ -88,5 +88,9 @@
     "settingsTitle": "SETTINGS",
     "suggestionsTitle": "IDEAS FOR YOU",
     "suggestionsSpecificTitle": "SPECIALIZED TOPICS",
-    "suggestionsFunTitle": "QUIRKY & FUN"
+    "suggestionsFunTitle": "QUIRKY & FUN",
+    "quitGameTitle": "Quit Game?",
+    "quitGameContent": "This will finish the game and the used tokens will be lost. Are you sure you want to proceed?",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
 }

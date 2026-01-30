@@ -174,8 +174,41 @@ class _GameView extends StatelessWidget {
                           ),
                         ),
                         // Quit Button (Top Right)
+                        // Quit Button (Top Right)
                         IconButton(
-                          onPressed: () => Navigator.of(context).pop(),
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: Text(
+                                  AppLocalizations.of(context)!.quitGameTitle,
+                                ),
+                                content: Text(
+                                  AppLocalizations.of(
+                                    context,
+                                  )!.quitGameContent,
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed:
+                                        () => Navigator.of(context).pop(),
+                                    child: Text(
+                                      AppLocalizations.of(context)!.cancel,
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop(); // Close dialog
+                                      Navigator.of(context).pop(); // Go to Home
+                                    },
+                                    child: Text(
+                                      AppLocalizations.of(context)!.confirm,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
                           icon: const Icon(Icons.close),
                           tooltip: 'Quit Game',
                         ),
