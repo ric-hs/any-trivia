@@ -86,10 +86,13 @@ class _GameView extends StatelessWidget {
               final message = state.message == 'errorLoadQuestions'
                   ? AppLocalizations.of(context)!.errorLoadQuestions
                   : state.message == 'unableToRetrieveTokens'
-                      ? AppLocalizations.of(context)!.unableToRetrieveTokens
-                      : state.message == 'notEnoughTokens'
-                          ? AppLocalizations.of(context)!.notEnoughTokens(rounds, 0) // tokens count is tricky here, maybe just generic
-                          : state.message;
+                  ? AppLocalizations.of(context)!.unableToRetrieveTokens
+                  : state.message == 'notEnoughTokens'
+                  ? AppLocalizations.of(context)!.notEnoughTokens(
+                      rounds,
+                      0,
+                    ) // tokens count is tricky here, maybe just generic
+                  : state.message;
               return Center(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -121,21 +124,34 @@ class _GameView extends StatelessWidget {
                 children: [
                   // Custom Header
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0,
+                      vertical: 8.0,
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         // Round Counter (Top Left)
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 6,
+                          ),
                           decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
+                            color: Theme.of(
+                              context,
+                            ).primaryColor.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
-                                color: Theme.of(context).primaryColor.withValues(alpha: 0.5)),
+                              color: Theme.of(
+                                context,
+                              ).primaryColor.withValues(alpha: 0.5),
+                            ),
                           ),
                           child: Text(
-                            AppLocalizations.of(context)!.roundProgress(currentRound, totalRounds),
+                            AppLocalizations.of(
+                              context,
+                            )!.roundProgress(currentRound, totalRounds),
                             style: TextStyle(
                               color: Theme.of(context).primaryColor,
                               fontWeight: FontWeight.bold,
@@ -166,7 +182,7 @@ class _GameView extends StatelessWidget {
                       ],
                     ),
                   ),
-                  
+
                   // Content
                   Expanded(
                     child: SingleChildScrollView(
@@ -204,7 +220,8 @@ class _GameView extends StatelessWidget {
                             if (state is AnswerSubmitted) {
                               if (index == q.correctAnswerIndex) {
                                 backgroundColor = Colors.green;
-                              } else if (index == selectedIndex && !isCorrect!) {
+                              } else if (index == selectedIndex &&
+                                  !isCorrect!) {
                                 backgroundColor = Colors.red;
                               } else {
                                 backgroundColor = Colors.grey.shade800;
@@ -215,7 +232,9 @@ class _GameView extends StatelessWidget {
                               padding: const EdgeInsets.only(bottom: 16.0),
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(vertical: 20),
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 20,
+                                  ),
                                   backgroundColor: backgroundColor,
                                   disabledBackgroundColor: backgroundColor,
                                   disabledForegroundColor: Colors.white,
@@ -249,16 +268,18 @@ class _GameView extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
-                                color: state.isCorrect ? Colors.green : Colors.red,
+                                color: state.isCorrect
+                                    ? Colors.green
+                                    : Colors.red,
                               ),
                               textAlign: TextAlign.center,
                             ),
                             if (!state.isCorrect) ...[
                               const SizedBox(height: 8),
                               Text(
-                                AppLocalizations.of(
-                                  context,
-                                )!.correctAnswerWas(q.answers[q.correctAnswerIndex]),
+                                AppLocalizations.of(context)!.correctAnswerWas(
+                                  q.answers[q.correctAnswerIndex],
+                                ),
                                 style: const TextStyle(
                                   fontSize: 16,
                                   color: Colors.white70,
@@ -267,36 +288,43 @@ class _GameView extends StatelessWidget {
                               ),
                             ],
                             const SizedBox(height: 20),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(vertical: 16),
-                                backgroundColor: Theme.of(context).primaryColor,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
-                              onPressed: () {
-                                if (currentRound == totalRounds) {
-                                  Navigator.of(context).pop(); // Go to Home
-                                } else {
-                                  context.read<GameBloc>().add(NextQuestion());
-                                }
-                              },
-                              child: Text(
-                                currentRound == totalRounds
-                                    ? AppLocalizations.of(context)!.endGame
-                                    : AppLocalizations.of(context)!.continueBtn,
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
                           ],
                         ],
                       ),
                     ),
                   ),
+                  if (state is AnswerSubmitted) ...[
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        backgroundColor: Theme.of(context).primaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      onPressed: () {
+                        if (currentRound == totalRounds) {
+                          Navigator.of(context).pop(); // Go to Home
+                        } else {
+                          context.read<GameBloc>().add(NextQuestion());
+                        }
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            currentRound == totalRounds
+                                ? AppLocalizations.of(context)!.endGame
+                                : AppLocalizations.of(context)!.continueBtn,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ],
               );
             }
