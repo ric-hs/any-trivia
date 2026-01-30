@@ -7,6 +7,7 @@ import 'package:endless_trivia/features/auth/presentation/bloc/auth_event.dart';
 import 'package:endless_trivia/l10n/app_localizations.dart';
 import 'package:endless_trivia/core/services/device_info_service.dart';
 import 'package:endless_trivia/core/di/injection_container.dart' as di;
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends StatefulWidget {
   final String userId;
@@ -39,6 +40,22 @@ class _SettingsPageState extends State<SettingsPage> {
     if (text == null || text.isEmpty) return '---';
     if (text.length <= length) return text;
     return '${text.substring(0, length)}...';
+  }
+
+  Future<void> _contactSupport() async {
+    final Uri emailLaunchUri = Uri(
+      scheme: 'mailto',
+      path: 'contacto@ricardohs.com',
+      query: 'subject=Endless%20Trivia%20Support',
+    );
+
+    if (!await launchUrl(emailLaunchUri)) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Could not launch email app')),
+        );
+      }
+    }
   }
 
   @override
@@ -118,6 +135,19 @@ class _SettingsPageState extends State<SettingsPage> {
               ],
             ),
           ),
+
+          // Contact Support
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            height: 56,
+            child: ElevatedButton.icon(
+              onPressed: _contactSupport,
+              icon: const Icon(Icons.email_outlined),
+              label: Text(l10n.contactSupport),
+            ),
+          ),
+          const SizedBox(height: 24),
           // Discrete IDs
           Center(
             child: Opacity(

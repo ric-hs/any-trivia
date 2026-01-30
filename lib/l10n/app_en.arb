@@ -92,5 +92,6 @@
     "quitGameTitle": "Quit Game?",
     "quitGameContent": "This will finish the game and the used tokens will be lost. Are you sure you want to proceed?",
     "confirm": "Confirm",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "contactSupport": "Contact Support"
 }
