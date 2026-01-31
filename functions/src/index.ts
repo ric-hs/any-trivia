@@ -12,7 +12,12 @@ const PRICE_CACHING_PER_1M = 0.05;
 // Initialize Gemini with API key from environment variables
 // Ensure to set the secret using: firebase functions:secrets:set GEMINI_API_KEY
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
-const model = genAI.getGenerativeModel({model: "gemini-3-flash-preview"});
+const model = genAI.getGenerativeModel({
+  model: "gemini-3-flash-preview",
+  generationConfig: {
+    responseMimeType: "application/json",
+  },
+});
 
 interface GenerateQuestionRequest {
   categories: string[];
