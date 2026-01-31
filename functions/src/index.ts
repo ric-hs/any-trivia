@@ -5,6 +5,10 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 admin.initializeApp();
 const db = admin.firestore();
 
+const PRICE_INPUT_PER_1M = 0.50;
+const PRICE_OUTPUT_PER_1M = 3.00;
+const PRICE_CACHING_PER_1M = 0.05;
+
 // Initialize Gemini with API key from environment variables
 // Ensure to set the secret using: firebase functions:secrets:set GEMINI_API_KEY
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
@@ -72,6 +76,36 @@ export const generateQuestion = functions.runWith({
 
     // Clean up potential markdown code blocks if the model includes them
     const cleanText = text.replace(/```json\n?|\n?```/g, "").trim();
+
+    try {
+      const usage = result.response.usageMetadata;
+    if (usage) {
+        const inputTokens = usage.promptTokenCount || 0;
+        const outputTokens = usage.candidatesTokenCount || 0;
+        const cachedTokens = usage.cachedContentTokenCount || 0;
+        const totalTokens = usage.totalTokenCount || 0;
+        
+        const inputCost = (inputTokens / 1000000) * PRICE_INPUT_PER_1M;
+        const cachingCost = (cachedTokens / 1000000) * PRICE_CACHING_PER_1M;
+        const outputCost = ((totalTokens - inputTokens - cachedTokens) / 1000000) * PRICE_OUTPUT_PER_1M;
+        const totalCost = inputCost + outputCost + cachingCost;
+
+        functions.logger.info("AI Cost Calculation", {
+          inputTokens,
+          outputTokens,
+          cachedTokens,
+          totalTokens,
+          inputCost: inputCost.toFixed(10), // High precision for small costs
+          outputCost: outputCost.toFixed(10),
+          totalCost: totalCost.toFixed(10),
+          currency: "USD"
+        });
+      }
+
+    } catch (error) {
+      console.error("Failed to generate or calculate cost:", error);
+    }
+
 
     return JSON.parse(cleanText);
   } catch (e) {
