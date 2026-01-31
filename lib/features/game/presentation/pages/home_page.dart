@@ -8,6 +8,7 @@ import 'package:endless_trivia/features/game/presentation/pages/game_page.dart';
 import 'package:endless_trivia/features/settings/presentation/pages/settings_page.dart';
 import 'package:endless_trivia/features/game/presentation/widgets/category_suggestion_carousel.dart';
 import 'package:endless_trivia/features/game/presentation/constants/category_suggestions.dart';
+import 'package:endless_trivia/features/game/presentation/utils/game_cost_calculator.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -81,7 +82,8 @@ class _HomePageState extends State<HomePage> {
     }
 
     // Check if user has enough tokens for the selected rounds
-    if (currentTokens < _rounds) {
+    final requiredTokens = GameCostCalculator.calculateCost(_rounds);
+    if (currentTokens < requiredTokens) {
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
@@ -89,7 +91,7 @@ class _HomePageState extends State<HomePage> {
           content: Text(
             AppLocalizations.of(
               context,
-            )!.notEnoughTokens(_rounds, currentTokens),
+            )!.notEnoughTokens(_rounds, currentTokens, requiredTokens),
           ),
           actions: [
             TextButton(
@@ -425,7 +427,7 @@ class _HomePageState extends State<HomePage> {
                         onPressed: () =>
                             _startGame(context, profile.tokens, profile.userId),
                         child: Text(
-                          AppLocalizations.of(context)!.playRound(_rounds),
+                          AppLocalizations.of(context)!.playRound(GameCostCalculator.calculateCost(_rounds)),
                           style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
                         ),
                       ),

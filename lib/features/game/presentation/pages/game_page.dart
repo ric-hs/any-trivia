@@ -10,6 +10,7 @@ import 'package:endless_trivia/features/game/presentation/widgets/loading_view.d
 import 'package:endless_trivia/features/game/presentation/widgets/game_results_view.dart';
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_event.dart';
+import 'package:endless_trivia/features/game/presentation/utils/game_cost_calculator.dart';
 
 class GamePage extends StatelessWidget {
   final List<String> categories;
@@ -72,10 +73,11 @@ class _GameView extends StatelessWidget {
                   : state.message == 'unableToRetrieveTokens'
                   ? AppLocalizations.of(context)!.unableToRetrieveTokens
                   : state.message == 'notEnoughTokens'
-                  ? AppLocalizations.of(context)!.notEnoughTokens(
-                      rounds,
-                      0,
-                    ) // tokens count is tricky here, maybe just generic
+                   ? AppLocalizations.of(context)!.notEnoughTokens(
+                       rounds,
+                       0,
+                       GameCostCalculator.calculateCost(rounds),
+                     ) // tokens count is tricky here, maybe just generic
                   : state.message;
               return Center(
                 child: Padding(

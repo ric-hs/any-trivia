@@ -4,6 +4,7 @@ import 'package:endless_trivia/features/game/domain/repositories/game_repository
 import 'package:endless_trivia/features/game/presentation/bloc/game_event.dart';
 import 'package:endless_trivia/features/game/presentation/bloc/game_state.dart';
 import 'package:endless_trivia/features/profile/domain/repositories/profile_repository.dart';
+import 'package:endless_trivia/features/game/presentation/utils/game_cost_calculator.dart';
 
 class GameBloc extends Bloc<GameEvent, GameState> {
   final GameRepository _gameRepository;
@@ -50,7 +51,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
         try {
           await _profileRepository.consumeTokens(
             event.userId,
-            event.rounds,
+            GameCostCalculator.calculateCost(event.rounds),
           );
 
           // Token consumed successfully, proceed with game

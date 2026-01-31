@@ -24,7 +24,7 @@
     "errorAuth": "Error de Autenticación",
     "errorSignup": "Error de Registro",
     "errorProfile": "Error cargando perfil: {message}",
-    "notEnoughTokens": "Seleccionaste {rounds} rondas pero solo tienes {tokens} fichas.",
+    "notEnoughTokens": "Seleccionaste {rounds} rondas (Costo: {requiredTokens} Fichas) pero solo tienes {tokens} fichas.",
     "roundProgress": "Ronda {current} / {total}",
     "numberOfRounds": "Número de Rondas",
     "maxRounds": "(máx. 30)",

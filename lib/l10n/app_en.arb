@@ -45,13 +45,16 @@
             }
         }
     },
-    "notEnoughTokens": "You selected {rounds} rounds but only have {tokens} tokens.",
+    "notEnoughTokens": "You selected {rounds} rounds (Cost: {requiredTokens} Tokens) but only have {tokens} tokens.",
     "@notEnoughTokens": {
         "placeholders": {
             "rounds": {
                 "type": "int"
             },
             "tokens": {
+                "type": "int"
+            },
+            "requiredTokens": {
                 "type": "int"
             }
         }

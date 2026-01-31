@@ -97,8 +97,8 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String notEnoughTokens(int rounds, int tokens) {
-    return 'Seleccionaste $rounds rondas pero solo tienes $tokens fichas.';
+  String notEnoughTokens(int rounds, int tokens, int requiredTokens) {
+    return 'Seleccionaste $rounds rondas (Costo: $requiredTokens Fichas) pero solo tienes $tokens fichas.';
   }
 
   @override
