@@ -82,7 +82,17 @@ class _GameView extends StatelessWidget {
               return Center(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Text('Error: $message', textAlign: TextAlign.center),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text('Error: $message', textAlign: TextAlign.center),
+                      const SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: Text(AppLocalizations.of(context)!.backToMenu),
+                      ),
+                    ],
+                  ),
                 ),
               );
             } else if (state is GameFinished) {
