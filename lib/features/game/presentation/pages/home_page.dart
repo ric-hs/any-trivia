@@ -19,7 +19,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final _categoryController = TextEditingController();
   final List<String> _selectedCategories = [];
-  int _rounds = 1;
+  int _rounds = 5;
 
   // Cached suggestions to prevent reshuffling on state changes
   List<String> _generalSuggestions = [];
@@ -350,8 +350,9 @@ class _HomePageState extends State<HomePage> {
                              const SizedBox(height: 16),
 
                             // Round Counter
-                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            // Round Selector
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   AppLocalizations.of(context)!.numberOfRounds,
@@ -360,37 +361,46 @@ class _HomePageState extends State<HomePage> {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFF2C2C2C),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      IconButton(
-                                        visualDensity: VisualDensity.compact,
-                                        icon: const Icon(Icons.remove, size: 20, color: Colors.white),
-                                        onPressed: _rounds > 1
-                                            ? () => setState(() => _rounds--)
-                                            : null,
-                                      ),
-                                      Text(
-                                        '$_rounds',
-                                        style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
+                                const SizedBox(height: 12),
+                                Row(
+                                  children: [5, 10, 15, 20].map((rounds) {
+                                    final isSelected = _rounds == rounds;
+                                    return Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              _rounds = rounds;
+                                            });
+                                          },
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(vertical: 12),
+                                            decoration: BoxDecoration(
+                                              color: isSelected
+                                                  ? const Color(0xFF6200EA)
+                                                  : const Color(0xFF2C2C2C),
+                                              borderRadius: BorderRadius.circular(12),
+                                              border: isSelected
+                                                  ? Border.all(color: const Color(0xFFBB86FC), width: 1.5)
+                                                  : null,
+                                            ),
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              '$rounds',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: isSelected
+                                                    ? FontWeight.bold
+                                                    : FontWeight.normal,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                      IconButton(
-                                        visualDensity: VisualDensity.compact,
-                                        icon: const Icon(Icons.add, size: 20, color: Colors.white),
-                                        onPressed: _rounds < 30
-                                            ? () => setState(() => _rounds++)
-                                            : null,
-                                      ),
-                                    ],
-                                  ),
+                                    );
+                                  }).toList(),
                                 ),
                               ],
                             ),
