@@ -505,7 +505,7 @@ class _HomePageState extends State<HomePage> {
                                     .slideY(begin: 0.1, end: 0),
 
                                 const SizedBox(
-                                  height: 100,
+                                  height: 128,
                                 ), // Spacing for floating button
                               ],
                             ),
