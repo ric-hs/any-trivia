@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:endless_trivia/l10n/app_localizations.dart';
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_event.dart';
@@ -76,6 +78,8 @@ class _HomePageState extends State<HomePage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(AppLocalizations.of(context)!.pleaseEnterCategory),
+          backgroundColor: Theme.of(context).colorScheme.error,
+          behavior: SnackBarBehavior.floating,
         ),
       );
       return;
@@ -87,11 +91,13 @@ class _HomePageState extends State<HomePage> {
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: Text(AppLocalizations.of(context)!.outOfTokens),
+          backgroundColor: Theme.of(context).cardTheme.color,
+          title: Text(AppLocalizations.of(context)!.outOfTokens, style: const TextStyle(color: Colors.white)),
           content: Text(
             AppLocalizations.of(
               context,
             )!.notEnoughTokens(_rounds, currentTokens, requiredTokens),
+             style: const TextStyle(color: Colors.white70),
           ),
           actions: [
             TextButton(
@@ -104,12 +110,6 @@ class _HomePageState extends State<HomePage> {
       return;
     }
 
-    // Token consumption is now handled by the Cloud Function consumeTokens,
-    // which is called from the GameBloc when the game starts.
-    // If there are not enough tokens, the Cloud Function will return an error status,
-    // and the GameBloc will emit a GameError.
-
-    // Get current language
     final languageCode = Localizations.localeOf(context).languageCode;
 
     // Navigate to Game
@@ -128,239 +128,220 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: BlocBuilder<ProfileBloc, ProfileState>(
-          builder: (context, state) {
-            if (state is ProfileLoading) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (state is ProfileLoaded) {
-              final profile = state.profile;
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+      extendBodyBehindAppBar: true,
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color(0xFF100F1F), // Dark BG
+              Color(0xFF2A0045), // Deep Purple Accent
+            ],
+            stops: [0.3, 1.0],
+          ),
+        ),
+        child: SafeArea(
+          child: BlocBuilder<ProfileBloc, ProfileState>(
+            builder: (context, state) {
+              if (state is ProfileLoading) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (state is ProfileLoaded) {
+                final profile = state.profile;
+                return Stack(
                   children: [
-                    // Header: Tokens (Left) and Settings (Right)
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        // Tokens Display
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                          decoration: BoxDecoration(
-                            color: const Color(0x336200EA),
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(color: const Color(0xFF6200EA)),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Icon(Icons.monetization_on, color: Color(0xFFBB86FC), size: 20),
-                              const SizedBox(width: 8),
-                              Text(
-                                '${profile.tokens}',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFFBB86FC),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        // Settings Button
-                        IconButton(
-                          icon: const Icon(Icons.settings),
-                          onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => SettingsPage(userId: state.profile.userId),
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
+                        // HUD Header
+                        _buildHUD(context, profile),
+                        
+                        // Main Content
+                        Expanded(
+                          child: SingleChildScrollView(
+                            physics: const BouncingScrollPhysics(),
+                            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                const SizedBox(height: 16),
+                                // Hero Title or Welcome
+                                Text(
+                                  "PREPARE FOR BATTLE",
+                                  style: GoogleFonts.rubikGlitch(
+                                    fontSize: 32,
+                                    color: Colors.white.withValues(alpha:0.9),
+                                    letterSpacing: 2,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ).animate().fadeIn(duration: 600.ms).slideY(begin: -0.2, end: 0),
 
-                    // Main Content Area (Flexible to fit screen)
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            // Category Input
-                            TextField(
-                              controller: _categoryController,
-                              onSubmitted: (_) => _addCategory(),
-                              decoration: InputDecoration(
-                                hintText: AppLocalizations.of(context)!.enterTopic, // Updated hint
-                                filled: true,
-                                fillColor: const Color(0xFF2C2C2C),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                  borderSide: BorderSide.none,
-                                ),
-                                prefixIcon: const Icon(Icons.search),
-                                suffixIcon: IconButton(
-                                  icon: const Icon(Icons.add),
-                                  onPressed: _addCategory,
-                                ),
-                                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                              ),
-                            ),
-                            const SizedBox(height: 12),
-
-                            // Selected Categories
-                            if (_selectedCategories.isNotEmpty) ...[
-                              Wrap(
-                                spacing: 8.0,
-                                runSpacing: 2.0,
-                                children: _selectedCategories.map((category) {
-                                  final isFavorite = profile.favoriteCategories.contains(category);
-                                  return InputChip(
-                                    label: Text(category),
-                                    onDeleted: () => _removeCategory(category),
-                                    deleteIcon: const Icon(Icons.close, size: 18),
-                                    onPressed: () {
-                                      final newFavorites = List<String>.from(profile.favoriteCategories);
-                                      if (isFavorite) {
-                                        newFavorites.remove(category);
-                                      } else {
-                                        newFavorites.add(category);
-                                      }
-                                      context.read<ProfileBloc>().add(
-                                        UpdateFavoriteCategories(
-                                          userId: profile.userId,
-                                          categories: newFavorites,
-                                        ),
-                                      );
-                                    },
-                                    avatar: Icon(
-                                      isFavorite ? Icons.star : Icons.star_border,
-                                      color: isFavorite ? Colors.amber : Colors.grey,
-                                      size: 18,
+                                const SizedBox(height: 24),
+                                
+                                // Category Input
+                                TextField(
+                                  controller: _categoryController,
+                                  onSubmitted: (_) => _addCategory(),
+                                  style: const TextStyle(color: Colors.white),
+                                  decoration: InputDecoration(
+                                    hintText: AppLocalizations.of(context)!.enterTopic,
+                                    prefixIcon: const Icon(Icons.search, color: Color(0xFF00E5FF)),
+                                    suffixIcon: IconButton(
+                                      icon: const Icon(Icons.add_circle, color: Color(0xFFD300F9)),
+                                      onPressed: _addCategory,
                                     ),
-                                  );
-                                }).toList(),
-                              ),
-                              const SizedBox(height: 16),
-                            ],
+                                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                                  ),
+                                ).animate().fadeIn(delay: 200.ms).slideX(),
+                                const SizedBox(height: 16),
 
-                            // Recommendations
-                            Text(
-                              AppLocalizations.of(context)!.suggestionsTitle,
-                              style: const TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            // Stack or List Carousels tightly
-                            CategorySuggestionCarousel(
-                              suggestions: _generalSuggestions,
-                              onCategorySelected: _addCategoryWithName,
-                              speed: 30.0,
-                            ),
-                            CategorySuggestionCarousel(
-                              suggestions: _specializedSuggestions,
-                              onCategorySelected: _addCategoryWithName,
-                              speed: 45.0,
-                            ),
-                            CategorySuggestionCarousel(
-                              suggestions: _quirkySuggestions,
-                              onCategorySelected: _addCategoryWithName,
-                              speed: 35.0,
-                            ),
-                            const SizedBox(height: 16),
+                                // Selected Categories (Chips)
+                                if (_selectedCategories.isNotEmpty)
+                                  Wrap(
+                                    spacing: 8.0,
+                                    runSpacing: 8.0,
+                                    children: _selectedCategories.map((category) {
+                                      final isFavorite = profile.favoriteCategories.contains(category);
+                                      return InputChip(
+                                        backgroundColor: const Color(0xFF252538),
+                                        side: BorderSide(color: Theme.of(context).colorScheme.primary),
+                                        label: Text(category, style: const TextStyle(color: Colors.white)),
+                                        onDeleted: () => _removeCategory(category),
+                                        deleteIcon: const Icon(Icons.close, size: 18, color: Colors.white70),
+                                        onPressed: () {
+                                          final newFavorites = List<String>.from(profile.favoriteCategories);
+                                          if (isFavorite) {
+                                            newFavorites.remove(category);
+                                          } else {
+                                            newFavorites.add(category);
+                                          }
+                                          context.read<ProfileBloc>().add(
+                                                UpdateFavoriteCategories(
+                                                  userId: profile.userId,
+                                                  categories: newFavorites,
+                                                ),
+                                              );
+                                        },
+                                        avatar: Icon(
+                                          isFavorite ? Icons.star : Icons.star_border,
+                                          color: isFavorite ? Colors.amber : Colors.grey,
+                                          size: 18,
+                                        ),
+                                      ).animate().scale();
+                                    }).toList(),
+                                  ),
+                                const SizedBox(height: 24),
 
-                            // Favorites (Horizontal Scroll)
-                            if (profile.favoriteCategories.isNotEmpty) ...[
-                              Text(
-                                AppLocalizations.of(context)!.favorites,
-                                style: const TextStyle(fontSize: 14, color: Colors.grey, fontWeight: FontWeight.w500),
-                              ),
-                              const SizedBox(height: 8),
-                              SizedBox(
-                                height: 40,
-                                child: ListView.separated(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: profile.favoriteCategories.length,
-                                  separatorBuilder: (context, index) => const SizedBox(width: 8),
-                                  itemBuilder: (context, index) {
-                                    final cat = profile.favoriteCategories[index];
-                                    return Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey[800],
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      child: Material(
-                                        color: Colors.transparent,
-                                        child: InkWell(
-                                          borderRadius: BorderRadius.circular(20),
-                                          onTap: () {
-                                            if (!_selectedCategories.contains(cat)) {
-                                              setState(() {
-                                                _selectedCategories.add(cat);
-                                              });
-                                            }
-                                          },
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    final newFavorites = List<String>.from(profile.favoriteCategories)..remove(cat);
-                                                    context.read<ProfileBloc>().add(
-                                                      UpdateFavoriteCategories(
-                                                        userId: profile.userId,
-                                                        categories: newFavorites,
-                                                      ),
-                                                    );
-                                                  },
-                                                  child: const Icon(Icons.star, size: 18, color: Colors.amber),
+                                // Recommendations Section
+                                Text(
+                                  AppLocalizations.of(context)!.suggestionsTitle.toUpperCase(),
+                                  style: GoogleFonts.outfit(
+                                    fontSize: 14,
+                                    color: const Color(0xFF00E5FF),
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 1.5,
+                                  ),
+                                ).animate().fadeIn(delay: 300.ms),
+                                const SizedBox(height: 8),
+                                
+                                CategorySuggestionCarousel(
+                                  suggestions: _generalSuggestions,
+                                  onCategorySelected: _addCategoryWithName,
+                                  speed: 30.0,
+                                ).animate().fadeIn(delay: 400.ms),
+                                CategorySuggestionCarousel(
+                                  suggestions: _specializedSuggestions,
+                                  onCategorySelected: _addCategoryWithName,
+                                  speed: 45.0,
+                                ).animate().fadeIn(delay: 500.ms),
+                                CategorySuggestionCarousel(
+                                  suggestions: _quirkySuggestions,
+                                  onCategorySelected: _addCategoryWithName,
+                                  speed: 35.0,
+                                ).animate().fadeIn(delay: 600.ms),
+                                const SizedBox(height: 24),
+
+                                // Favorites Section
+                                if (profile.favoriteCategories.isNotEmpty) ...[
+                                  Text(
+                                    AppLocalizations.of(context)!.favorites.toUpperCase(),
+                                    style: GoogleFonts.outfit(
+                                      fontSize: 14,
+                                      color: const Color(0xFFFF2B5E),
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 1.5,
+                                    ),
+                                  ).animate().fadeIn(delay: 700.ms),
+                                  const SizedBox(height: 8),
+                                  SizedBox(
+                                    height: 50,
+                                    child: ListView.separated(
+                                      scrollDirection: Axis.horizontal,
+                                      physics: const BouncingScrollPhysics(),
+                                      itemCount: profile.favoriteCategories.length,
+                                      separatorBuilder: (context, index) => const SizedBox(width: 8),
+                                      itemBuilder: (context, index) {
+                                        final cat = profile.favoriteCategories[index];
+                                        return Container(
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xFF252538),
+                                            borderRadius: BorderRadius.circular(16),
+                                            border: Border.all(color: Colors.white12),
+                                          ),
+                                          child: Material(
+                                            color: Colors.transparent,
+                                            child: InkWell(
+                                              borderRadius: BorderRadius.circular(16),
+                                              onTap: () {
+                                                if (!_selectedCategories.contains(cat)) {
+                                                  setState(() {
+                                                    _selectedCategories.add(cat);
+                                                  });
+                                                }
+                                              },
+                                              child: Padding(
+                                                padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                                                child: Row(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  children: [
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        final newFavorites = List<String>.from(profile.favoriteCategories)..remove(cat);
+                                                        context.read<ProfileBloc>().add(
+                                                              UpdateFavoriteCategories(
+                                                                userId: profile.userId,
+                                                                categories: newFavorites,
+                                                              ),
+                                                            );
+                                                      },
+                                                      child: const Icon(Icons.star, size: 18, color: Colors.amber),
+                                                    ),
+                                                    const SizedBox(width: 8),
+                                                    Text(
+                                                      cat,
+                                                      style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.w500),
+                                                    ),
+                                                  ],
                                                 ),
-                                                const SizedBox(width: 8),
-                                                Text(
-                                                  cat,
-                                                  style: const TextStyle(color: Colors.white, fontSize: 13),
-                                                ),
-                                                const SizedBox(width: 4),
-                                              ],
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ] else ...[
-                               Text(
-                                AppLocalizations.of(context)!.favorites,
-                                style: const TextStyle(fontSize: 14, color: Colors.grey, fontWeight: FontWeight.w500),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                AppLocalizations.of(context)!.noFavorites,
-                                style: const TextStyle(color: Colors.grey, fontStyle: FontStyle.italic),
-                              ),
-                            ],
-                             const SizedBox(height: 16),
+                                        );
+                                      },
+                                    ),
+                                  ).animate().fadeIn(delay: 800.ms),
+                                ],
 
-                            // Round Counter
-                            // Round Selector
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
+                                const SizedBox(height: 24),
+
+                                // Round Selector
                                 Text(
-                                  AppLocalizations.of(context)!.numberOfRounds,
-                                  style: const TextStyle(
-                                    fontSize: 16,
+                                  AppLocalizations.of(context)!.numberOfRounds.toUpperCase(),
+                                  style: GoogleFonts.outfit(
+                                    fontSize: 14,
                                     fontWeight: FontWeight.bold,
+                                    color: Colors.white70,
+                                    letterSpacing: 1.2,
                                   ),
                                 ),
                                 const SizedBox(height: 12),
@@ -376,25 +357,33 @@ class _HomePageState extends State<HomePage> {
                                               _rounds = rounds;
                                             });
                                           },
-                                          child: Container(
+                                          child: AnimatedContainer(
+                                            duration: 200.ms,
                                             padding: const EdgeInsets.symmetric(vertical: 12),
                                             decoration: BoxDecoration(
                                               color: isSelected
                                                   ? const Color(0xFF6200EA)
-                                                  : const Color(0xFF2C2C2C),
+                                                  : const Color(0xFF252538),
                                               borderRadius: BorderRadius.circular(12),
                                               border: isSelected
-                                                  ? Border.all(color: const Color(0xFFBB86FC), width: 1.5)
-                                                  : null,
+                                                  ? Border.all(color: const Color(0xFFD300F9), width: 2)
+                                                  : Border.all(color: Colors.white12),
+                                              boxShadow: isSelected
+                                                  ? [
+                                                      BoxShadow(
+                                                        color: const Color(0xFFD300F9).withValues(alpha:0.4),
+                                                        blurRadius: 8,
+                                                        spreadRadius: 1,
+                                                      )
+                                                    ]
+                                                  : [],
                                             ),
                                             alignment: Alignment.center,
                                             child: Text(
                                               '$rounds',
-                                              style: TextStyle(
+                                              style: GoogleFonts.outfit(
                                                 color: Colors.white,
-                                                fontWeight: isSelected
-                                                    ? FontWeight.bold
-                                                    : FontWeight.normal,
+                                                fontWeight: isSelected ? FontWeight.w900 : FontWeight.normal,
                                                 fontSize: 16,
                                               ),
                                             ),
@@ -403,48 +392,116 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                     );
                                   }).toList(),
-                                ),
+                                ).animate().fadeIn(delay: 900.ms).slideY(begin: 0.1, end: 0),
+                                
+                                const SizedBox(height: 100), // Spacing for floating button
                               ],
                             ),
-                          ],
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                    const SizedBox(height: 16),
-
-                    // Start Game Button (Fixed at bottom)
-                    SizedBox(
-                      width: double.infinity,
-                      height: 56,
+                    
+                    // Floating Start Game Button
+                    Positioned(
+                      bottom: 24,
+                      left: 24,
+                      right: 24,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF6200EA),
+                          padding: const EdgeInsets.symmetric(vertical: 20),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
+                            borderRadius: BorderRadius.circular(20),
+                            side: const BorderSide(color: Color(0xFFD300F9), width: 2),
                           ),
-                          elevation: 4,
+                          elevation: 12,
+                          shadowColor: const Color(0xFF6200EA).withValues(alpha:0.6),
                         ),
-                        onPressed: () =>
-                            _startGame(context, profile.tokens, profile.userId),
-                        child: Text(
-                          AppLocalizations.of(context)!.playRound(GameCostCalculator.calculateCost(_rounds)),
-                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                        onPressed: () => _startGame(context, profile.tokens, profile.userId),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              AppLocalizations.of(context)!.playRound(GameCostCalculator.calculateCost(_rounds)).toUpperCase(),
+                              style: GoogleFonts.rubikGlitch(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+                            ),
+                            const SizedBox(width: 8),
+                            const Icon(Icons.play_arrow_rounded, size: 32),
+                          ],
                         ),
-                      ),
+                      )
+                      .animate(onPlay: (controller) => controller.repeat(reverse: true))
+                      .boxShadow(begin: BoxShadow(color: const Color(0xFF6200EA).withValues(alpha:0.5), blurRadius: 10), end: BoxShadow(color: const Color(0xFF6200EA).withValues(alpha:0.8), blurRadius: 20, spreadRadius: 2))
+                      .scale(begin: const Offset(1, 1), end: const Offset(1.02, 1.02), duration: 1500.ms),
                     ),
                   ],
-                ),
-              );
-            } else if (state is ProfileError) {
-              return Center(
-                child: Text(
-                  AppLocalizations.of(context)!.errorProfile(state.message),
-                ),
-              );
-            }
-            return const Center(child: Text('Loading Profile...'));
-          },
+                );
+              } else if (state is ProfileError) {
+                return Center(
+                  child: Text(
+                    AppLocalizations.of(context)!.errorProfile(state.message),
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                );
+              }
+              return const Center(child: Text('Loading Profile...', style: TextStyle(color: Colors.white)));
+            },
+          ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildHUD(BuildContext context, dynamic profile) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          // Tokens Display (HUD Style)
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            decoration: BoxDecoration(
+              color: Colors.black45,
+              borderRadius: BorderRadius.circular(30),
+              border: Border.all(color: const Color(0xFF00E5FF).withValues(alpha:0.5)),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.bolt, color: Color(0xFF00E5FF), size: 20),
+                const SizedBox(width: 8),
+                Text(
+                  '${profile.tokens}',
+                  style: GoogleFonts.rubikGlitch(
+                    fontSize: 20,
+                    color: const Color(0xFF00E5FF),
+                  ),
+                ),
+              ],
+            ),
+          ).animate().fadeIn().slideX(begin: -0.5, end: 0),
+          
+          // Settings Button (HUD Style)
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.black45,
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.white24),
+            ),
+            child: IconButton(
+              icon: const Icon(Icons.settings, color: Colors.white70),
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => SettingsPage(userId: profile.userId),
+                  ),
+                );
+              },
+            ),
+          ).animate().fadeIn().slideX(begin: 0.5, end: 0),
+        ],
       ),
     );
   }
