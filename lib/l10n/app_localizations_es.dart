@@ -30,17 +30,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get startGame => 'INICIAR JUEGO';
 
   @override
-  String playRound(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'INICIAR PARTIDA ($count Fichas)',
-      one: 'INICIAR PARTIDA (1 Ficha)',
-    );
-    return '$_temp0';
-  }
-
-  @override
   String get tokens => 'FICHAS';
 
   @override
@@ -201,4 +190,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get backToMenu => 'Volver al Menú';
+
+  @override
+  String costDisplay(int amount) {
+    return 'COSTO: $amount FICHAS';
+  }
 }

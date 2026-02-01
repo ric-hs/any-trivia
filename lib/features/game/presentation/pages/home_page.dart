@@ -92,12 +92,15 @@ class _HomePageState extends State<HomePage> {
         context: context,
         builder: (_) => AlertDialog(
           backgroundColor: Theme.of(context).cardTheme.color,
-          title: Text(AppLocalizations.of(context)!.outOfTokens, style: const TextStyle(color: Colors.white)),
+          title: Text(
+            AppLocalizations.of(context)!.outOfTokens,
+            style: const TextStyle(color: Colors.white),
+          ),
           content: Text(
             AppLocalizations.of(
               context,
             )!.notEnoughTokens(_rounds, currentTokens, requiredTokens),
-             style: const TextStyle(color: Colors.white70),
+            style: const TextStyle(color: Colors.white70),
           ),
           actions: [
             TextButton(
@@ -155,42 +158,61 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         // HUD Header
                         _buildHUD(context, profile),
-                        
+
                         // Main Content
                         Expanded(
                           child: SingleChildScrollView(
                             physics: const BouncingScrollPhysics(),
-                            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 24.0,
+                              vertical: 8.0,
+                            ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                                 const SizedBox(height: 16),
                                 // Hero Title or Welcome
                                 Text(
-                                  "PREPARE FOR BATTLE",
-                                  style: GoogleFonts.rubikGlitch(
-                                    fontSize: 32,
-                                    color: Colors.white.withValues(alpha:0.9),
-                                    letterSpacing: 2,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ).animate().fadeIn(duration: 600.ms).slideY(begin: -0.2, end: 0),
+                                      "PREPARE FOR BATTLE",
+                                      style: GoogleFonts.rubikGlitch(
+                                        fontSize: 32,
+                                        color: Colors.white.withValues(
+                                          alpha: 0.9,
+                                        ),
+                                        letterSpacing: 2,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    )
+                                    .animate()
+                                    .fadeIn(duration: 600.ms)
+                                    .slideY(begin: -0.2, end: 0),
 
                                 const SizedBox(height: 24),
-                                
+
                                 // Category Input
                                 TextField(
                                   controller: _categoryController,
                                   onSubmitted: (_) => _addCategory(),
                                   style: const TextStyle(color: Colors.white),
                                   decoration: InputDecoration(
-                                    hintText: AppLocalizations.of(context)!.enterTopic,
-                                    prefixIcon: const Icon(Icons.search, color: Color(0xFF00E5FF)),
+                                    hintText: AppLocalizations.of(
+                                      context,
+                                    )!.enterTopic,
+                                    prefixIcon: const Icon(
+                                      Icons.search,
+                                      color: Color(0xFF00E5FF),
+                                    ),
                                     suffixIcon: IconButton(
-                                      icon: const Icon(Icons.add_circle, color: Color(0xFFD300F9)),
+                                      icon: const Icon(
+                                        Icons.add_circle,
+                                        color: Color(0xFFD300F9),
+                                      ),
                                       onPressed: _addCategory,
                                     ),
-                                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 16,
+                                      vertical: 14,
+                                    ),
                                   ),
                                 ).animate().fadeIn(delay: 200.ms).slideX(),
                                 const SizedBox(height: 16),
@@ -200,31 +222,58 @@ class _HomePageState extends State<HomePage> {
                                   Wrap(
                                     spacing: 8.0,
                                     runSpacing: 8.0,
-                                    children: _selectedCategories.map((category) {
-                                      final isFavorite = profile.favoriteCategories.contains(category);
+                                    children: _selectedCategories.map((
+                                      category,
+                                    ) {
+                                      final isFavorite = profile
+                                          .favoriteCategories
+                                          .contains(category);
                                       return InputChip(
-                                        backgroundColor: const Color(0xFF252538),
-                                        side: BorderSide(color: Theme.of(context).colorScheme.primary),
-                                        label: Text(category, style: const TextStyle(color: Colors.white)),
-                                        onDeleted: () => _removeCategory(category),
-                                        deleteIcon: const Icon(Icons.close, size: 18, color: Colors.white70),
+                                        backgroundColor: const Color(
+                                          0xFF252538,
+                                        ),
+                                        side: BorderSide(
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.primary,
+                                        ),
+                                        label: Text(
+                                          category,
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        onDeleted: () =>
+                                            _removeCategory(category),
+                                        deleteIcon: const Icon(
+                                          Icons.close,
+                                          size: 18,
+                                          color: Colors.white70,
+                                        ),
                                         onPressed: () {
-                                          final newFavorites = List<String>.from(profile.favoriteCategories);
+                                          final newFavorites =
+                                              List<String>.from(
+                                                profile.favoriteCategories,
+                                              );
                                           if (isFavorite) {
                                             newFavorites.remove(category);
                                           } else {
                                             newFavorites.add(category);
                                           }
                                           context.read<ProfileBloc>().add(
-                                                UpdateFavoriteCategories(
-                                                  userId: profile.userId,
-                                                  categories: newFavorites,
-                                                ),
-                                              );
+                                            UpdateFavoriteCategories(
+                                              userId: profile.userId,
+                                              categories: newFavorites,
+                                            ),
+                                          );
                                         },
                                         avatar: Icon(
-                                          isFavorite ? Icons.star : Icons.star_border,
-                                          color: isFavorite ? Colors.amber : Colors.grey,
+                                          isFavorite
+                                              ? Icons.star
+                                              : Icons.star_border,
+                                          color: isFavorite
+                                              ? Colors.amber
+                                              : Colors.grey,
                                           size: 18,
                                         ),
                                       ).animate().scale();
@@ -234,7 +283,9 @@ class _HomePageState extends State<HomePage> {
 
                                 // Recommendations Section
                                 Text(
-                                  AppLocalizations.of(context)!.suggestionsTitle.toUpperCase(),
+                                  AppLocalizations.of(
+                                    context,
+                                  )!.suggestionsTitle.toUpperCase(),
                                   style: GoogleFonts.outfit(
                                     fontSize: 14,
                                     color: const Color(0xFF00E5FF),
@@ -243,7 +294,7 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ).animate().fadeIn(delay: 300.ms),
                                 const SizedBox(height: 8),
-                                
+
                                 CategorySuggestionCarousel(
                                   suggestions: _generalSuggestions,
                                   onCategorySelected: _addCategoryWithName,
@@ -264,7 +315,9 @@ class _HomePageState extends State<HomePage> {
                                 // Favorites Section
                                 if (profile.favoriteCategories.isNotEmpty) ...[
                                   Text(
-                                    AppLocalizations.of(context)!.favorites.toUpperCase(),
+                                    AppLocalizations.of(
+                                      context,
+                                    )!.favorites.toUpperCase(),
                                     style: GoogleFonts.outfit(
                                       fontSize: 14,
                                       color: const Color(0xFFFF2B5E),
@@ -278,48 +331,80 @@ class _HomePageState extends State<HomePage> {
                                     child: ListView.separated(
                                       scrollDirection: Axis.horizontal,
                                       physics: const BouncingScrollPhysics(),
-                                      itemCount: profile.favoriteCategories.length,
-                                      separatorBuilder: (context, index) => const SizedBox(width: 8),
+                                      itemCount:
+                                          profile.favoriteCategories.length,
+                                      separatorBuilder: (context, index) =>
+                                          const SizedBox(width: 8),
                                       itemBuilder: (context, index) {
-                                        final cat = profile.favoriteCategories[index];
+                                        final cat =
+                                            profile.favoriteCategories[index];
                                         return Container(
                                           decoration: BoxDecoration(
                                             color: const Color(0xFF252538),
-                                            borderRadius: BorderRadius.circular(16),
-                                            border: Border.all(color: Colors.white12),
+                                            borderRadius: BorderRadius.circular(
+                                              16,
+                                            ),
+                                            border: Border.all(
+                                              color: Colors.white12,
+                                            ),
                                           ),
                                           child: Material(
                                             color: Colors.transparent,
                                             child: InkWell(
-                                              borderRadius: BorderRadius.circular(16),
+                                              borderRadius:
+                                                  BorderRadius.circular(16),
                                               onTap: () {
-                                                if (!_selectedCategories.contains(cat)) {
+                                                if (!_selectedCategories
+                                                    .contains(cat)) {
                                                   setState(() {
-                                                    _selectedCategories.add(cat);
+                                                    _selectedCategories.add(
+                                                      cat,
+                                                    );
                                                   });
                                                 }
                                               },
                                               child: Padding(
-                                                padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                      horizontal: 12.0,
+                                                      vertical: 8.0,
+                                                    ),
                                                 child: Row(
-                                                  mainAxisSize: MainAxisSize.min,
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
                                                   children: [
                                                     GestureDetector(
                                                       onTap: () {
-                                                        final newFavorites = List<String>.from(profile.favoriteCategories)..remove(cat);
-                                                        context.read<ProfileBloc>().add(
+                                                        final newFavorites =
+                                                            List<String>.from(
+                                                              profile
+                                                                  .favoriteCategories,
+                                                            )..remove(cat);
+                                                        context
+                                                            .read<ProfileBloc>()
+                                                            .add(
                                                               UpdateFavoriteCategories(
-                                                                userId: profile.userId,
-                                                                categories: newFavorites,
+                                                                userId: profile
+                                                                    .userId,
+                                                                categories:
+                                                                    newFavorites,
                                                               ),
                                                             );
                                                       },
-                                                      child: const Icon(Icons.star, size: 18, color: Colors.amber),
+                                                      child: const Icon(
+                                                        Icons.star,
+                                                        size: 18,
+                                                        color: Colors.amber,
+                                                      ),
                                                     ),
                                                     const SizedBox(width: 8),
                                                     Text(
                                                       cat,
-                                                      style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.w500),
+                                                      style: GoogleFonts.outfit(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
                                                     ),
                                                   ],
                                                 ),
@@ -336,7 +421,9 @@ class _HomePageState extends State<HomePage> {
 
                                 // Round Selector
                                 Text(
-                                  AppLocalizations.of(context)!.numberOfRounds.toUpperCase(),
+                                  AppLocalizations.of(
+                                    context,
+                                  )!.numberOfRounds.toUpperCase(),
                                   style: GoogleFonts.outfit(
                                     fontSize: 14,
                                     fontWeight: FontWeight.bold,
@@ -346,94 +433,176 @@ class _HomePageState extends State<HomePage> {
                                 ),
                                 const SizedBox(height: 12),
                                 Row(
-                                  children: [5, 10, 15, 20].map((rounds) {
-                                    final isSelected = _rounds == rounds;
-                                    return Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              _rounds = rounds;
-                                            });
-                                          },
-                                          child: AnimatedContainer(
-                                            duration: 200.ms,
-                                            padding: const EdgeInsets.symmetric(vertical: 12),
-                                            decoration: BoxDecoration(
-                                              color: isSelected
-                                                  ? const Color(0xFF6200EA)
-                                                  : const Color(0xFF252538),
-                                              borderRadius: BorderRadius.circular(12),
-                                              border: isSelected
-                                                  ? Border.all(color: const Color(0xFFD300F9), width: 2)
-                                                  : Border.all(color: Colors.white12),
-                                              boxShadow: isSelected
-                                                  ? [
-                                                      BoxShadow(
-                                                        color: const Color(0xFFD300F9).withValues(alpha:0.4),
-                                                        blurRadius: 8,
-                                                        spreadRadius: 1,
-                                                      )
-                                                    ]
-                                                  : [],
+                                      children: [5, 10, 15, 20].map((rounds) {
+                                        final isSelected = _rounds == rounds;
+                                        return Expanded(
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 4.0,
                                             ),
-                                            alignment: Alignment.center,
-                                            child: Text(
-                                              '$rounds',
-                                              style: GoogleFonts.outfit(
-                                                color: Colors.white,
-                                                fontWeight: isSelected ? FontWeight.w900 : FontWeight.normal,
-                                                fontSize: 16,
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  _rounds = rounds;
+                                                });
+                                              },
+                                              child: AnimatedContainer(
+                                                duration: 200.ms,
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                      vertical: 12,
+                                                    ),
+                                                decoration: BoxDecoration(
+                                                  color: isSelected
+                                                      ? const Color(0xFF6200EA)
+                                                      : const Color(0xFF252538),
+                                                  borderRadius:
+                                                      BorderRadius.circular(12),
+                                                  border: isSelected
+                                                      ? Border.all(
+                                                          color: const Color(
+                                                            0xFFD300F9,
+                                                          ),
+                                                          width: 2,
+                                                        )
+                                                      : Border.all(
+                                                          color: Colors.white12,
+                                                        ),
+                                                  boxShadow: isSelected
+                                                      ? [
+                                                          BoxShadow(
+                                                            color:
+                                                                const Color(
+                                                                  0xFFD300F9,
+                                                                ).withValues(
+                                                                  alpha: 0.4,
+                                                                ),
+                                                            blurRadius: 8,
+                                                            spreadRadius: 1,
+                                                          ),
+                                                        ]
+                                                      : [],
+                                                ),
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                  '$rounds',
+                                                  style: GoogleFonts.outfit(
+                                                    color: Colors.white,
+                                                    fontWeight: isSelected
+                                                        ? FontWeight.w900
+                                                        : FontWeight.normal,
+                                                    fontSize: 16,
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                      ),
-                                    );
-                                  }).toList(),
-                                ).animate().fadeIn(delay: 900.ms).slideY(begin: 0.1, end: 0),
-                                
-                                const SizedBox(height: 100), // Spacing for floating button
+                                        );
+                                      }).toList(),
+                                    )
+                                    .animate()
+                                    .fadeIn(delay: 900.ms)
+                                    .slideY(begin: 0.1, end: 0),
+
+                                const SizedBox(
+                                  height: 100,
+                                ), // Spacing for floating button
                               ],
                             ),
                           ),
                         ),
                       ],
                     ),
-                    
+
                     // Floating Start Game Button
                     Positioned(
                       bottom: 24,
                       left: 24,
                       right: 24,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF6200EA),
-                          padding: const EdgeInsets.symmetric(vertical: 20),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                            side: const BorderSide(color: Color(0xFFD300F9), width: 2),
-                          ),
-                          elevation: 12,
-                          shadowColor: const Color(0xFF6200EA).withValues(alpha:0.6),
-                        ),
-                        onPressed: () => _startGame(context, profile.tokens, profile.userId),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              AppLocalizations.of(context)!.playRound(GameCostCalculator.calculateCost(_rounds)).toUpperCase(),
-                              style: GoogleFonts.rubikGlitch(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
-                            ),
-                            const SizedBox(width: 8),
-                            const Icon(Icons.play_arrow_rounded, size: 32),
-                          ],
-                        ),
-                      )
-                      .animate(onPlay: (controller) => controller.repeat(reverse: true))
-                      .boxShadow(begin: BoxShadow(color: const Color(0xFF6200EA).withValues(alpha:0.5), blurRadius: 10), end: BoxShadow(color: const Color(0xFF6200EA).withValues(alpha:0.8), blurRadius: 20, spreadRadius: 2))
-                      .scale(begin: const Offset(1, 1), end: const Offset(1.02, 1.02), duration: 1500.ms),
+                      child:
+                          ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFF6200EA),
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 20,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                    side: const BorderSide(
+                                      color: Color.fromARGB(255, 143, 163, 255),
+                                      width: 2,
+                                    ),
+                                  ),
+                                  elevation: 12,
+                                  shadowColor: const Color(
+                                    0xFF6200EA,
+                                  ).withValues(alpha: 0.6),
+                                ),
+                                onPressed: () => _startGame(
+                                  context,
+                                  profile.tokens,
+                                  profile.userId,
+                                ),
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        AppLocalizations.of(
+                                          context,
+                                        )!.startGame.toUpperCase(),
+                                        style: GoogleFonts.rubikGlitch(
+                                          fontSize: 28,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                          height: 1.0,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        AppLocalizations.of(
+                                          context,
+                                        )!.costDisplay(
+                                          GameCostCalculator.calculateCost(
+                                            _rounds,
+                                          ),
+                                        ),
+                                        style: GoogleFonts.outfit(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                          color: const Color(0xFF00E5FF),
+                                          letterSpacing: 1.2,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                              .animate(
+                                onPlay: (controller) =>
+                                    controller.repeat(reverse: true),
+                              )
+                              .boxShadow(
+                                begin: BoxShadow(
+                                  color: const Color(
+                                    0xFF6200EA,
+                                  ).withValues(alpha: 0.5),
+                                  blurRadius: 10,
+                                ),
+                                end: BoxShadow(
+                                  color: const Color(
+                                    0xFF6200EA,
+                                  ).withValues(alpha: 0.8),
+                                  blurRadius: 20,
+                                  spreadRadius: 2,
+                                ),
+                              )
+                              .scale(
+                                begin: const Offset(1, 1),
+                                end: const Offset(1.02, 1.02),
+                                duration: 1500.ms,
+                              ),
                     ),
                   ],
                 );
@@ -445,7 +614,12 @@ class _HomePageState extends State<HomePage> {
                   ),
                 );
               }
-              return const Center(child: Text('Loading Profile...', style: TextStyle(color: Colors.white)));
+              return const Center(
+                child: Text(
+                  'Loading Profile...',
+                  style: TextStyle(color: Colors.white),
+                ),
+              );
             },
           ),
         ),
@@ -465,7 +639,9 @@ class _HomePageState extends State<HomePage> {
             decoration: BoxDecoration(
               color: Colors.black45,
               borderRadius: BorderRadius.circular(30),
-              border: Border.all(color: const Color(0xFF00E5FF).withValues(alpha:0.5)),
+              border: Border.all(
+                color: const Color(0xFF00E5FF).withValues(alpha: 0.5),
+              ),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -482,7 +658,7 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ).animate().fadeIn().slideX(begin: -0.5, end: 0),
-          
+
           // Settings Button (HUD Style)
           Container(
             decoration: BoxDecoration(

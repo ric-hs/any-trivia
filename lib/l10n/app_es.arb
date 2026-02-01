@@ -6,7 +6,7 @@
     "createAccount": "CREAR CUENTA",
     "joinNow": "UNIRSE",
     "startGame": "INICIAR JUEGO",
-    "playRound": "{count, plural, =1{INICIAR PARTIDA (1 Ficha)} other{INICIAR PARTIDA ({count} Fichas)}}",
+
     "tokens": "FICHAS",
     "chooseAdventure": "ELIGE TU AVENTURA",
     "enterTopic": "Ingresa una categoría",
@@ -56,5 +56,6 @@
     "resultsTitle": "RESULTADOS",
     "scoreLabel": "Puntaje",
     "playAgain": "Jugar de nuevo",
-    "backToMenu": "Volver al Menú"
+    "backToMenu": "Volver al Menú",
+    "costDisplay": "COSTO: {amount} FICHAS"
 }

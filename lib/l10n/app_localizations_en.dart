@@ -30,17 +30,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get startGame => 'START GAME';
 
   @override
-  String playRound(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'START GAME ($count Tokens)',
-      one: 'START GAME (1 Token)',
-    );
-    return '$_temp0';
-  }
-
-  @override
   String get tokens => 'TOKENS';
 
   @override
@@ -200,4 +189,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get backToMenu => 'Back to Menu';
+
+  @override
+  String costDisplay(int amount) {
+    return 'COST: $amount TOKENS';
+  }
 }

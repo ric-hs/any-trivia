@@ -6,14 +6,7 @@
     "createAccount": "CREATE ACCOUNT",
     "joinNow": "JOIN NOW",
     "startGame": "START GAME",
-    "playRound": "{count, plural, =1{START GAME (1 Token)} other{START GAME ({count} Tokens)}}",
-    "@playRound": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
+
     "tokens": "TOKENS",
     "chooseAdventure": "CHOOSE YOUR ADVENTURE",
     "enterTopic": "Enter a topic",
@@ -100,5 +93,14 @@
     "resultsTitle": "RESULTS",
     "scoreLabel": "Score",
     "playAgain": "Play Again",
-    "backToMenu": "Back to Menu"
+    "playAgain": "Play Again",
+    "backToMenu": "Back to Menu",
+    "costDisplay": "COST: {amount} TOKENS",
+    "@costDisplay": {
+        "placeholders": {
+            "amount": {
+                "type": "int"
+            }
+        }
+    }
 }

@@ -140,12 +140,6 @@ abstract class AppLocalizations {
   /// **'START GAME'**
   String get startGame;
 
-  /// No description provided for @playRound.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, =1{START GAME (1 Token)} other{START GAME ({count} Tokens)}}'**
-  String playRound(int count);
-
   /// No description provided for @tokens.
   ///
   /// In en, this message translates to:
@@ -445,6 +439,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Back to Menu'**
   String get backToMenu;
+
+  /// No description provided for @costDisplay.
+  ///
+  /// In en, this message translates to:
+  /// **'COST: {amount} TOKENS'**
+  String costDisplay(int amount);
 }
 
 class _AppLocalizationsDelegate
