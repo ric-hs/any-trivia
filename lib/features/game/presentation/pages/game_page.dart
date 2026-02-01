@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:endless_trivia/core/theme/app_theme.dart';
 import 'package:endless_trivia/core/di/injection_container.dart';
 import 'package:endless_trivia/features/game/presentation/bloc/game_bloc.dart';
 import 'package:endless_trivia/features/game/presentation/bloc/game_event.dart';
@@ -107,7 +108,7 @@ class _GameView extends StatelessWidget {
                         const SizedBox(height: 24),
                         Text(
                           'SYSTEM FAILURE',
-                          style: GoogleFonts.rubikGlitch(fontSize: 24, color: Colors.white),
+                          style: AppTheme.gameFont.copyWith(fontSize: 24, color: Colors.white),
                         ),
                         const SizedBox(height: 16),
                         Text(
@@ -209,7 +210,7 @@ class _GameView extends StatelessWidget {
                               ),
                               child: Text(
                                 "ROUND $currentRound / $totalRounds",
-                                style: GoogleFonts.rubikGlitch(
+                                style: AppTheme.gameFont.copyWith(
                                   color: const Color(0xFF00E5FF),
                                   fontSize: 16,
                                 ),
@@ -224,7 +225,7 @@ class _GameView extends StatelessWidget {
                                     backgroundColor: Theme.of(context).cardTheme.color,
                                     title: Text(
                                       AppLocalizations.of(context)!.quitGameTitle,
-                                      style: GoogleFonts.rubikGlitch(fontSize: 24, color: Colors.white),
+                                      style: AppTheme.gameFont.copyWith(fontSize: 24, color: Colors.white),
                                     ),
                                     content: Text(
                                       AppLocalizations.of(
@@ -428,7 +429,7 @@ class _GameView extends StatelessWidget {
                                     currentRound == totalRounds
                                         ? AppLocalizations.of(context)!.resultsTitle.toUpperCase()
                                         : AppLocalizations.of(context)!.continueBtn.toUpperCase(),
-                                    style: GoogleFonts.rubikGlitch(
+                                    style: AppTheme.gameFont.copyWith(
                                       fontSize: 22,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white,

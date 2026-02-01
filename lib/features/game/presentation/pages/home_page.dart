@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:endless_trivia/core/theme/app_theme.dart';
 import 'package:endless_trivia/l10n/app_localizations.dart';
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_event.dart';
@@ -174,7 +175,7 @@ class _HomePageState extends State<HomePage> {
                                 // Hero Title or Welcome
                                 Text(
                                       "PREPARE FOR BATTLE",
-                                      style: GoogleFonts.rubikGlitch(
+                                      style: AppTheme.gameFont.copyWith(
                                         fontSize: 32,
                                         color: Colors.white.withValues(
                                           alpha: 0.9,
@@ -552,7 +553,7 @@ class _HomePageState extends State<HomePage> {
                                         AppLocalizations.of(
                                           context,
                                         )!.startGame.toUpperCase(),
-                                        style: GoogleFonts.rubikGlitch(
+                                        style: AppTheme.gameFont.copyWith(
                                           fontSize: 28,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white,
@@ -650,7 +651,7 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(width: 8),
                 Text(
                   '${profile.tokens}',
-                  style: GoogleFonts.rubikGlitch(
+                  style: AppTheme.gameFont.copyWith(
                     fontSize: 20,
                     color: const Color(0xFF00E5FF),
                   ),

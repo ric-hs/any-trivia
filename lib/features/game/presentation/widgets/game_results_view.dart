@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:endless_trivia/l10n/app_localizations.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:endless_trivia/core/theme/app_theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class GameResultsView extends StatelessWidget {
@@ -30,7 +31,7 @@ class GameResultsView extends StatelessWidget {
             children: [
               Text(
                 AppLocalizations.of(context)!.resultsTitle,
-                style: GoogleFonts.rubikGlitch(
+                style: AppTheme.gameFont.copyWith(
                   fontSize: 48,
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).colorScheme.primary,
@@ -84,14 +85,14 @@ class GameResultsView extends StatelessWidget {
                       children: [
                         Text(
                           '$score',
-                          style: GoogleFonts.rubikGlitch(
+                          style: AppTheme.gameFont.copyWith(
                             fontSize: 72,
                             color: Colors.white,
                           ),
                         ),
                         Text(
                           '/$totalQuestions',
-                          style: GoogleFonts.rubikGlitch(
+                          style: AppTheme.gameFont.copyWith(
                             fontSize: 32,
                             color: Colors.white54,
                           ),
@@ -131,7 +132,7 @@ class GameResultsView extends StatelessWidget {
                   children: [
                     Text(
                       AppLocalizations.of(context)!.backToMenu.toUpperCase(),
-                      style: GoogleFonts.rubikGlitch(
+                      style: AppTheme.gameFont.copyWith(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,

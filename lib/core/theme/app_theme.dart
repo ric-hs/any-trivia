@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
+  static TextStyle get gameFont => GoogleFonts.bungee();
+
   static final ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
     primaryColor: const Color(0xFF6200EA), // Deep Purple
@@ -16,7 +18,7 @@ class AppTheme {
       onSurface: Colors.white,
     ),
     textTheme: GoogleFonts.outfitTextTheme(ThemeData.dark().textTheme).copyWith(
-      displayLarge: GoogleFonts.rubikGlitch(fontSize: 48, color: Colors.white), // Game Titles
+      displayLarge: gameFont.copyWith(fontSize: 48, color: Colors.white), // Game Titles
       headlineMedium: GoogleFonts.outfit(fontSize: 24, fontWeight: FontWeight.bold),
       bodyLarge: GoogleFonts.outfit(fontSize: 16),
     ),
@@ -66,7 +68,7 @@ class AppTheme {
       backgroundColor: Colors.transparent,
       elevation: 0,
       centerTitle: true,
-      titleTextStyle: GoogleFonts.rubikGlitch(fontSize: 28, color: Colors.white),
+      titleTextStyle: gameFont.copyWith(fontSize: 28, color: Colors.white),
     ),
     /* cardTheme: CardTheme(
       color: const Color(0xFF252538),
