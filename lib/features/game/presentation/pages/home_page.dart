@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage>
   String? _currentLanguageCode;
 
   final Map<String, Color> _categoryColors = {};
-  
+
   // Cyberpunk Palette
   final List<Color> _palette = const [
     Color(0xFF00E5FF), // Cyan
@@ -95,7 +95,6 @@ class _HomePageState extends State<HomePage>
       _categoryController.clear();
     }
   }
-
 
   void _addCategoryWithName(String category) {
     if (category.isNotEmpty && !_selectedCategories.contains(category)) {
@@ -303,11 +302,13 @@ class _HomePageState extends State<HomePage>
                                   child:
                                       TextField(
                                             controller: _categoryController,
+                                            maxLength: 64,
                                             onSubmitted: (_) => _addCategory(),
                                             style: const TextStyle(
                                               color: Colors.white,
                                             ),
                                             decoration: InputDecoration(
+                                              counterText: "",
                                               hintText: AppLocalizations.of(
                                                 context,
                                               )!.enterTopic,
@@ -385,14 +386,15 @@ class _HomePageState extends State<HomePage>
                                             final isFavorite = profile
                                                 .favoriteCategories
                                                 .contains(category);
-                                            final color = _categoryColors[category] ??
+                                            final color =
+                                                _categoryColors[category] ??
                                                 const Color(0xFF252538);
-                                            
+
                                             return InputChip(
-                                              backgroundColor: color.withValues(alpha: 0.2),
-                                              side: BorderSide(
-                                                color: color,
+                                              backgroundColor: color.withValues(
+                                                alpha: 0.2,
                                               ),
+                                              side: BorderSide(color: color),
                                               label: Text(
                                                 category,
                                                 style: const TextStyle(
