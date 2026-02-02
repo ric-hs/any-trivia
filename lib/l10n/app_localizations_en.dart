@@ -157,6 +157,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get categories => 'Categories';
 
   @override
+  String get emptyCategoriesMessage =>
+      'Please choose one or more categories to start the game.';
+
+  @override
   String get suggestionsTitle => 'IDEAS FOR YOU';
 
   @override

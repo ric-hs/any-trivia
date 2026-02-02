@@ -164,35 +164,33 @@ class _HomePageState extends State<HomePage> {
                         Expanded(
                           child: SingleChildScrollView(
                             physics: const BouncingScrollPhysics(),
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 8.0,
-                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                const SizedBox(height: 16),
-                                // Hero Title or Welcome
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 24.0,
-                                  ),
-                                  child: Text(
-                                    "PREPARE FOR BATTLE",
-                                    style: AppTheme.gameFont.copyWith(
-                                      fontSize: 32,
-                                      color: Colors.white.withValues(
-                                        alpha: 0.9,
-                                      ),
-                                      letterSpacing: 2,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  )
-                                  .animate()
-                                  .fadeIn(duration: 600.ms)
-                                  .slideY(begin: -0.2, end: 0),
-                                ),
+                                // const SizedBox(height: 16),
+                                // // Hero Title or Welcome
+                                // Padding(
+                                //   padding: const EdgeInsets.symmetric(
+                                //     horizontal: 24.0,
+                                //   ),
+                                //   child: Text(
+                                //     "PREPARE FOR BATTLE",
+                                //     style: AppTheme.gameFont.copyWith(
+                                //       fontSize: 32,
+                                //       color: Colors.white.withValues(
+                                //         alpha: 0.9,
+                                //       ),
+                                //       letterSpacing: 2,
+                                //     ),
+                                //     textAlign: TextAlign.center,
+                                //   )
+                                //   .animate()
+                                //   .fadeIn(duration: 600.ms)
+                                //   .slideY(begin: -0.2, end: 0),
+                                // ),
 
-                                const SizedBox(height: 24),
+                                // const SizedBox(height: 24),
 
                                 // Categories Subtitle
                                 Padding(
@@ -237,82 +235,97 @@ class _HomePageState extends State<HomePage> {
                                         ),
                                         onPressed: _addCategory,
                                       ),
-                                      contentPadding: const EdgeInsets.symmetric(
-                                        horizontal: 16,
-                                        vertical: 14,
-                                      ),
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                            horizontal: 16,
+                                            vertical: 14,
+                                          ),
                                     ),
                                   ).animate().fadeIn(delay: 200.ms).slideX(),
                                 ),
                                 const SizedBox(height: 16),
 
-                                // Selected Categories (Chips)
-                                if (_selectedCategories.isNotEmpty)
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 24.0,
-                                    ),
-                                    child: Wrap(
-                                      spacing: 8.0,
-                                      runSpacing: 8.0,
-                                      children: _selectedCategories.map((
-                                        category,
-                                      ) {
-                                        final isFavorite = profile
-                                            .favoriteCategories
-                                            .contains(category);
-                                        return InputChip(
-                                          backgroundColor: const Color(
-                                            0xFF252538,
-                                          ),
-                                          side: BorderSide(
-                                            color: Theme.of(
-                                              context,
-                                            ).colorScheme.primary,
-                                          ),
-                                          label: Text(
-                                            category,
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                          onDeleted: () =>
-                                              _removeCategory(category),
-                                          deleteIcon: const Icon(
-                                            Icons.close,
-                                            size: 18,
-                                            color: Colors.white70,
-                                          ),
-                                          onPressed: () {
-                                            final newFavorites =
-                                                List<String>.from(
-                                                  profile.favoriteCategories,
-                                                );
-                                            if (isFavorite) {
-                                              newFavorites.remove(category);
-                                            } else {
-                                              newFavorites.add(category);
-                                            }
-                                            context.read<ProfileBloc>().add(
-                                              UpdateFavoriteCategories(
-                                                userId: profile.userId,
-                                                categories: newFavorites,
-                                              ),
-                                            );
-                                          },
-                                          avatar: Icon(
-                                            isFavorite
-                                                ? Icons.star
-                                                : Icons.star_border,
-                                            color: isFavorite
-                                                ? Colors.amber
-                                                : Colors.grey,
-                                            size: 18,
-                                          ),
-                                        ).animate().scale();
-                                      }).toList(),
-                                    ),
+                                // Selected Categories (Chips) or Empty State
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 24.0,
                                   ),
+                                  child: _selectedCategories.isEmpty
+                                      ? Center(
+                                          child: Text(
+                                            AppLocalizations.of(
+                                              context,
+                                            )!.emptyCategoriesMessage,
+                                            style: GoogleFonts.outfit(
+                                              color: Colors.white70,
+                                              fontSize: 16,
+                                              fontStyle: FontStyle.italic,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ).animate().fadeIn(duration: 500.ms),
+                                        )
+                                      : Wrap(
+                                          spacing: 8.0,
+                                          runSpacing: 8.0,
+                                          children: _selectedCategories.map((
+                                            category,
+                                          ) {
+                                            final isFavorite = profile
+                                                .favoriteCategories
+                                                .contains(category);
+                                            return InputChip(
+                                              backgroundColor: const Color(
+                                                0xFF252538,
+                                              ),
+                                              side: BorderSide(
+                                                color: Theme.of(
+                                                  context,
+                                                ).colorScheme.primary,
+                                              ),
+                                              label: Text(
+                                                category,
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              onDeleted: () =>
+                                                  _removeCategory(category),
+                                              deleteIcon: const Icon(
+                                                Icons.close,
+                                                size: 18,
+                                                color: Colors.white70,
+                                              ),
+                                              onPressed: () {
+                                                final newFavorites =
+                                                    List<String>.from(
+                                                      profile
+                                                          .favoriteCategories,
+                                                    );
+                                                if (isFavorite) {
+                                                  newFavorites.remove(category);
+                                                } else {
+                                                  newFavorites.add(category);
+                                                }
+                                                context.read<ProfileBloc>().add(
+                                                  UpdateFavoriteCategories(
+                                                    userId: profile.userId,
+                                                    categories: newFavorites,
+                                                  ),
+                                                );
+                                              },
+                                              avatar: Icon(
+                                                isFavorite
+                                                    ? Icons.star
+                                                    : Icons.star_border,
+                                                color: isFavorite
+                                                    ? Colors.amber
+                                                    : Colors.grey,
+                                                size: 18,
+                                              ),
+                                            ).animate().scale();
+                                          }).toList(),
+                                        ),
+                                ),
                                 const SizedBox(height: 24),
 
                                 // Recommendations Section
@@ -555,10 +568,7 @@ class _HomePageState extends State<HomePage> {
                                         ),
                                       );
                                     }).toList(),
-                                  )
-                                  .animate()
-                                  .fadeIn(delay: 900.ms)
-                                  .slideY(begin: 0.1, end: 0),
+                                  ).animate().fadeIn(delay: 900.ms).slideY(begin: 0.1, end: 0),
                                 ),
 
                                 const SizedBox(

@@ -158,6 +158,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get categories => 'Categorías';
 
   @override
+  String get emptyCategoriesMessage =>
+      'Por favor elige una o más categorías para comenzar.';
+
+  @override
   String get suggestionsTitle => 'IDEAS PARA TI';
 
   @override

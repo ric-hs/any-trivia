@@ -46,6 +46,7 @@
     "signOut": "Cerrar Sesión",
     "settingsTitle": "AJUSTES",
     "categories": "Categorías",
+    "emptyCategoriesMessage": "Por favor elige una o más categorías para comenzar.",
     "suggestionsTitle": "IDEAS PARA TI",
     "suggestionsSpecificTitle": "TEMAS ESPECIALIZADOS",
     "suggestionsFunTitle": "CURIOSOS Y DIVERTIDOS",
