@@ -24,6 +24,7 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   final _categoryController = TextEditingController();
   final _scrollController = ScrollController();
+  final _favoriteController = ScrollController();
   final List<String> _selectedCategories = [];
   int _rounds = 5;
 
@@ -398,6 +399,26 @@ class _HomePageState extends State<HomePage>
                                                   newFavorites.remove(category);
                                                 } else {
                                                   newFavorites.add(category);
+                                                  WidgetsBinding.instance
+                                                      .addPostFrameCallback((
+                                                        _,
+                                                      ) {
+                                                        if (_favoriteController
+                                                            .hasClients) {
+                                                          _favoriteController.animateTo(
+                                                            _favoriteController
+                                                                .position
+                                                                .maxScrollExtent,
+                                                            duration:
+                                                                const Duration(
+                                                                  milliseconds:
+                                                                      300,
+                                                                ),
+                                                            curve:
+                                                                Curves.easeOut,
+                                                          );
+                                                        }
+                                                      });
                                                 }
                                                 context.read<ProfileBloc>().add(
                                                   UpdateFavoriteCategories(
@@ -479,6 +500,7 @@ class _HomePageState extends State<HomePage>
                                   SizedBox(
                                     height: 50,
                                     child: ListView.separated(
+                                      controller: _favoriteController,
                                       scrollDirection: Axis.horizontal,
                                       physics: const BouncingScrollPhysics(),
                                       padding: const EdgeInsets.symmetric(
