@@ -12,6 +12,7 @@ import 'package:endless_trivia/features/settings/presentation/pages/settings_pag
 import 'package:endless_trivia/features/game/presentation/widgets/category_suggestion_carousel.dart';
 import 'package:endless_trivia/features/game/presentation/constants/category_suggestions.dart';
 import 'package:endless_trivia/features/game/presentation/utils/game_cost_calculator.dart';
+import 'dart:math';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -33,6 +34,19 @@ class _HomePageState extends State<HomePage>
   List<String> _specializedSuggestions = [];
   List<String> _quirkySuggestions = [];
   String? _currentLanguageCode;
+
+  final Map<String, Color> _categoryColors = {};
+  
+  // Cyberpunk Palette
+  final List<Color> _palette = const [
+    Color(0xFF00E5FF), // Cyan
+    Color(0xFFFF2B5E), // Neon Red/Pink
+    Color(0xFF00C853), // Neon Green
+    Color(0xFFAA00FF), // Neon Purple
+    Color(0xFFFFD600), // Neon Yellow
+    Color(0xFFFF9100), // Neon Orange
+    Color(0xFFD500F9), // Neon Magenta
+  ];
 
   late AnimationController _shakeController;
 
@@ -82,10 +96,12 @@ class _HomePageState extends State<HomePage>
     }
   }
 
+
   void _addCategoryWithName(String category) {
     if (category.isNotEmpty && !_selectedCategories.contains(category)) {
       setState(() {
         _selectedCategories.add(category);
+        _categoryColors[category] = _palette[Random().nextInt(_palette.length)];
       });
       // Scroll to the end after the frame is built
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -103,6 +119,7 @@ class _HomePageState extends State<HomePage>
   void _removeCategory(String category) {
     setState(() {
       _selectedCategories.remove(category);
+      _categoryColors.remove(category);
     });
   }
 
@@ -189,6 +206,7 @@ class _HomePageState extends State<HomePage>
       MaterialPageRoute(
         builder: (_) => GamePage(
           categories: List.from(_selectedCategories),
+          categoryColors: Map.from(_categoryColors),
           language: languageCode,
           rounds: _rounds,
           userId: userId,
@@ -367,14 +385,13 @@ class _HomePageState extends State<HomePage>
                                             final isFavorite = profile
                                                 .favoriteCategories
                                                 .contains(category);
+                                            final color = _categoryColors[category] ??
+                                                const Color(0xFF252538);
+                                            
                                             return InputChip(
-                                              backgroundColor: const Color(
-                                                0xFF252538,
-                                              ),
+                                              backgroundColor: color.withValues(alpha: 0.2),
                                               side: BorderSide(
-                                                color: Theme.of(
-                                                  context,
-                                                ).colorScheme.primary,
+                                                color: color,
                                               ),
                                               label: Text(
                                                 category,

@@ -18,6 +18,7 @@ import 'package:endless_trivia/features/game/presentation/utils/game_cost_calcul
 
 class GamePage extends StatelessWidget {
   final List<String> categories;
+  final Map<String, Color>? categoryColors;
 
   final String language;
   final int rounds;
@@ -29,6 +30,7 @@ class GamePage extends StatelessWidget {
     required this.language,
     required this.userId,
     this.rounds = 1,
+    this.categoryColors,
   });
 
   @override
@@ -43,7 +45,7 @@ class GamePage extends StatelessWidget {
             rounds: rounds,
           ),
         ),
-      child: _GameView(rounds: rounds, userId: userId),
+      child: _GameView(rounds: rounds, userId: userId, categoryColors: categoryColors),
     );
   }
 }
@@ -51,7 +53,13 @@ class GamePage extends StatelessWidget {
 class _GameView extends StatelessWidget {
   final int rounds;
   final String userId;
-  const _GameView({required this.rounds, required this.userId});
+  final Map<String, Color>? categoryColors;
+
+  const _GameView({
+    required this.rounds,
+    required this.userId,
+    this.categoryColors,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -168,6 +176,10 @@ class _GameView extends StatelessWidget {
                   selectedIndex = state.selectedIndex;
                   isCorrect = state.isCorrect;
                 }
+
+                // Get the color for the current category, fallback to purple if not found
+                final categoryColor = categoryColors?[q.category] ??
+                    const Color(0xFFD300F9);
 
                 return Stack(
                   children: [
@@ -331,16 +343,16 @@ class _GameView extends StatelessWidget {
                                         ).withValues(alpha: 0.8),
                                         borderRadius: BorderRadius.circular(24),
                                         border: Border.all(
-                                          color: const Color(
-                                            0xFFD300F9,
-                                          ).withValues(alpha: 0.5),
+                                          color: categoryColor.withValues(
+                                            alpha: 0.5,
+                                          ),
                                           width: 2,
                                         ),
                                         boxShadow: [
                                           BoxShadow(
-                                            color: const Color(
-                                              0xFFD300F9,
-                                            ).withValues(alpha: 0.2),
+                                            color: categoryColor.withValues(
+                                              alpha: 0.2,
+                                            ),
                                             blurRadius: 20,
                                             spreadRadius: 2,
                                           ),
@@ -355,9 +367,9 @@ class _GameView extends StatelessWidget {
                                               vertical: 4,
                                             ),
                                             decoration: BoxDecoration(
-                                              color: const Color(
-                                                0xFFD300F9,
-                                              ).withValues(alpha: 0.2),
+                                              color: categoryColor.withValues(
+                                                alpha: 0.2,
+                                              ),
                                               borderRadius:
                                                   BorderRadius.circular(12),
                                             ),
@@ -365,7 +377,7 @@ class _GameView extends StatelessWidget {
                                               q.category.toUpperCase(),
                                               textAlign: TextAlign.center,
                                               style: GoogleFonts.outfit(
-                                                color: const Color(0xFFD300F9),
+                                                color: categoryColor,
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.bold,
                                                 letterSpacing: 1.5,
