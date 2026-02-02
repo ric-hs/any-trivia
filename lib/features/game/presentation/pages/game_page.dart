@@ -571,7 +571,7 @@ class _GameView extends StatelessWidget {
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(20),
                                       side: const BorderSide(
-                                        color: Color(0xFFD300F9),
+                                        color: Color.fromARGB(255, 143, 163, 255),
                                         width: 2,
                                       ),
                                     ),
