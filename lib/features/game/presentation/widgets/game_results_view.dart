@@ -31,6 +31,7 @@ class GameResultsView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              // Title
               Text(
                 AppLocalizations.of(context)!.resultsTitle,
                 style: AppTheme.gameFont.copyWith(
@@ -83,36 +84,53 @@ class GameResultsView extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.baseline,
-                      textBaseline: TextBaseline.alphabetic,
-                      children: [
-                        Text(
-                          '$score',
-                          style: AppTheme.gameFont.copyWith(
-                            fontSize: 72,
-                            color: Colors.white,
-                          ),
-                        ),
-                        Text(
-                          '/$totalQuestions',
-                          style: AppTheme.gameFont.copyWith(
-                            fontSize: 32,
-                            color: Colors.white54,
-                          ),
-                        ),
-                      ],
+                    // Score Display
+                    TweenAnimationBuilder<int>(
+                      tween: IntTween(begin: 0, end: score),
+                      duration: Duration(milliseconds: 1200),
+                      builder: (context, value, child) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.baseline,
+                          textBaseline: TextBaseline.alphabetic,
+                          children: [
+                            Text(
+                              '$value',
+                              style: AppTheme.gameFont.copyWith(
+                                fontSize: 72,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Text(
+                              '/$totalQuestions',
+                              style: AppTheme.gameFont.copyWith(
+                                fontSize: 32,
+                                color: Colors.white54,
+                              ),
+                            ),
+                          ],
+                        );
+                      },
                     ),
                     const SizedBox(height: 24),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: LinearProgressIndicator(
-                        value: percentage / 100,
-                        backgroundColor: Colors.white10,
-                        valueColor: AlwaysStoppedAnimation<Color>(scoreColor),
-                        minHeight: 12,
-                      ),
+                    // Score Bar
+                    TweenAnimationBuilder<double>(
+                      tween: Tween<double>(begin: 0, end: percentage / 100),
+                      duration: Duration(milliseconds: 1600),
+                      curve: Curves.easeOutCubic,
+                      builder: (context, value, child) {
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: LinearProgressIndicator(
+                            value: value,
+                            backgroundColor: Colors.white10,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              scoreColor,
+                            ),
+                            minHeight: 12,
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),
