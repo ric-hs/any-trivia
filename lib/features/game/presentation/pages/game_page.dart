@@ -11,6 +11,7 @@ import 'package:endless_trivia/features/game/presentation/bloc/game_state.dart';
 import 'package:endless_trivia/l10n/app_localizations.dart';
 import 'package:endless_trivia/features/game/presentation/widgets/loading_view.dart';
 import 'package:endless_trivia/features/game/presentation/widgets/game_results_view.dart';
+import 'package:endless_trivia/features/game/presentation/widgets/particle_burst.dart';
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_event.dart';
 import 'package:endless_trivia/features/game/presentation/utils/game_cost_calculator.dart';
@@ -419,91 +420,128 @@ class _GameView extends StatelessWidget {
                                           state is AnswerSubmitted &&
                                           index == selectedIndex &&
                                           !isCorrect!;
+                                      
+                                      final isCorrectAnswer = 
+                                          state is AnswerSubmitted && 
+                                          index == q.correctAnswerIndex;
 
                                       return Padding(
                                             padding: const EdgeInsets.only(
                                               bottom: 16.0,
                                             ),
-                                            child: AnimatedContainer(
-                                              duration: 300.ms,
-                                              curve: Curves.easeOut,
-                                              child: ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                  padding:
-                                                      const EdgeInsets.symmetric(
-                                                        vertical: 20,
-                                                        horizontal: 16,
-                                                      ),
-                                                  backgroundColor:
-                                                      backgroundColor,
-                                                  disabledBackgroundColor:
-                                                      backgroundColor,
-                                                  disabledForegroundColor:
-                                                      Colors.white,
-                                                  elevation:
-                                                      state
-                                                              is AnswerSubmitted &&
-                                                          (index ==
-                                                                  q.correctAnswerIndex ||
-                                                              index ==
-                                                                  selectedIndex)
-                                                      ? 8
-                                                      : 2,
-                                                  shadowColor: borderColor
-                                                      .withValues(alpha: 0.5),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                          16,
-                                                        ),
-                                                    side: BorderSide(
-                                                      color: borderColor,
-                                                      width:
+                                            child: Stack(
+                                              alignment: Alignment.center,
+                                              clipBehavior: Clip.none,
+                                              children: [
+                                                // 1. Particle Burst (Behind) - Only for correct answer
+                                                if (isCorrectAnswer &&
+                                                    (isCorrect == true))
+                                                  Positioned.fill(
+                                                    child: ParticleBurst(
+                                                      color: const Color(0xFF00C853),
+                                                    ),
+                                                  ),
+                                                  
+                                                // 2. The Button
+                                                AnimatedContainer(
+                                                  duration: 300.ms,
+                                                  width: double.infinity,
+                                                  curve: Curves.easeOut,
+                                                  child: ElevatedButton(
+                                                    style: ElevatedButton.styleFrom(
+                                                      padding:
+                                                          const EdgeInsets.symmetric(
+                                                            vertical: 20,
+                                                            horizontal: 16,
+                                                          ),
+                                                      backgroundColor:
+                                                          backgroundColor,
+                                                      disabledBackgroundColor:
+                                                          backgroundColor,
+                                                      disabledForegroundColor:
+                                                          Colors.white,
+                                                      elevation:
                                                           state
                                                                   is AnswerSubmitted &&
                                                               (index ==
                                                                       q.correctAnswerIndex ||
                                                                   index ==
                                                                       selectedIndex)
-                                                          ? 2
-                                                          : 1,
+                                                          ? 8
+                                                          : 2,
+                                                      shadowColor: borderColor
+                                                          .withValues(alpha: 0.5),
+                                                      shape: RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                              16,
+                                                            ),
+                                                        side: BorderSide(
+                                                          color: borderColor,
+                                                          width:
+                                                              state
+                                                                      is AnswerSubmitted &&
+                                                                  (index ==
+                                                                          q.correctAnswerIndex ||
+                                                                      index ==
+                                                                          selectedIndex)
+                                                              ? 2
+                                                              : 1,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    onPressed:
+                                                        state is AnswerSubmitted
+                                                        ? null
+                                                        : () {
+                                                            context
+                                                                .read<GameBloc>()
+                                                                .add(
+                                                                  AnswerQuestion(
+                                                                    index,
+                                                                  ),
+                                                                );
+                                                          },
+                                                    child: Text(
+                                                      q.answers[index],
+                                                      textAlign: TextAlign.center,
+                                                      style: GoogleFonts.outfit(
+                                                        fontSize: 16,
+                                                        fontWeight: FontWeight.w500,
+                                                        color: textColor,
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                                onPressed:
-                                                    state is AnswerSubmitted
-                                                    ? null
-                                                    : () {
-                                                        context
-                                                            .read<GameBloc>()
-                                                            .add(
-                                                              AnswerQuestion(
-                                                                index,
-                                                              ),
-                                                            );
-                                                      },
-                                                child: Text(
-                                                  q.answers[index],
-                                                  textAlign: TextAlign.center,
-                                                  style: GoogleFonts.outfit(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: textColor,
-                                                  ),
-                                                ),
-                                              ),
+                                                )
+                                                // Incorrect: Rapid Horizontal Shake ("No")
+                                                .animate(
+                                                  target: isSelectedWrong ? 1 : 0,
+                                                )
+                                                .shakeX(hz: 8, amount: 6, curve: Curves.easeInOutCubic) // Horizontal Shake
+                                                
+                                                // Correct: Bounce (Squash & Stretch)
+                                                .animate(
+                                                  target: isCorrectAnswer ? 1 : 0,
+                                                )
+                                                .scaleXY(
+                                                  end: 1.05, 
+                                                  duration: 150.ms,
+                                                  curve: Curves.easeOut,
+                                                )
+                                                .then()
+                                                .scaleXY(
+                                                  end: 1.0,
+                                                  duration: 100.ms,
+                                                  curve: Curves.easeIn,
+                                                )
+                                                
+                                                // Entrance Animation (Always run on build)
+                                                .animate(delay: (100 * index).ms)
+                                                .fadeIn()
+                                                .slideY(begin: 0.5, end: 0),
+                                              ],
                                             ),
-                                          )
-                                          .animate(
-                                            target: isSelectedWrong ? 1 : 0,
-                                          )
-                                          .shake(
-                                            hz: 4,
-                                            curve: Curves.easeInOutCubic,
-                                          )
-                                          .animate(delay: (100 * index).ms)
-                                          .fadeIn()
-                                          .slideY(begin: 0.5, end: 0);
+                                          );
                                     }),
 
                                     // Spacer for floating button
