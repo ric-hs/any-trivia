@@ -12,7 +12,7 @@
     "enterTopic": "Enter a topic",
     "favorites": "FAVORITES",
     "noFavorites": "No favorites yet.",
-    "pleaseEnterCategory": "Please enter a category",
+    "pleaseEnterCategory": "Pick a topic to start the battle!",
     "outOfTokens": "Out of Tokens",
     "zeroTokensMessage": "You have 0 tokens. Wait for refill!",
     "generatingQuestion": "Generating Question with AI...",

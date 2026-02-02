@@ -12,7 +12,7 @@
     "enterTopic": "Ingresa una categoría",
     "favorites": "FAVORITOS",
     "noFavorites": "Sin favoritos aún.",
-    "pleaseEnterCategory": "Por favor ingresa una categoría",
+    "pleaseEnterCategory": "¡Elige un tema para comenzar la batalla!",
     "outOfTokens": "Sin Fichas",
     "zeroTokensMessage": "Tienes 0 fichas. ¡Espera a que se recarguen!",
     "generatingQuestion": "Generando Pregunta con IA...",

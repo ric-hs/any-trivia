@@ -173,7 +173,7 @@ abstract class AppLocalizations {
   /// No description provided for @pleaseEnterCategory.
   ///
   /// In en, this message translates to:
-  /// **'Please enter a category'**
+  /// **'Pick a topic to start the battle!'**
   String get pleaseEnterCategory;
 
   /// No description provided for @outOfTokens.

@@ -20,7 +20,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
   final _categoryController = TextEditingController();
   final List<String> _selectedCategories = [];
   int _rounds = 5;
@@ -30,6 +30,24 @@ class _HomePageState extends State<HomePage> {
   List<String> _specializedSuggestions = [];
   List<String> _quirkySuggestions = [];
   String? _currentLanguageCode;
+  
+  late AnimationController _shakeController;
+
+  @override
+  void initState() {
+    super.initState();
+    _shakeController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+  }
+
+  @override
+  void dispose() {
+    _shakeController.dispose();
+    _categoryController.dispose();
+    super.dispose();
+  }
 
   @override
   void didChangeDependencies() {
@@ -76,11 +94,43 @@ class _HomePageState extends State<HomePage> {
 
   void _startGame(BuildContext context, int currentTokens, String userId) {
     if (_selectedCategories.isEmpty) {
+      _shakeController.forward(from: 0);
+      
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(AppLocalizations.of(context)!.pleaseEnterCategory),
-          backgroundColor: Theme.of(context).colorScheme.error,
+          content: Container(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            decoration: BoxDecoration(
+              border: Border(
+                left: BorderSide(color: Color(0xFF00E5FF), width: 3),
+              ),
+            ),
+            child: Row(
+              children: [
+                const SizedBox(width: 8),
+                const Icon(Icons.warning_amber_rounded, color: Color(0xFF00E5FF), size: 28),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Text(
+                    AppLocalizations.of(context)!.pleaseEnterCategory,
+                    style: GoogleFonts.outfit(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          backgroundColor: const Color(0xFF2A0045),
           behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: const BorderSide(color: Color(0xFFD300F9), width: 1),
+          ),
+          margin: const EdgeInsets.all(16),
+          elevation: 10,
         ),
       );
       return;
@@ -241,7 +291,11 @@ class _HomePageState extends State<HomePage> {
                                             vertical: 14,
                                           ),
                                     ),
-                                  ).animate().fadeIn(delay: 200.ms).slideX(),
+                                  ).animate(autoPlay: false, controller: _shakeController)
+                                  .shake(duration: 500.ms, hz: 4, offset: const Offset(10, 0))
+                                  .animate()
+                                  .fadeIn(delay: 200.ms)
+                                  .slideX(),
                                 ),
                                 const SizedBox(height: 16),
 

@@ -45,7 +45,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get noFavorites => 'Sin favoritos aún.';
 
   @override
-  String get pleaseEnterCategory => 'Por favor ingresa una categoría';
+  String get pleaseEnterCategory => '¡Elige un tema para comenzar la batalla!';
 
   @override
   String get outOfTokens => 'Sin Fichas';
