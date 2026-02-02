@@ -22,6 +22,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
   final _categoryController = TextEditingController();
+  final _scrollController = ScrollController();
   final List<String> _selectedCategories = [];
   int _rounds = 5;
 
@@ -46,6 +47,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   void dispose() {
     _shakeController.dispose();
     _categoryController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -82,6 +84,16 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     if (category.isNotEmpty && !_selectedCategories.contains(category)) {
       setState(() {
         _selectedCategories.add(category);
+      });
+      // Scroll to the end after the frame is built
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (_scrollController.hasClients) {
+          _scrollController.animateTo(
+            _scrollController.position.maxScrollExtent,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
+        }
       });
     }
   }
@@ -248,9 +260,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                                     horizontal: 24.0,
                                   ),
                                   child: Text(
-                                    AppLocalizations.of(
-                                      context,
-                                    )!.categories.toUpperCase(),
+                                    '${AppLocalizations.of(context)!.categories.toUpperCase()} (${_selectedCategories.length})',
                                     style: GoogleFonts.outfit(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold,
@@ -300,12 +310,12 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                                 const SizedBox(height: 16),
 
                                 // Selected Categories (Chips) or Empty State
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 24.0,
-                                  ),
-                                  child: _selectedCategories.isEmpty
-                                      ? Center(
+                                _selectedCategories.isEmpty
+                                    ? Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 24.0,
+                                        ),
+                                        child: Center(
                                           child: Text(
                                             AppLocalizations.of(
                                               context,
@@ -317,13 +327,23 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                                             ),
                                             textAlign: TextAlign.center,
                                           ).animate().fadeIn(duration: 500.ms),
-                                        )
-                                      : Wrap(
-                                          spacing: 8.0,
-                                          runSpacing: 8.0,
-                                          children: _selectedCategories.map((
-                                            category,
-                                          ) {
+                                        ),
+                                      )
+                                    : SizedBox(
+                                        height: 50,
+                                        child: ListView.separated(
+                                          controller: _scrollController,
+                                          scrollDirection: Axis.horizontal,
+                                          physics: const BouncingScrollPhysics(),
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 24.0,
+                                          ),
+                                          itemCount: _selectedCategories.length,
+                                          separatorBuilder: (context, index) =>
+                                              const SizedBox(width: 8),
+                                          itemBuilder: (context, index) {
+                                            final category =
+                                                _selectedCategories[index];
                                             final isFavorite = profile
                                                 .favoriteCategories
                                                 .contains(category);
@@ -377,9 +397,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                                                 size: 18,
                                               ),
                                             ).animate().scale();
-                                          }).toList(),
+                                          },
                                         ),
-                                ),
+                                      ),
                                 const SizedBox(height: 24),
 
                                 // Recommendations Section
@@ -470,11 +490,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                                               onTap: () {
                                                 if (!_selectedCategories
                                                     .contains(cat)) {
-                                                  setState(() {
-                                                    _selectedCategories.add(
-                                                      cat,
-                                                    );
-                                                  });
+                                                  _addCategoryWithName(cat);
                                                 }
                                               },
                                               child: Padding(
