@@ -77,10 +77,11 @@ class _CategorySuggestionCarouselState extends State<CategorySuggestionCarousel>
       onPointerUp: (_) => setState(() => _userInteracting = false),
       onPointerCancel: (_) => setState(() => _userInteracting = false),
       child: SizedBox(
-        height: 50,
+        height: 48,
         child: ListView.builder(
           controller: _scrollController,
           scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
           // Disable default drag physics if it conflicts, 
           // but usually it's fine to let the user swipe.
           itemCount: extendedSuggestions.length,

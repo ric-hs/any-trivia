@@ -165,7 +165,6 @@ class _HomePageState extends State<HomePage> {
                           child: SingleChildScrollView(
                             physics: const BouncingScrollPhysics(),
                             padding: const EdgeInsets.symmetric(
-                              horizontal: 24.0,
                               vertical: 8.0,
                             ),
                             child: Column(
@@ -173,127 +172,166 @@ class _HomePageState extends State<HomePage> {
                               children: [
                                 const SizedBox(height: 16),
                                 // Hero Title or Welcome
-                                Text(
-                                      "PREPARE FOR BATTLE",
-                                      style: AppTheme.gameFont.copyWith(
-                                        fontSize: 32,
-                                        color: Colors.white.withValues(
-                                          alpha: 0.9,
-                                        ),
-                                        letterSpacing: 2,
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 24.0,
+                                  ),
+                                  child: Text(
+                                    "PREPARE FOR BATTLE",
+                                    style: AppTheme.gameFont.copyWith(
+                                      fontSize: 32,
+                                      color: Colors.white.withValues(
+                                        alpha: 0.9,
                                       ),
-                                      textAlign: TextAlign.center,
-                                    )
-                                    .animate()
-                                    .fadeIn(duration: 600.ms)
-                                    .slideY(begin: -0.2, end: 0),
+                                      letterSpacing: 2,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  )
+                                  .animate()
+                                  .fadeIn(duration: 600.ms)
+                                  .slideY(begin: -0.2, end: 0),
+                                ),
 
                                 const SizedBox(height: 24),
 
-                                // Category Input
-                                TextField(
-                                  controller: _categoryController,
-                                  onSubmitted: (_) => _addCategory(),
-                                  style: const TextStyle(color: Colors.white),
-                                  decoration: InputDecoration(
-                                    hintText: AppLocalizations.of(
-                                      context,
-                                    )!.enterTopic,
-                                    prefixIcon: const Icon(
-                                      Icons.search,
-                                      color: Color(0xFF00E5FF),
-                                    ),
-                                    suffixIcon: IconButton(
-                                      icon: const Icon(
-                                        Icons.add_circle,
-                                        color: Color(0xFFD300F9),
-                                      ),
-                                      onPressed: _addCategory,
-                                    ),
-                                    contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 16,
-                                      vertical: 14,
-                                    ),
+                                // Categories Subtitle
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 24.0,
                                   ),
-                                ).animate().fadeIn(delay: 200.ms).slideX(),
+                                  child: Text(
+                                    AppLocalizations.of(
+                                      context,
+                                    )!.categories.toUpperCase(),
+                                    style: GoogleFonts.outfit(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white70,
+                                      letterSpacing: 1.2,
+                                    ),
+                                  ).animate().fadeIn(delay: 100.ms),
+                                ),
+                                const SizedBox(height: 12),
+
+                                // Category Input
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 24.0,
+                                  ),
+                                  child: TextField(
+                                    controller: _categoryController,
+                                    onSubmitted: (_) => _addCategory(),
+                                    style: const TextStyle(color: Colors.white),
+                                    decoration: InputDecoration(
+                                      hintText: AppLocalizations.of(
+                                        context,
+                                      )!.enterTopic,
+                                      prefixIcon: const Icon(
+                                        Icons.search,
+                                        color: Color(0xFF00E5FF),
+                                      ),
+                                      suffixIcon: IconButton(
+                                        icon: const Icon(
+                                          Icons.add_circle,
+                                          color: Color(0xFFD300F9),
+                                        ),
+                                        onPressed: _addCategory,
+                                      ),
+                                      contentPadding: const EdgeInsets.symmetric(
+                                        horizontal: 16,
+                                        vertical: 14,
+                                      ),
+                                    ),
+                                  ).animate().fadeIn(delay: 200.ms).slideX(),
+                                ),
                                 const SizedBox(height: 16),
 
                                 // Selected Categories (Chips)
                                 if (_selectedCategories.isNotEmpty)
-                                  Wrap(
-                                    spacing: 8.0,
-                                    runSpacing: 8.0,
-                                    children: _selectedCategories.map((
-                                      category,
-                                    ) {
-                                      final isFavorite = profile
-                                          .favoriteCategories
-                                          .contains(category);
-                                      return InputChip(
-                                        backgroundColor: const Color(
-                                          0xFF252538,
-                                        ),
-                                        side: BorderSide(
-                                          color: Theme.of(
-                                            context,
-                                          ).colorScheme.primary,
-                                        ),
-                                        label: Text(
-                                          category,
-                                          style: const TextStyle(
-                                            color: Colors.white,
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 24.0,
+                                    ),
+                                    child: Wrap(
+                                      spacing: 8.0,
+                                      runSpacing: 8.0,
+                                      children: _selectedCategories.map((
+                                        category,
+                                      ) {
+                                        final isFavorite = profile
+                                            .favoriteCategories
+                                            .contains(category);
+                                        return InputChip(
+                                          backgroundColor: const Color(
+                                            0xFF252538,
                                           ),
-                                        ),
-                                        onDeleted: () =>
-                                            _removeCategory(category),
-                                        deleteIcon: const Icon(
-                                          Icons.close,
-                                          size: 18,
-                                          color: Colors.white70,
-                                        ),
-                                        onPressed: () {
-                                          final newFavorites =
-                                              List<String>.from(
-                                                profile.favoriteCategories,
-                                              );
-                                          if (isFavorite) {
-                                            newFavorites.remove(category);
-                                          } else {
-                                            newFavorites.add(category);
-                                          }
-                                          context.read<ProfileBloc>().add(
-                                            UpdateFavoriteCategories(
-                                              userId: profile.userId,
-                                              categories: newFavorites,
+                                          side: BorderSide(
+                                            color: Theme.of(
+                                              context,
+                                            ).colorScheme.primary,
+                                          ),
+                                          label: Text(
+                                            category,
+                                            style: const TextStyle(
+                                              color: Colors.white,
                                             ),
-                                          );
-                                        },
-                                        avatar: Icon(
-                                          isFavorite
-                                              ? Icons.star
-                                              : Icons.star_border,
-                                          color: isFavorite
-                                              ? Colors.amber
-                                              : Colors.grey,
-                                          size: 18,
-                                        ),
-                                      ).animate().scale();
-                                    }).toList(),
+                                          ),
+                                          onDeleted: () =>
+                                              _removeCategory(category),
+                                          deleteIcon: const Icon(
+                                            Icons.close,
+                                            size: 18,
+                                            color: Colors.white70,
+                                          ),
+                                          onPressed: () {
+                                            final newFavorites =
+                                                List<String>.from(
+                                                  profile.favoriteCategories,
+                                                );
+                                            if (isFavorite) {
+                                              newFavorites.remove(category);
+                                            } else {
+                                              newFavorites.add(category);
+                                            }
+                                            context.read<ProfileBloc>().add(
+                                              UpdateFavoriteCategories(
+                                                userId: profile.userId,
+                                                categories: newFavorites,
+                                              ),
+                                            );
+                                          },
+                                          avatar: Icon(
+                                            isFavorite
+                                                ? Icons.star
+                                                : Icons.star_border,
+                                            color: isFavorite
+                                                ? Colors.amber
+                                                : Colors.grey,
+                                            size: 18,
+                                          ),
+                                        ).animate().scale();
+                                      }).toList(),
+                                    ),
                                   ),
                                 const SizedBox(height: 24),
 
                                 // Recommendations Section
-                                Text(
-                                  AppLocalizations.of(
-                                    context,
-                                  )!.suggestionsTitle.toUpperCase(),
-                                  style: GoogleFonts.outfit(
-                                    fontSize: 14,
-                                    color: const Color(0xFF00E5FF),
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: 1.5,
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 24.0,
                                   ),
-                                ).animate().fadeIn(delay: 300.ms),
+                                  child: Text(
+                                    AppLocalizations.of(
+                                      context,
+                                    )!.suggestionsTitle.toUpperCase(),
+                                    style: GoogleFonts.outfit(
+                                      fontSize: 14,
+                                      color: const Color(0xFF00E5FF),
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 1.5,
+                                    ),
+                                  ).animate().fadeIn(delay: 300.ms),
+                                ),
                                 const SizedBox(height: 8),
 
                                 CategorySuggestionCarousel(
@@ -315,23 +353,31 @@ class _HomePageState extends State<HomePage> {
 
                                 // Favorites Section
                                 if (profile.favoriteCategories.isNotEmpty) ...[
-                                  Text(
-                                    AppLocalizations.of(
-                                      context,
-                                    )!.favorites.toUpperCase(),
-                                    style: GoogleFonts.outfit(
-                                      fontSize: 14,
-                                      color: const Color(0xFFFF2B5E),
-                                      fontWeight: FontWeight.bold,
-                                      letterSpacing: 1.5,
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 24.0,
                                     ),
-                                  ).animate().fadeIn(delay: 700.ms),
+                                    child: Text(
+                                      AppLocalizations.of(
+                                        context,
+                                      )!.favorites.toUpperCase(),
+                                      style: GoogleFonts.outfit(
+                                        fontSize: 14,
+                                        color: const Color(0xFFFF2B5E),
+                                        fontWeight: FontWeight.bold,
+                                        letterSpacing: 1.5,
+                                      ),
+                                    ).animate().fadeIn(delay: 700.ms),
+                                  ),
                                   const SizedBox(height: 8),
                                   SizedBox(
                                     height: 50,
                                     child: ListView.separated(
                                       scrollDirection: Axis.horizontal,
                                       physics: const BouncingScrollPhysics(),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 24.0,
+                                      ),
                                       itemCount:
                                           profile.favoriteCategories.length,
                                       separatorBuilder: (context, index) =>
@@ -421,89 +467,99 @@ class _HomePageState extends State<HomePage> {
                                 const SizedBox(height: 24),
 
                                 // Round Selector
-                                Text(
-                                  AppLocalizations.of(
-                                    context,
-                                  )!.numberOfRounds.toUpperCase(),
-                                  style: GoogleFonts.outfit(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white70,
-                                    letterSpacing: 1.2,
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 24.0,
+                                  ),
+                                  child: Text(
+                                    AppLocalizations.of(
+                                      context,
+                                    )!.numberOfRounds.toUpperCase(),
+                                    style: GoogleFonts.outfit(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white70,
+                                      letterSpacing: 1.2,
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(height: 12),
-                                Row(
-                                      children: [5, 10, 15, 20].map((rounds) {
-                                        final isSelected = _rounds == rounds;
-                                        return Expanded(
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 4.0,
-                                            ),
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  _rounds = rounds;
-                                                });
-                                              },
-                                              child: AnimatedContainer(
-                                                duration: 200.ms,
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                      vertical: 12,
-                                                    ),
-                                                decoration: BoxDecoration(
-                                                  color: isSelected
-                                                      ? const Color(0xFF6200EA)
-                                                      : const Color(0xFF252538),
-                                                  borderRadius:
-                                                      BorderRadius.circular(12),
-                                                  border: isSelected
-                                                      ? Border.all(
-                                                          color: const Color(
-                                                            0xFFD300F9,
-                                                          ),
-                                                          width: 2,
-                                                        )
-                                                      : Border.all(
-                                                          color: Colors.white12,
-                                                        ),
-                                                  boxShadow: isSelected
-                                                      ? [
-                                                          BoxShadow(
-                                                            color:
-                                                                const Color(
-                                                                  0xFFD300F9,
-                                                                ).withValues(
-                                                                  alpha: 0.4,
-                                                                ),
-                                                            blurRadius: 8,
-                                                            spreadRadius: 1,
-                                                          ),
-                                                        ]
-                                                      : [],
-                                                ),
-                                                alignment: Alignment.center,
-                                                child: Text(
-                                                  '$rounds',
-                                                  style: GoogleFonts.outfit(
-                                                    color: Colors.white,
-                                                    fontWeight: isSelected
-                                                        ? FontWeight.w900
-                                                        : FontWeight.normal,
-                                                    fontSize: 16,
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 24.0,
+                                  ),
+                                  child: Row(
+                                    children: [5, 10, 15, 20].map((rounds) {
+                                      final isSelected = _rounds == rounds;
+                                      return Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 4.0,
+                                          ),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                _rounds = rounds;
+                                              });
+                                            },
+                                            child: AnimatedContainer(
+                                              duration: 200.ms,
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    vertical: 12,
                                                   ),
+                                              decoration: BoxDecoration(
+                                                color: isSelected
+                                                    ? const Color(0xFF6200EA)
+                                                    : const Color(0xFF252538),
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                border: isSelected
+                                                    ? Border.all(
+                                                        color: const Color(
+                                                          0xFFD300F9,
+                                                        ),
+                                                        width: 2,
+                                                      )
+                                                    : Border.all(
+                                                        color: Colors.white12,
+                                                      ),
+                                                boxShadow: isSelected
+                                                    ? [
+                                                        BoxShadow(
+                                                          color:
+                                                              const Color(
+                                                                0xFFD300F9,
+                                                              ).withValues(
+                                                                alpha: 0.4,
+                                                              ),
+                                                          blurRadius: 8,
+                                                          spreadRadius: 1,
+                                                        ),
+                                                      ]
+                                                    : [],
+                                              ),
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                '$rounds',
+                                                style: GoogleFonts.outfit(
+                                                  color: Colors.white,
+                                                  fontWeight: isSelected
+                                                      ? FontWeight.w900
+                                                      : FontWeight.normal,
+                                                  fontSize: 16,
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        );
-                                      }).toList(),
-                                    )
-                                    .animate()
-                                    .fadeIn(delay: 900.ms)
-                                    .slideY(begin: 0.1, end: 0),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  )
+                                  .animate()
+                                  .fadeIn(delay: 900.ms)
+                                  .slideY(begin: 0.1, end: 0),
+                                ),
 
                                 const SizedBox(
                                   height: 128,
