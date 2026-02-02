@@ -20,7 +20,8 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
   final _categoryController = TextEditingController();
   final _scrollController = ScrollController();
   final List<String> _selectedCategories = [];
@@ -31,7 +32,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   List<String> _specializedSuggestions = [];
   List<String> _quirkySuggestions = [];
   String? _currentLanguageCode;
-  
+
   late AnimationController _shakeController;
 
   @override
@@ -107,7 +108,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   void _startGame(BuildContext context, int currentTokens, String userId) {
     if (_selectedCategories.isEmpty) {
       _shakeController.forward(from: 0);
-      
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Container(
@@ -120,7 +121,11 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
             child: Row(
               children: [
                 const SizedBox(width: 8),
-                const Icon(Icons.warning_amber_rounded, color: Color(0xFF00E5FF), size: 28),
+                const Icon(
+                  Icons.warning_amber_rounded,
+                  color: Color(0xFF00E5FF),
+                  size: 28,
+                ),
                 const SizedBox(width: 16),
                 Expanded(
                   child: Text(
@@ -276,36 +281,49 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 24.0,
                                   ),
-                                  child: TextField(
-                                    controller: _categoryController,
-                                    onSubmitted: (_) => _addCategory(),
-                                    style: const TextStyle(color: Colors.white),
-                                    decoration: InputDecoration(
-                                      hintText: AppLocalizations.of(
-                                        context,
-                                      )!.enterTopic,
-                                      prefixIcon: const Icon(
-                                        Icons.search,
-                                        color: Color(0xFF00E5FF),
-                                      ),
-                                      suffixIcon: IconButton(
-                                        icon: const Icon(
-                                          Icons.add_circle,
-                                          color: Color(0xFFD300F9),
-                                        ),
-                                        onPressed: _addCategory,
-                                      ),
-                                      contentPadding:
-                                          const EdgeInsets.symmetric(
-                                            horizontal: 16,
-                                            vertical: 14,
-                                          ),
-                                    ),
-                                  ).animate(autoPlay: false, controller: _shakeController)
-                                  .shake(duration: 500.ms, hz: 4, offset: const Offset(10, 0))
-                                  .animate()
-                                  .fadeIn(delay: 200.ms)
-                                  .slideX(),
+                                  child:
+                                      TextField(
+                                            controller: _categoryController,
+                                            onSubmitted: (_) => _addCategory(),
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                            decoration: InputDecoration(
+                                              hintText: AppLocalizations.of(
+                                                context,
+                                              )!.enterTopic,
+                                              prefixIcon: Icon(
+                                                Icons.search,
+                                                color: Color(0xFF00E5FF),
+                                              ),
+                                              suffixIcon: IconButton(
+                                                icon: Icon(
+                                                  Icons.add_circle,
+                                                  color: Theme.of(
+                                                    context,
+                                                  ).colorScheme.primary,
+                                                ),
+                                                onPressed: _addCategory,
+                                              ),
+                                              contentPadding:
+                                                  const EdgeInsets.symmetric(
+                                                    horizontal: 16,
+                                                    vertical: 14,
+                                                  ),
+                                            ),
+                                          )
+                                          .animate(
+                                            autoPlay: false,
+                                            controller: _shakeController,
+                                          )
+                                          .shake(
+                                            duration: 500.ms,
+                                            hz: 4,
+                                            offset: const Offset(10, 0),
+                                          )
+                                          .animate()
+                                          .fadeIn(delay: 200.ms)
+                                          .slideX(),
                                 ),
                                 const SizedBox(height: 16),
 
@@ -334,7 +352,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                                         child: ListView.separated(
                                           controller: _scrollController,
                                           scrollDirection: Axis.horizontal,
-                                          physics: const BouncingScrollPhysics(),
+                                          physics:
+                                              const BouncingScrollPhysics(),
                                           padding: const EdgeInsets.symmetric(
                                             horizontal: 24.0,
                                           ),
@@ -599,9 +618,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                                                     BorderRadius.circular(12),
                                                 border: isSelected
                                                     ? Border.all(
-                                                        color: const Color(
-                                                          0xFFD300F9,
-                                                        ),
+                                                        color: Theme.of(
+                                                          context,
+                                                        ).colorScheme.primary,
                                                         width: 2,
                                                       )
                                                     : Border.all(
@@ -612,7 +631,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                                                         BoxShadow(
                                                           color:
                                                               const Color(
-                                                                0xFFD300F9,
+                                                                0xFF6200EA,
                                                               ).withValues(
                                                                 alpha: 0.4,
                                                               ),
@@ -663,17 +682,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                                   padding: const EdgeInsets.symmetric(
                                     vertical: 20,
                                   ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                    side: const BorderSide(
-                                      color: Color.fromARGB(255, 143, 163, 255),
-                                      width: 2,
-                                    ),
-                                  ),
                                   elevation: 12,
-                                  shadowColor: const Color(
-                                    0xFF6200EA,
-                                  ).withValues(alpha: 0.6),
                                 ),
                                 onPressed: () => _startGame(
                                   context,

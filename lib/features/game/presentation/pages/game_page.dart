@@ -420,30 +420,32 @@ class _GameView extends StatelessWidget {
                                           state is AnswerSubmitted &&
                                           index == selectedIndex &&
                                           !isCorrect!;
-                                      
-                                      final isCorrectAnswer = 
-                                          state is AnswerSubmitted && 
+
+                                      final isCorrectAnswer =
+                                          state is AnswerSubmitted &&
                                           index == q.correctAnswerIndex;
 
                                       return Padding(
-                                            padding: const EdgeInsets.only(
-                                              bottom: 16.0,
-                                            ),
-                                            child: Stack(
-                                              alignment: Alignment.center,
-                                              clipBehavior: Clip.none,
-                                              children: [
-                                                // 1. Particle Burst (Behind) - Only for correct answer
-                                                if (isCorrectAnswer &&
-                                                    (isCorrect == true))
-                                                  Positioned.fill(
-                                                    child: ParticleBurst(
-                                                      color: const Color(0xFF00C853),
-                                                    ),
+                                        padding: const EdgeInsets.only(
+                                          bottom: 16.0,
+                                        ),
+                                        child: Stack(
+                                          alignment: Alignment.center,
+                                          clipBehavior: Clip.none,
+                                          children: [
+                                            // 1. Particle Burst (Behind) - Only for correct answer
+                                            if (isCorrectAnswer &&
+                                                (isCorrect == true))
+                                              Positioned.fill(
+                                                child: ParticleBurst(
+                                                  color: const Color(
+                                                    0xFF00C853,
                                                   ),
-                                                  
-                                                // 2. The Button
-                                                AnimatedContainer(
+                                                ),
+                                              ),
+
+                                            // 2. The Button
+                                            AnimatedContainer(
                                                   duration: 300.ms,
                                                   width: double.infinity,
                                                   curve: Curves.easeOut,
@@ -470,7 +472,9 @@ class _GameView extends StatelessWidget {
                                                           ? 8
                                                           : 2,
                                                       shadowColor: borderColor
-                                                          .withValues(alpha: 0.5),
+                                                          .withValues(
+                                                            alpha: 0.5,
+                                                          ),
                                                       shape: RoundedRectangleBorder(
                                                         borderRadius:
                                                             BorderRadius.circular(
@@ -495,7 +499,9 @@ class _GameView extends StatelessWidget {
                                                         ? null
                                                         : () {
                                                             context
-                                                                .read<GameBloc>()
+                                                                .read<
+                                                                  GameBloc
+                                                                >()
                                                                 .add(
                                                                   AnswerQuestion(
                                                                     index,
@@ -504,10 +510,12 @@ class _GameView extends StatelessWidget {
                                                           },
                                                     child: Text(
                                                       q.answers[index],
-                                                      textAlign: TextAlign.center,
+                                                      textAlign:
+                                                          TextAlign.center,
                                                       style: GoogleFonts.outfit(
                                                         fontSize: 16,
-                                                        fontWeight: FontWeight.w500,
+                                                        fontWeight:
+                                                            FontWeight.w500,
                                                         color: textColor,
                                                       ),
                                                     ),
@@ -515,16 +523,23 @@ class _GameView extends StatelessWidget {
                                                 )
                                                 // Incorrect: Rapid Horizontal Shake ("No")
                                                 .animate(
-                                                  target: isSelectedWrong ? 1 : 0,
+                                                  target: isSelectedWrong
+                                                      ? 1
+                                                      : 0,
                                                 )
-                                                .shakeX(hz: 8, amount: 6, curve: Curves.easeInOutCubic) // Horizontal Shake
-                                                
+                                                .shakeX(
+                                                  hz: 8,
+                                                  amount: 6,
+                                                  curve: Curves.easeInOutCubic,
+                                                ) // Horizontal Shake
                                                 // Correct: Bounce (Squash & Stretch)
                                                 .animate(
-                                                  target: isCorrectAnswer ? 1 : 0,
+                                                  target: isCorrectAnswer
+                                                      ? 1
+                                                      : 0,
                                                 )
                                                 .scaleXY(
-                                                  end: 1.05, 
+                                                  end: 1.05,
                                                   duration: 150.ms,
                                                   curve: Curves.easeOut,
                                                 )
@@ -534,14 +549,15 @@ class _GameView extends StatelessWidget {
                                                   duration: 100.ms,
                                                   curve: Curves.easeIn,
                                                 )
-                                                
                                                 // Entrance Animation (Always run on build)
-                                                .animate(delay: (100 * index).ms)
+                                                .animate(
+                                                  delay: (100 * index).ms,
+                                                )
                                                 .fadeIn()
                                                 .slideY(begin: 0.5, end: 0),
-                                              ],
-                                            ),
-                                          );
+                                          ],
+                                        ),
+                                      );
                                     }),
 
                                     // Spacer for floating button
@@ -568,17 +584,7 @@ class _GameView extends StatelessWidget {
                                       vertical: 20,
                                     ),
                                     backgroundColor: const Color(0xFF6200EA),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                      side: const BorderSide(
-                                        color: Color.fromARGB(255, 143, 163, 255),
-                                        width: 2,
-                                      ),
-                                    ),
                                     elevation: 12,
-                                    shadowColor: const Color(
-                                      0xFF6200EA,
-                                    ).withValues(alpha: 0.6),
                                   ),
                                   onPressed: () {
                                     if (currentRound == totalRounds) {

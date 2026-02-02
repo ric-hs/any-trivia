@@ -125,9 +125,10 @@ class _SettingsPageState extends State<SettingsPage> {
                       icon: const Icon(Icons.logout),
                       label: Text(l10n.signOut),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red.withValues(alpha: 0.1),
-                        foregroundColor: Colors.red,
-                        side: const BorderSide(color: Colors.red),
+                        backgroundColor: Color(0xFFD300F9).withValues(alpha: 0.1),
+                        foregroundColor: Color(0xFFD300F9),
+                        side: const BorderSide(color: Color(0xFFD300F9)),
+                        elevation: 0
                       ),
                     ),
                   ),

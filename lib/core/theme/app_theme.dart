@@ -9,7 +9,7 @@ class AppTheme {
     primaryColor: const Color(0xFF6200EA), // Deep Purple
     scaffoldBackgroundColor: const Color(0xFF100F1F), // Deep Blue/Black (Cyberpunk bg)
     colorScheme: const ColorScheme.dark(
-      primary: Color(0xFFD300F9), // Neon Purple
+      primary: Color.fromARGB(255, 143, 163, 255), // Soft Neon Blue
       secondary: Color(0xFF00E5FF), // Cyan/Electric Blue
       surface: Color(0xFF1E1E2C), // Dark Blue-Grey Surface
       error: Color(0xFFFF2B5E), // Vibrant Red/Pink
@@ -31,10 +31,10 @@ class AppTheme {
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
-          side: const BorderSide(color: Color(0xFFD300F9), width: 2), // Neon border
+          side: const BorderSide(color: Color.fromARGB(255, 143, 163, 255), width: 2), // Neon border
         ),
         elevation: 8,
-        shadowColor: const Color(0xFFD300F9).withValues(alpha:0.5),
+        shadowColor: const Color(0xFF6200EA).withValues(alpha:0.6),
       ),
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(

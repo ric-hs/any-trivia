@@ -36,7 +36,7 @@ class GameResultsView extends StatelessWidget {
                 style: AppTheme.gameFont.copyWith(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 143, 163, 255),
+                  color: Theme.of(context).colorScheme.primary,
                   letterSpacing: 2.0,
                   shadows: [
                     Shadow(
@@ -123,18 +123,7 @@ class GameResultsView extends StatelessWidget {
               ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 24),
-                      backgroundColor: const Color(0xFF6200EA),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        side: const BorderSide(
-                          color: Color.fromARGB(255, 143, 163, 255),
-                          width: 2,
-                        ),
-                      ),
                       elevation: 8,
-                      shadowColor: const Color(
-                        0xFF6200EA,
-                      ).withValues(alpha: 0.5),
                     ),
                     onPressed: onBackToMenu,
                     child: Row(
