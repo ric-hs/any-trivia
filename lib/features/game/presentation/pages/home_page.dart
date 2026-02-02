@@ -772,13 +772,25 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                 Text(
                   '${profile.tokens}',
                   style: AppTheme.gameFont.copyWith(
-                    fontSize: 20,
+                    fontSize: 18,
                     color: const Color(0xFF00E5FF),
                   ),
                 ),
               ],
             ),
           ).animate().fadeIn().slideX(begin: -0.5, end: 0),
+
+          // Center Logo Title
+          Flexible(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Image.asset(
+                'assets/logo/logo_title.png',
+                height: 28,
+                fit: BoxFit.contain,
+              ).animate().fadeIn().slideY(begin: -0.5, end: 0),
+            ),
+          ),
 
           // Settings Button (HUD Style)
           Container(
