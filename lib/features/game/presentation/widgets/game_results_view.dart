@@ -145,7 +145,7 @@ class GameResultsView extends StatelessWidget {
                             context,
                           )!.backToMenu.toUpperCase(),
                           style: AppTheme.gameFont.copyWith(
-                            fontSize: 24,
+                            fontSize: 22,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
