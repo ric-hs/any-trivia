@@ -104,6 +104,12 @@ abstract class AppLocalizations {
   /// **'Endless Trivia'**
   String get appTitle;
 
+  /// No description provided for @appSlogan.
+  ///
+  /// In en, this message translates to:
+  /// **'If you can think it, you can play it'**
+  String get appSlogan;
+
   /// No description provided for @login.
   ///
   /// In en, this message translates to:

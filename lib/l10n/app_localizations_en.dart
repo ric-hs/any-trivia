@@ -12,6 +12,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appTitle => 'Endless Trivia';
 
   @override
+  String get appSlogan => 'If you can think it, you can play it';
+
+  @override
   String get login => 'LOGIN';
 
   @override
