@@ -101,52 +101,66 @@ class _LoginFormState extends State<_LoginForm> {
                           return SizedBox(
                             width: double.infinity,
                             height: 60,
-                            child:
-                                ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Theme.of(
-                                          context,
-                                        ).primaryColor,
-                                        foregroundColor: Colors.white,
-                                        textStyle: const TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                gradient: const LinearGradient(
+                                  colors: [
+                                    Color(0xFF00E5FF), // Cyan
+                                    Color(0xFFD500F9), // Purple
+                                  ],
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                ),
+                                borderRadius: BorderRadius.circular(30),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: const Color(0xFFD500F9).withOpacity(0.5),
+                                    blurRadius: 20,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ],
+                              ),
+                              child: Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  borderRadius: BorderRadius.circular(30),
+                                  onTap: () {
+                                    context.read<LoginCubit>().logInAnonymously();
+                                  },
+                                  child: Center(
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        const Icon(
+                                          Icons.play_arrow_rounded,
+                                          color: Colors.white,
+                                          size: 32,
                                         ),
-                                        elevation: 10,
-                                        shadowColor: Theme.of(
-                                          context,
-                                        ).primaryColor.withOpacity(0.6),
-                                      ),
-                                      onPressed: () {
-                                        context
-                                            .read<LoginCubit>()
-                                            .logInAnonymously();
-                                      },
-                                      child: Text(
-                                        AppLocalizations.of(context)!.startGame,
-                                      ),
-                                    )
-                                    .animate(
-                                      onPlay: (controller) =>
-                                          controller.repeat(reverse: true),
-                                    )
-                                    .boxShadow(
-                                      begin: BoxShadow(
-                                        color: Theme.of(
-                                          context,
-                                        ).primaryColor.withOpacity(0.4),
-                                        blurRadius: 8,
-                                        spreadRadius: 0,
-                                      ),
-                                      end: BoxShadow(
-                                        color: Theme.of(
-                                          context,
-                                        ).primaryColor.withOpacity(0.8),
-                                        blurRadius: 16,
-                                        spreadRadius: 4,
-                                      ),
-                                      duration: 2.seconds,
+                                        const SizedBox(width: 8),
+                                        Text(
+                                          AppLocalizations.of(context)!.startGame,
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.bold,
+                                            letterSpacing: 1.2,
+                                          ),
+                                        ),
+                                      ],
                                     ),
+                                  ),
+                                ),
+                              ),
+                            )
+                            .animate(
+                              onPlay: (controller) => controller.repeat(reverse: true),
+                            )
+                            .scale(
+                              begin: const Offset(1.0, 1.0),
+                              end: const Offset(1.05, 1.05),
+                              duration: 1500.ms,
+                              curve: Curves.easeInOut,
+                            ),
                           );
                         },
                       ),
