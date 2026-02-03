@@ -867,7 +867,12 @@ class _HomePageState extends State<HomePage>
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.bolt, color: Color(0xFF00E5FF), size: 20),
+                Image.asset(
+                  'assets/a-token_icon_small.png',
+                  width: 24,
+                  height: 24,
+                  fit: BoxFit.contain,
+                ),
                 const SizedBox(width: 8),
                 Text(
                   '${profile.tokens}',
