@@ -498,114 +498,148 @@ class _HomePageState extends State<HomePage>
                                 const SizedBox(height: 24),
 
                                 // Favorites Section
-                                if (profile.favoriteCategories.isNotEmpty) ...[
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 24.0,
-                                    ),
-                                    child: Text(
-                                      AppLocalizations.of(
-                                        context,
-                                      )!.favorites.toUpperCase(),
-                                      style: GoogleFonts.outfit(
-                                        fontSize: 14,
-                                        color: const Color(0xFFFF2B5E),
-                                        fontWeight: FontWeight.bold,
-                                        letterSpacing: 1.5,
-                                      ),
-                                    ).animate().fadeIn(delay: 700.ms),
+
+                                // Favorites Section
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 24.0,
                                   ),
-                                  const SizedBox(height: 8),
-                                  SizedBox(
-                                    height: 50,
-                                    child: ListView.separated(
-                                      controller: _favoriteController,
-                                      scrollDirection: Axis.horizontal,
-                                      physics: const BouncingScrollPhysics(),
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 24.0,
-                                      ),
-                                      itemCount:
-                                          profile.favoriteCategories.length,
-                                      separatorBuilder: (context, index) =>
-                                          const SizedBox(width: 8),
-                                      itemBuilder: (context, index) {
-                                        final cat =
-                                            profile.favoriteCategories[index];
-                                        return Container(
-                                          decoration: BoxDecoration(
-                                            color: const Color(0xFF252538),
-                                            borderRadius: BorderRadius.circular(
-                                              16,
-                                            ),
-                                            border: Border.all(
-                                              color: Colors.white12,
-                                            ),
+                                  child: Text(
+                                    AppLocalizations.of(
+                                      context,
+                                    )!.favorites.toUpperCase(),
+                                    style: GoogleFonts.outfit(
+                                      fontSize: 14,
+                                      color: const Color(0xFFFF2B5E),
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 1.5,
+                                    ),
+                                  ).animate().fadeIn(delay: 700.ms),
+                                ),
+                                const SizedBox(height: 8),
+
+                                profile.favoriteCategories.isEmpty
+                                    ? Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 24.0,
+                                          vertical: 8.0,
+                                        ),
+                                        child: Text(
+                                          AppLocalizations.of(
+                                            context,
+                                          )!.emptyFavoritesMessage,
+                                          style: GoogleFonts.outfit(
+                                            color: Colors.white30,
+                                            fontSize: 14,
+                                            fontStyle: FontStyle.italic,
                                           ),
-                                          child: Material(
-                                            color: Colors.transparent,
-                                            child: InkWell(
-                                              borderRadius:
-                                                  BorderRadius.circular(16),
-                                              onTap: () {
-                                                if (!_selectedCategories
-                                                    .contains(cat)) {
-                                                  _addCategoryWithName(cat);
-                                                }
-                                              },
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                      horizontal: 12.0,
-                                                      vertical: 8.0,
-                                                    ),
-                                                child: Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        final newFavorites =
-                                                            List<String>.from(
-                                                              profile
-                                                                  .favoriteCategories,
-                                                            )..remove(cat);
-                                                        context
-                                                            .read<ProfileBloc>()
-                                                            .add(
-                                                              UpdateFavoriteCategories(
-                                                                userId: profile
-                                                                    .userId,
-                                                                categories:
-                                                                    newFavorites,
-                                                              ),
-                                                            );
-                                                      },
-                                                      child: const Icon(
-                                                        Icons.star,
-                                                        size: 18,
-                                                        color: Colors.amber,
-                                                      ),
-                                                    ),
-                                                    const SizedBox(width: 8),
-                                                    Text(
-                                                      cat,
-                                                      style: GoogleFonts.outfit(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                                    ),
-                                                  ],
+                                        ).animate().fadeIn(delay: 800.ms),
+                                      )
+                                    : SizedBox(
+                                        height: 50,
+                                        child: ListView.separated(
+                                          controller: _favoriteController,
+                                          scrollDirection: Axis.horizontal,
+                                          physics:
+                                              const BouncingScrollPhysics(),
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 24.0,
+                                          ),
+                                          itemCount:
+                                              profile.favoriteCategories.length,
+                                          separatorBuilder: (context, index) =>
+                                              const SizedBox(width: 8),
+                                          itemBuilder: (context, index) {
+                                            final cat =
+                                                profile
+                                                    .favoriteCategories[index];
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                color: const Color(0xFF252538),
+                                                borderRadius:
+                                                    BorderRadius.circular(16),
+                                                border: Border.all(
+                                                  color: Colors.white12,
                                                 ),
                                               ),
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ).animate().fadeIn(delay: 800.ms),
-                                ],
+                                              child: Material(
+                                                color: Colors.transparent,
+                                                child: InkWell(
+                                                  borderRadius:
+                                                      BorderRadius.circular(16),
+                                                  onTap: () {
+                                                    if (!_selectedCategories
+                                                        .contains(cat)) {
+                                                      _addCategoryWithName(cat);
+                                                    }
+                                                  },
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets
+                                                            .symmetric(
+                                                          horizontal: 12.0,
+                                                          vertical: 8.0,
+                                                        ),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        GestureDetector(
+                                                          onTap: () {
+                                                            final newFavorites =
+                                                                List<String>
+                                                                    .from(
+                                                                      profile
+                                                                          .favoriteCategories,
+                                                                    )..remove(
+                                                                  cat,
+                                                                );
+                                                            context
+                                                                .read<
+                                                                  ProfileBloc
+                                                                >()
+                                                                .add(
+                                                                  UpdateFavoriteCategories(
+                                                                    userId:
+                                                                        profile
+                                                                            .userId,
+                                                                    categories:
+                                                                        newFavorites,
+                                                                  ),
+                                                                );
+                                                          },
+                                                          child: const Icon(
+                                                            Icons.star,
+                                                            size: 18,
+                                                            color: Colors.amber,
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                          width: 8,
+                                                        ),
+                                                        Text(
+                                                          cat,
+                                                          style:
+                                                              GoogleFonts
+                                                                  .outfit(
+                                                                    color:
+                                                                        Colors
+                                                                            .white,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                  ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ).animate().fadeIn(delay: 800.ms),
+
 
                                 const SizedBox(height: 24),
 

@@ -165,6 +165,9 @@ class AppLocalizationsEs extends AppLocalizations {
       'Por favor elige una o más categorías para comenzar.';
 
   @override
+  String get emptyFavoritesMessage => 'Aquí verás tus categorías favoritas';
+
+  @override
   String get suggestionsTitle => 'IDEAS PARA TI';
 
   @override

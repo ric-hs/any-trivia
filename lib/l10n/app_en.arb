@@ -85,6 +85,7 @@
     "settingsTitle": "SETTINGS",
     "categories": "Categories",
     "emptyCategoriesMessage": "Please choose one or more categories to start the game.",
+    "emptyFavoritesMessage": "Here you will see your favorite categories",
     "suggestionsTitle": "IDEAS FOR YOU",
     "suggestionsSpecificTitle": "SPECIALIZED TOPICS",
     "suggestionsFunTitle": "QUIRKY & FUN",

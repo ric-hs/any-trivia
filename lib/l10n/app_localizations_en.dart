@@ -164,6 +164,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Please choose one or more categories to start the game.';
 
   @override
+  String get emptyFavoritesMessage =>
+      'Here you will see your favorite categories';
+
+  @override
   String get suggestionsTitle => 'IDEAS FOR YOU';
 
   @override

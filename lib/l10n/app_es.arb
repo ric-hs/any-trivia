@@ -48,6 +48,7 @@
     "settingsTitle": "AJUSTES",
     "categories": "Categorías",
     "emptyCategoriesMessage": "Por favor elige una o más categorías para comenzar.",
+    "emptyFavoritesMessage": "Aquí verás tus categorías favoritas",
     "suggestionsTitle": "IDEAS PARA TI",
     "suggestionsSpecificTitle": "TEMAS ESPECIALIZADOS",
     "suggestionsFunTitle": "CURIOSOS Y DIVERTIDOS",

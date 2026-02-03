@@ -386,6 +386,12 @@ abstract class AppLocalizations {
   /// **'Please choose one or more categories to start the game.'**
   String get emptyCategoriesMessage;
 
+  /// No description provided for @emptyFavoritesMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Here you will see your favorite categories'**
+  String get emptyFavoritesMessage;
+
   /// No description provided for @suggestionsTitle.
   ///
   /// In en, this message translates to:
