@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  static TextStyle get gameFont => GoogleFonts.michroma();
+  static TextStyle get gameFont => GoogleFonts.outfit();
 
   static final ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
