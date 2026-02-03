@@ -55,17 +55,20 @@ class _LoginFormState extends State<_LoginForm> {
                     children: [
                       // Logo Image
                       Image.asset(
-                        'assets/logo/logo.png',
-                        height: 180,
-                        fit: BoxFit.contain,
-                      )
-                      .animate(onPlay: (controller) => controller.repeat(reverse: true))
-                      .moveY(
-                        begin: -10,
-                        end: 10,
-                        duration: 3.seconds,
-                        curve: Curves.easeInOutSine,
-                      ),
+                            'assets/logo/logo.png',
+                            height: 180,
+                            fit: BoxFit.contain,
+                          )
+                          .animate(
+                            onPlay: (controller) =>
+                                controller.repeat(reverse: true),
+                          )
+                          .moveY(
+                            begin: -10,
+                            end: 10,
+                            duration: 3.seconds,
+                            curve: Curves.easeInOutSine,
+                          ),
                       const SizedBox(height: 16),
                       // Logo Title Image
                       Image.asset(
@@ -76,25 +79,18 @@ class _LoginFormState extends State<_LoginForm> {
                       const SizedBox(height: 16),
                       // Slogan
                       Text(
-                        AppLocalizations.of(context)!.appSlogan,
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                              color: Theme.of(context).colorScheme.secondary,
-                              fontWeight: FontWeight.bold,
-                              fontStyle: FontStyle.italic,
-                              fontSize: 18,
-                              shadows: [
-                                BoxShadow(
-                                  color: Theme.of(context).colorScheme.secondary.withOpacity(0.5),
-                                  blurRadius: 10,
-                                  offset: const Offset(0, 0),
+                            AppLocalizations.of(context)!.appSlogan,
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.headlineMedium
+                                ?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  fontStyle: FontStyle.italic,
+                                  fontSize: 18,
                                 ),
-                              ],
-                            ),
-                      )
-                      .animate()
-                      .fadeIn(duration: 800.ms, delay: 300.ms)
-                      .shimmer(duration: 2.seconds, delay: 1.seconds),
+                          )
+                          .animate()
+                          .fadeIn(duration: 800.ms, delay: 300.ms)
+                          .shimmer(duration: 2.seconds, delay: 1.seconds),
                       const SizedBox(height: 48),
 
                       BlocBuilder<LoginCubit, LoginState>(
@@ -105,38 +101,52 @@ class _LoginFormState extends State<_LoginForm> {
                           return SizedBox(
                             width: double.infinity,
                             height: 60,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Theme.of(context).primaryColor,
-                                foregroundColor: Colors.white,
-                                textStyle: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                elevation: 10,
-                                shadowColor: Theme.of(context).primaryColor.withOpacity(0.6),
-                              ),
-                              onPressed: () {
-                                context.read<LoginCubit>().logInAnonymously();
-                              },
-                              child: Text(
-                                AppLocalizations.of(context)!.startGame,
-                              ),
-                            )
-                            .animate(onPlay: (controller) => controller.repeat(reverse: true))
-                            .boxShadow(
-                              begin: BoxShadow(
-                                color: Theme.of(context).primaryColor.withOpacity(0.4),
-                                blurRadius: 8,
-                                spreadRadius: 0,
-                              ),
-                              end: BoxShadow(
-                                color: Theme.of(context).primaryColor.withOpacity(0.8),
-                                blurRadius: 16,
-                                spreadRadius: 4,
-                              ),
-                              duration: 2.seconds,
-                            ),
+                            child:
+                                ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Theme.of(
+                                          context,
+                                        ).primaryColor,
+                                        foregroundColor: Colors.white,
+                                        textStyle: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        elevation: 10,
+                                        shadowColor: Theme.of(
+                                          context,
+                                        ).primaryColor.withOpacity(0.6),
+                                      ),
+                                      onPressed: () {
+                                        context
+                                            .read<LoginCubit>()
+                                            .logInAnonymously();
+                                      },
+                                      child: Text(
+                                        AppLocalizations.of(context)!.startGame,
+                                      ),
+                                    )
+                                    .animate(
+                                      onPlay: (controller) =>
+                                          controller.repeat(reverse: true),
+                                    )
+                                    .boxShadow(
+                                      begin: BoxShadow(
+                                        color: Theme.of(
+                                          context,
+                                        ).primaryColor.withOpacity(0.4),
+                                        blurRadius: 8,
+                                        spreadRadius: 0,
+                                      ),
+                                      end: BoxShadow(
+                                        color: Theme.of(
+                                          context,
+                                        ).primaryColor.withOpacity(0.8),
+                                        blurRadius: 16,
+                                        spreadRadius: 4,
+                                      ),
+                                      duration: 2.seconds,
+                                    ),
                           );
                         },
                       ),
