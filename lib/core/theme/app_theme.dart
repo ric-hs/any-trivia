@@ -13,6 +13,16 @@ class AppTheme {
     end: Alignment.centerRight,
   );
 
+  static const LinearGradient secondaryGradient = LinearGradient(
+    colors: [
+      Color(0xFF00E5FF), // Cyan
+      Color.fromARGB(255, 0, 116, 249), // Purple
+    ],
+    stops: [0.0, 1.0],
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+  );
+
   static final List<BoxShadow> primaryShadow = [
     BoxShadow(
       color: const Color(0xFFD500F9).withValues(alpha: 0.5),

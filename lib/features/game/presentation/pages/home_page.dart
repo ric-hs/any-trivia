@@ -681,71 +681,76 @@ class _HomePageState extends State<HomePage>
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: 24.0,
                                     ),
-                                    child: Row(
-                                      children: [5, 10, 15, 20].map((rounds) {
-                                        final isSelected = _rounds == rounds;
-                                        return Expanded(
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 4.0,
-                                            ),
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  _rounds = rounds;
-                                                });
-                                              },
-                                              child: GlassContainer(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                      vertical: 12,
-                                                    ),
-                                                color: isSelected
-                                                    ? const Color(0xFF6200EA).withValues(alpha: 0.5)
-                                                    : const Color(0xFF252538).withValues(alpha: 0.3),
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
-                                                border: isSelected
-                                                    ? Border.all(
-                                                        color: Theme.of(
-                                                          context,
-                                                        ).colorScheme.primary,
-                                                        width: 2,
-                                                      )
-                                                    : Border.all(
-                                                        color: Colors.white12,
-                                                      ),
-                                                boxShadow: isSelected
-                                                    ? [
-                                                        BoxShadow(
-                                                          color:
-                                                              const Color(
-                                                                0xFF6200EA,
-                                                              ).withValues(
-                                                                alpha: 0.4,
-                                                              ),
-                                                          blurRadius: 8,
-                                                          spreadRadius: 1,
-                                                        ),
-                                                      ]
-                                                    : [],
-                                                child: Center(
-                                                  child: Text(
-                                                  '$rounds',
-                                                  style: GoogleFonts.outfit(
-                                                    color: Colors.white,
-                                                    fontWeight: isSelected
-                                                        ? FontWeight.w900
-                                                        : FontWeight.normal,
-                                                    fontSize: 16,
-                                                  ),
-                                                ),
-                                              ),
+                                    child: Container(
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xFF252538).withValues(alpha: 0.3),
+                                            borderRadius: BorderRadius.circular(30),
+                                            border: Border.all(
+                                              color: const Color(0xFF00E5FF).withValues(alpha: 0.2),
+                                              width: 1,
                                             ),
                                           ),
-                                        ));
-                                      }).toList(),
-                                    ).animate().fadeIn(delay: 900.ms).slideY(begin: 0.1, end: 0),
+                                          padding: const EdgeInsets.all(4),
+                                          child: Row(
+                                            children: [5, 10, 15, 20].map((rounds) {
+                                              final isSelected = _rounds == rounds;
+                                              return Expanded(
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      _rounds = rounds;
+                                                    });
+                                                  },
+                                                  child: Container(
+                                                    // duration: const Duration(milliseconds: 300),
+                                                    padding: const EdgeInsets.symmetric(vertical: 12),
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(24),
+                                                      gradient: isSelected
+                                                          ? AppTheme.secondaryGradient
+                                                          : null,
+                                                      boxShadow: isSelected
+                                                          ? [
+                                                              BoxShadow(
+                                                                color: const Color(0xFF00E5FF).withValues(alpha: 0.5),
+                                                                blurRadius: 16,
+                                                                spreadRadius: 1,
+                                                              ),
+                                                              BoxShadow(
+                                                                color: const Color(0xFFD500F9).withValues(alpha: 0.5),
+                                                                blurRadius: 16,
+                                                                spreadRadius: 1,
+                                                              ),
+                                                            ]
+                                                          : [],
+                                                    ),
+                                                    child: Center(
+                                                      child: Text(
+                                                        '$rounds',
+                                                        style: GoogleFonts.outfit(
+                                                          color: Colors.white,
+                                                          fontWeight: isSelected
+                                                              ? FontWeight.w900
+                                                              : FontWeight.normal,
+                                                          fontSize: 18,
+                                                          shadows: isSelected
+                                                              ? [
+                                                                  Shadow(
+                                                                    color: Colors.black26,
+                                                                    blurRadius: 2,
+                                                                    offset: const Offset(0, 1),
+                                                                  ),
+                                                                ]
+                                                              : [],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            }).toList(),
+                                          ),
+                                        ).animate().fadeIn(delay: 900.ms).slideY(begin: 0.1, end: 0),
                                   ),
 
                                   const SizedBox(
