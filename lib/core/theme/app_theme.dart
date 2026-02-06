@@ -4,6 +4,23 @@ import 'package:google_fonts/google_fonts.dart';
 class AppTheme {
   static TextStyle get gameFont => GoogleFonts.outfit();
 
+  static const LinearGradient primaryGradient = LinearGradient(
+    colors: [
+      Color(0xFF00E5FF), // Cyan
+      Color(0xFFD500F9), // Purple
+    ],
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+  );
+
+  static final List<BoxShadow> primaryShadow = [
+    BoxShadow(
+      color: const Color(0xFFD500F9).withValues(alpha: 0.5),
+      blurRadius: 20,
+      offset: const Offset(0, 4),
+    ),
+  ];
+
   static final ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
     primaryColor: const Color(0xFF6200EA), // Deep Purple
@@ -30,7 +47,7 @@ class AppTheme {
         textStyle: GoogleFonts.outfit(fontWeight: FontWeight.bold, fontSize: 18),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(30),
           side: const BorderSide(color: Color.fromARGB(255, 143, 163, 255), width: 2), // Neon border
         ),
         elevation: 8,

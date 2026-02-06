@@ -6,6 +6,7 @@ import 'package:endless_trivia/core/theme/app_theme.dart';
 import 'package:endless_trivia/l10n/app_localizations.dart';
 
 import 'package:endless_trivia/core/presentation/widgets/gradient_background.dart';
+import 'package:endless_trivia/core/presentation/widgets/primary_button.dart';
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_event.dart';
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_state.dart';
@@ -755,105 +756,57 @@ class _HomePageState extends State<HomePage>
                         bottom: 24,
                         left: 24,
                         right: 24,
-                        child:
-                            Container(
-                                  decoration: BoxDecoration(
-                                    gradient: const LinearGradient(
-                                      colors: [
-                                        Color(0xFF00E5FF), // Cyan
-                                        Color(0xFFD500F9), // Purple
-                                      ],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
+                        child: PrimaryButton(
+                          onPressed: () => _startGame(
+                            context,
+                            profile.tokens,
+                            profile.userId,
+                          ),
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Icon(
+                                      Icons.play_arrow_rounded,
+                                      color: Colors.white,
+                                      size: 32,
                                     ),
-                                    borderRadius: BorderRadius.circular(30),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: const Color(
-                                          0xFFD500F9,
-                                        ).withValues(alpha: 0.5),
-                                        blurRadius: 20,
-                                        offset: const Offset(0, 4),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Material(
-                                    color: Colors.transparent,
-                                    child: InkWell(
-                                      borderRadius: BorderRadius.circular(30),
-                                      onTap: () => _startGame(
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      AppLocalizations.of(
                                         context,
-                                        profile.tokens,
-                                        profile.userId,
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          vertical: 16,
-                                          horizontal: 32,
-                                        ),
-                                        child: FittedBox(
-                                          fit: BoxFit.scaleDown,
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  const Icon(
-                                                    Icons.play_arrow_rounded,
-                                                    color: Colors.white,
-                                                    size: 32,
-                                                  ),
-                                                  const SizedBox(width: 8),
-                                                  Text(
-                                                    AppLocalizations.of(
-                                                      context,
-                                                    )!.startGame.toUpperCase(),
-                                                    style: AppTheme.gameFont
-                                                        .copyWith(
-                                                          fontSize: 24,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: Colors.white,
-                                                          height: 1.0,
-                                                        ),
-                                                  ),
-                                                ],
-                                              ),
-                                              const SizedBox(height: 4),
-                                              Text(
-                                                AppLocalizations.of(
-                                                  context,
-                                                )!.costDisplay(
-                                                  GameCostCalculator.calculateCost(
-                                                    _rounds,
-                                                  ),
-                                                ),
-                                                style: GoogleFonts.outfit(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.white70,
-                                                  letterSpacing: 1.2,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
+                                      )!.startGame.toUpperCase(),
+                                      style: AppTheme.gameFont.copyWith(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                        height: 1.0,
                                       ),
                                     ),
-                                  ),
-                                )
-                                .animate(
-                                  onPlay: (controller) =>
-                                      controller.repeat(reverse: true),
-                                )
-                                .scale(
-                                  begin: const Offset(1.0, 1.0),
-                                  end: const Offset(1.05, 1.05),
-                                  duration: 1500.ms,
-                                  curve: Curves.easeInOut,
+                                  ],
                                 ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  AppLocalizations.of(
+                                    context,
+                                  )!.costDisplay(
+                                    GameCostCalculator.calculateCost(_rounds),
+                                  ),
+                                  style: GoogleFonts.outfit(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white70,
+                                    letterSpacing: 1.2,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   );
