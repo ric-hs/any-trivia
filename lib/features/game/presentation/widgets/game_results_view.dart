@@ -3,6 +3,7 @@ import 'package:endless_trivia/l10n/app_localizations.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:endless_trivia/core/theme/app_theme.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:endless_trivia/core/presentation/widgets/primary_button.dart';
 
 class GameResultsView extends StatelessWidget {
   final int score;
@@ -138,49 +139,25 @@ class GameResultsView extends StatelessWidget {
 
               const SizedBox(height: 64),
 
-              ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 24),
-                      elevation: 8,
+              PrimaryButton(
+                onPressed: onBackToMenu,
+                padding: const EdgeInsets.symmetric(vertical: 24),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      AppLocalizations.of(context)!.backToMenu.toUpperCase(),
+                      style: AppTheme.gameFont.copyWith(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
-                    onPressed: onBackToMenu,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          AppLocalizations.of(
-                            context,
-                          )!.backToMenu.toUpperCase(),
-                          style: AppTheme.gameFont.copyWith(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        const Icon(Icons.home_filled, size: 28),
-                      ],
-                    ),
-                  )
-                  .animate(delay: 500.ms)
-                  .fadeIn()
-                  .scale()
-                  .animate(
-                    onPlay: (controller) => controller.repeat(reverse: true),
-                  )
-                  .boxShadow(
-                    begin: BoxShadow(
-                      color: const Color(0xFF6200EA).withValues(alpha: 0.2),
-                      blurRadius: 4,
-                      spreadRadius: 0,
-                    ),
-                    end: BoxShadow(
-                      color: const Color(0xFF6200EA).withValues(alpha: 0.6),
-                      blurRadius: 12,
-                      spreadRadius: 4,
-                    ),
-                    duration: 2.seconds,
-                  ),
+                    const SizedBox(width: 8),
+                    const Icon(Icons.home_filled, size: 28, color: Colors.white),
+                  ],
+                ),
+              ).animate(delay: 500.ms).fadeIn(),
             ],
           ),
         ),

@@ -52,16 +52,17 @@ class AppTheme {
     useMaterial3: true,
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: const Color(0xFF6200EA),
-        foregroundColor: Colors.white,
+        backgroundColor: Colors.white.withOpacity(0.1), // Translucent white
+        foregroundColor: Colors.white, // Text color
         textStyle: GoogleFonts.outfit(fontWeight: FontWeight.bold, fontSize: 18),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),
-          side: const BorderSide(color: Color.fromARGB(255, 143, 163, 255), width: 2), // Neon border
+          side: BorderSide(color: Colors.white.withOpacity(0.2), width: 1.5), // Neon border
         ),
         elevation: 8,
-        shadowColor: const Color(0xFF6200EA).withValues(alpha:0.6),
+        // shadowColor: const Color(0xFF6200EA).withValues(alpha:0.6),
+        shadowColor: Colors.transparent
       ),
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(
