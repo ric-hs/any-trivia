@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage>
   final _scrollController = ScrollController();
   final _favoriteController = ScrollController();
   final List<String> _selectedCategories = [];
-  int _rounds = 5;
+  int _rounds = 10;
 
   // Cached suggestions to prevent reshuffling on state changes
   List<String> _generalSuggestions = [];
