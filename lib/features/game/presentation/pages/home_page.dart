@@ -15,7 +15,7 @@ import 'package:endless_trivia/features/game/presentation/pages/game_page.dart';
 import 'package:endless_trivia/features/settings/presentation/pages/settings_page.dart';
 import 'package:endless_trivia/features/game/presentation/widgets/category_suggestion_carousel.dart';
 import 'package:endless_trivia/features/game/presentation/constants/category_suggestions.dart';
-import 'package:endless_trivia/features/game/presentation/utils/game_cost_calculator.dart';
+
 import 'dart:math';
 
 class HomePage extends StatefulWidget {
@@ -126,7 +126,7 @@ class _HomePageState extends State<HomePage>
     });
   }
 
-  void _startGame(BuildContext context, int currentTokens, String userId) {
+  void _startGame(BuildContext context, String userId) {
     if (_selectedCategories.isEmpty) {
       _shakeController.forward(from: 0);
 
@@ -169,34 +169,6 @@ class _HomePageState extends State<HomePage>
           ),
           margin: const EdgeInsets.all(16),
           elevation: 10,
-        ),
-      );
-      return;
-    }
-
-    // Check if user has enough tokens for the selected rounds
-    final requiredTokens = GameCostCalculator.calculateCost(_rounds);
-    if (currentTokens < requiredTokens) {
-      showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-          backgroundColor: Theme.of(context).cardTheme.color,
-          title: Text(
-            AppLocalizations.of(context)!.outOfTokens,
-            style: const TextStyle(color: Colors.white),
-          ),
-          content: Text(
-            AppLocalizations.of(
-              context,
-            )!.notEnoughTokens(_rounds, currentTokens, requiredTokens),
-            style: const TextStyle(color: Colors.white70),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
-            ),
-          ],
         ),
       );
       return;
@@ -771,7 +743,6 @@ class _HomePageState extends State<HomePage>
                         child: PrimaryButton(
                           onPressed: () => _startGame(
                             context,
-                            profile.tokens,
                             profile.userId,
                           ),
                           child: FittedBox(
@@ -801,20 +772,7 @@ class _HomePageState extends State<HomePage>
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  AppLocalizations.of(
-                                    context,
-                                  )!.costDisplay(
-                                    GameCostCalculator.calculateCost(_rounds),
-                                  ),
-                                  style: GoogleFonts.outfit(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white70,
-                                    letterSpacing: 1.2,
-                                  ),
-                                ),
+
                               ],
                             ),
                           ),
@@ -849,36 +807,7 @@ class _HomePageState extends State<HomePage>
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Tokens Display (HUD Style)
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            decoration: BoxDecoration(
-              color: Colors.black45,
-              borderRadius: BorderRadius.circular(30),
-              border: Border.all(
-                color: const Color(0xFF00E5FF).withValues(alpha: 0.5),
-              ),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Image.asset(
-                  'assets/a-token_icon_small.png',
-                  width: 24,
-                  height: 24,
-                  fit: BoxFit.contain,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  '${profile.tokens}',
-                  style: AppTheme.gameFont.copyWith(
-                    fontSize: 18,
-                    color: const Color(0xFF00E5FF),
-                  ),
-                ),
-              ],
-            ),
-          ).animate().fadeIn().slideX(begin: -0.5, end: 0),
+
 
           // Center Logo Title
           Flexible(

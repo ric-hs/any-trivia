@@ -4,7 +4,7 @@ import 'package:endless_trivia/features/game/domain/repositories/game_repository
 import 'package:endless_trivia/features/game/presentation/bloc/game_event.dart';
 import 'package:endless_trivia/features/game/presentation/bloc/game_state.dart';
 import 'package:endless_trivia/features/profile/domain/repositories/profile_repository.dart';
-import 'package:endless_trivia/features/game/presentation/utils/game_cost_calculator.dart';
+
 
 class GameBloc extends Bloc<GameEvent, GameState> {
   final GameRepository _gameRepository;
@@ -47,27 +47,15 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       );
 
       if (questions.isNotEmpty) {
-        // Questions were retrieved successfully, now try to consume token
-        try {
-          await _profileRepository.consumeTokens(
-            event.userId,
-            GameCostCalculator.calculateCost(event.rounds),
-          );
-
-          // Token consumed successfully, proceed with game
-          _questionsQueue.addAll(questions);
-          final firstQuestion = _questionsQueue.removeAt(0);
-          emit(
-            QuestionLoaded(
-              question: firstQuestion,
-              currentRound: _currentRound,
-              totalRounds: _totalRounds,
-            ),
-          );
-        } catch (e) {
-          // Failure during token retrieval or update
-          emit(const GameError('unableToRetrieveTokens'));
-        }
+        _questionsQueue.addAll(questions);
+        final firstQuestion = _questionsQueue.removeAt(0);
+        emit(
+          QuestionLoaded(
+            question: firstQuestion,
+            currentRound: _currentRound,
+            totalRounds: _totalRounds,
+          ),
+        );
       } else {
         emit(GameFinished(score: _score, totalQuestions: _totalRounds));
       }
