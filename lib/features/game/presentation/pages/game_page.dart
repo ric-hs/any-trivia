@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:endless_trivia/core/theme/app_theme.dart';
+import 'package:endless_trivia/core/presentation/widgets/glass_container.dart';
+import 'package:endless_trivia/core/presentation/widgets/primary_button.dart';
 import 'package:endless_trivia/core/di/injection_container.dart';
 import 'package:endless_trivia/features/game/presentation/bloc/game_bloc.dart';
 import 'package:endless_trivia/features/game/presentation/bloc/game_event.dart';
@@ -272,19 +274,17 @@ class _GameViewState extends State<_GameView> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   // Round Counter
-                                  Container(
+                                  GlassContainer(
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: 16,
                                       vertical: 8,
                                     ),
-                                    decoration: BoxDecoration(
-                                      color: Colors.black45,
-                                      borderRadius: BorderRadius.circular(20),
-                                      border: Border.all(
-                                        color: const Color(
-                                          0xFF00E5FF,
-                                        ).withValues(alpha: 0.5),
-                                      ),
+                                    color: Colors.black.withValues(alpha: 0.3),
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(
+                                      color: const Color(
+                                        0xFF00E5FF,
+                                      ).withValues(alpha: 0.5),
                                     ),
                                     child: Text(
                                       "ROUND $currentRound / $totalRounds",
@@ -378,29 +378,27 @@ class _GameViewState extends State<_GameView> {
                                       CrossAxisAlignment.stretch,
                                   children: [
                                     // Glassmorphic Question Card
-                                    Container(
+                                    GlassContainer(
                                       padding: const EdgeInsets.all(24),
-                                      decoration: BoxDecoration(
-                                        color: const Color(
-                                          0xFF252538,
-                                        ).withValues(alpha: 0.8),
-                                        borderRadius: BorderRadius.circular(24),
-                                        border: Border.all(
-                                          color: categoryColor.withValues(
-                                            alpha: 0.5,
-                                          ),
-                                          width: 2,
+                                      color: const Color(
+                                        0xFF252538,
+                                      ).withValues(alpha: 0.6),
+                                      borderRadius: BorderRadius.circular(24),
+                                      border: Border.all(
+                                        color: categoryColor.withValues(
+                                          alpha: 0.5,
                                         ),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: categoryColor.withValues(
-                                              alpha: 0.2,
-                                            ),
-                                            blurRadius: 20,
-                                            spreadRadius: 2,
-                                          ),
-                                        ],
+                                        width: 2,
                                       ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: categoryColor.withValues(
+                                            alpha: 0.2,
+                                          ),
+                                          blurRadius: 20,
+                                          spreadRadius: 2,
+                                        ),
+                                      ],
                                       child: Column(
                                         children: [
                                           // Category Label
@@ -634,78 +632,47 @@ class _GameViewState extends State<_GameView> {
                         bottom: 24,
                         left: 24,
                         right: 24,
-                        child:
-                            ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 20,
+                        child: PrimaryButton(
+                              onPressed: () {
+                                if (currentRound == totalRounds) {
+                                  // If last round, next action should trigger finishing
+                                  context.read<GameBloc>().add(
+                                        NextQuestion(),
+                                      );
+                                } else {
+                                  context.read<GameBloc>().add(
+                                        NextQuestion(),
+                                      );
+                                }
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    currentRound == totalRounds
+                                        ? AppLocalizations.of(
+                                            context,
+                                          )!.resultsTitle.toUpperCase()
+                                        : AppLocalizations.of(
+                                            context,
+                                          )!.continueBtn.toUpperCase(),
+                                    style: AppTheme.gameFont.copyWith(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
                                     ),
-                                    backgroundColor: const Color(0xFF6200EA),
-                                    elevation: 12,
                                   ),
-                                  onPressed: () {
-                                    if (currentRound == totalRounds) {
-                                      // If last round, next action should trigger finishing
-                                      context.read<GameBloc>().add(
-                                        NextQuestion(),
-                                      );
-                                    } else {
-                                      context.read<GameBloc>().add(
-                                        NextQuestion(),
-                                      );
-                                    }
-                                  },
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        currentRound == totalRounds
-                                            ? AppLocalizations.of(
-                                                context,
-                                              )!.resultsTitle.toUpperCase()
-                                            : AppLocalizations.of(
-                                                context,
-                                              )!.continueBtn.toUpperCase(),
-                                        style: AppTheme.gameFont.copyWith(
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 8),
-                                      Icon(
-                                        currentRound == totalRounds
-                                            ? Icons.flag
-                                            : Icons.arrow_forward_rounded,
-                                        size: 28,
-                                      ),
-                                    ],
+                                  const SizedBox(width: 8),
+                                  Icon(
+                                    currentRound == totalRounds
+                                        ? Icons.flag
+                                        : Icons.arrow_forward_rounded,
+                                    size: 28,
+                                    color: Colors.white,
                                   ),
-                                )
-                                .animate(
-                                  onPlay: (controller) =>
-                                      controller.repeat(reverse: true),
-                                )
-                                .boxShadow(
-                                  begin: BoxShadow(
-                                    color: const Color(
-                                      0xFF6200EA,
-                                    ).withValues(alpha: 0.5),
-                                    blurRadius: 10,
-                                  ),
-                                  end: BoxShadow(
-                                    color: const Color(
-                                      0xFF6200EA,
-                                    ).withValues(alpha: 0.5),
-                                    blurRadius: 20,
-                                    spreadRadius: 2,
-                                  ),
-                                )
-                                .scale(
-                                  begin: const Offset(1, 1),
-                                  end: const Offset(1.02, 1.02),
-                                  duration: 1500.ms,
-                                ),
+                                ],
+                              ),
+                            ),
                       ),
                   ],
                 );

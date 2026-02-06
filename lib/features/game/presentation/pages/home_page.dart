@@ -7,6 +7,7 @@ import 'package:endless_trivia/l10n/app_localizations.dart';
 
 import 'package:endless_trivia/core/presentation/widgets/gradient_background.dart';
 import 'package:endless_trivia/core/presentation/widgets/primary_button.dart';
+import 'package:endless_trivia/core/presentation/widgets/glass_container.dart';
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_event.dart';
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_state.dart';
@@ -294,39 +295,50 @@ class _HomePageState extends State<HomePage>
                                       horizontal: 24.0,
                                     ),
                                     child:
-                                        TextField(
-                                              controller: _categoryController,
-                                              maxLength: 64,
-                                              onSubmitted: (_) =>
-                                                  _addCategory(),
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                              ),
-                                              decoration: InputDecoration(
-                                                counterText: "",
-                                                hintText: AppLocalizations.of(
-                                                  context,
-                                                )!.enterTopic,
-                                                prefixIcon: Icon(
-                                                  Icons.search,
-                                                  color: Color(0xFF00E5FF),
+                                        GlassContainer(
+                                          borderRadius: BorderRadius.circular(16),
+                                          color: const Color(0xFF252538).withValues(alpha: 0.5),
+                                          border: Border.all(color: Colors.white10),
+                                          child: TextField(
+                                                controller: _categoryController,
+                                                maxLength: 64,
+                                                onSubmitted: (_) =>
+                                                    _addCategory(),
+                                                style: const TextStyle(
+                                                  color: Colors.white,
                                                 ),
-                                                suffixIcon: IconButton(
-                                                  icon: Icon(
-                                                    Icons.add_circle,
-                                                    color: Theme.of(
-                                                      context,
-                                                    ).colorScheme.primary,
+                                                decoration: InputDecoration(
+                                                  counterText: "",
+                                                  hintText: AppLocalizations.of(
+                                                    context,
+                                                  )!.enterTopic,
+                                                  filled: false,
+                                                  border: InputBorder.none,
+                                                  focusedBorder: InputBorder.none,
+                                                  enabledBorder: InputBorder.none,
+                                                  errorBorder: InputBorder.none,
+                                                  disabledBorder: InputBorder.none,
+                                                  prefixIcon: Icon(
+                                                    Icons.search,
+                                                    color: Color(0xFF00E5FF),
                                                   ),
-                                                  onPressed: _addCategory,
-                                                ),
-                                                contentPadding:
-                                                    const EdgeInsets.symmetric(
-                                                      horizontal: 16,
-                                                      vertical: 14,
+                                                  suffixIcon: IconButton(
+                                                    icon: Icon(
+                                                      Icons.add_circle,
+                                                      color: Theme.of(
+                                                        context,
+                                                      ).colorScheme.primary,
                                                     ),
+                                                    onPressed: _addCategory,
+                                                  ),
+                                                  contentPadding:
+                                                      const EdgeInsets.symmetric(
+                                                        horizontal: 16,
+                                                        vertical: 14,
+                                                      ),
+                                                ),
                                               ),
-                                            )
+                                        )
                                             .animate(
                                               autoPlay: false,
                                               controller: _shakeController,
@@ -559,16 +571,14 @@ class _HomePageState extends State<HomePage>
                                             itemBuilder: (context, index) {
                                               final cat = profile
                                                   .favoriteCategories[index];
-                                              return Container(
-                                                decoration: BoxDecoration(
-                                                  color: const Color(
-                                                    0xFF252538,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(16),
-                                                  border: Border.all(
-                                                    color: Colors.white12,
-                                                  ),
+                                              return GlassContainer(
+                                                borderRadius:
+                                                    BorderRadius.circular(16),
+                                                color: const Color(
+                                                  0xFF252538,
+                                                ).withValues(alpha: 0.3),
+                                                border: Border.all(
+                                                  color: Colors.white12,
                                                 ),
                                                 child: Material(
                                                   color: Colors.transparent,
@@ -685,45 +695,42 @@ class _HomePageState extends State<HomePage>
                                                   _rounds = rounds;
                                                 });
                                               },
-                                              child: AnimatedContainer(
-                                                duration: 200.ms,
+                                              child: GlassContainer(
                                                 padding:
                                                     const EdgeInsets.symmetric(
                                                       vertical: 12,
                                                     ),
-                                                decoration: BoxDecoration(
-                                                  color: isSelected
-                                                      ? const Color(0xFF6200EA)
-                                                      : const Color(0xFF252538),
-                                                  borderRadius:
-                                                      BorderRadius.circular(12),
-                                                  border: isSelected
-                                                      ? Border.all(
-                                                          color: Theme.of(
-                                                            context,
-                                                          ).colorScheme.primary,
-                                                          width: 2,
-                                                        )
-                                                      : Border.all(
-                                                          color: Colors.white12,
+                                                color: isSelected
+                                                    ? const Color(0xFF6200EA).withValues(alpha: 0.5)
+                                                    : const Color(0xFF252538).withValues(alpha: 0.3),
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                border: isSelected
+                                                    ? Border.all(
+                                                        color: Theme.of(
+                                                          context,
+                                                        ).colorScheme.primary,
+                                                        width: 2,
+                                                      )
+                                                    : Border.all(
+                                                        color: Colors.white12,
+                                                      ),
+                                                boxShadow: isSelected
+                                                    ? [
+                                                        BoxShadow(
+                                                          color:
+                                                              const Color(
+                                                                0xFF6200EA,
+                                                              ).withValues(
+                                                                alpha: 0.4,
+                                                              ),
+                                                          blurRadius: 8,
+                                                          spreadRadius: 1,
                                                         ),
-                                                  boxShadow: isSelected
-                                                      ? [
-                                                          BoxShadow(
-                                                            color:
-                                                                const Color(
-                                                                  0xFF6200EA,
-                                                                ).withValues(
-                                                                  alpha: 0.4,
-                                                                ),
-                                                            blurRadius: 8,
-                                                            spreadRadius: 1,
-                                                          ),
-                                                        ]
-                                                      : [],
-                                                ),
-                                                alignment: Alignment.center,
-                                                child: Text(
+                                                      ]
+                                                    : [],
+                                                child: Center(
+                                                  child: Text(
                                                   '$rounds',
                                                   style: GoogleFonts.outfit(
                                                     color: Colors.white,
@@ -736,7 +743,7 @@ class _HomePageState extends State<HomePage>
                                               ),
                                             ),
                                           ),
-                                        );
+                                        ));
                                       }).toList(),
                                     ).animate().fadeIn(delay: 900.ms).slideY(begin: 0.1, end: 0),
                                   ),
