@@ -15,6 +15,7 @@ import 'package:endless_trivia/features/game/presentation/widgets/particle_burst
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_event.dart';
 import 'package:endless_trivia/features/game/presentation/utils/game_cost_calculator.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class GamePage extends StatelessWidget {
   final List<String> categories;
@@ -50,7 +51,7 @@ class GamePage extends StatelessWidget {
   }
 }
 
-class _GameView extends StatelessWidget {
+class _GameView extends StatefulWidget {
   final int rounds;
   final String userId;
   final Map<String, Color>? categoryColors;
@@ -60,6 +61,48 @@ class _GameView extends StatelessWidget {
     required this.userId,
     this.categoryColors,
   });
+
+  @override
+  State<_GameView> createState() => _GameViewState();
+}
+
+class _GameViewState extends State<_GameView> {
+  late final AudioPlayer _audioPlayer;
+
+  @override
+  void initState() {
+    super.initState();
+    _audioPlayer = AudioPlayer();
+    _preloadAudio();
+  }
+
+  Future<void> _preloadAudio() async {
+    // Preload sounds for lower latency
+    await _audioPlayer.setSource(AssetSource('audio/correct-sfx.wav'));
+    await _audioPlayer.setSource(AssetSource('audio/wrong-sfx.wav'));
+  }
+
+  @override
+  void dispose() {
+    _audioPlayer.dispose();
+    super.dispose();
+  }
+
+  Future<void> _playSound(bool isCorrect) async {
+    try {
+      if (isCorrect) {
+        // Stop any currently playing sound to allow rapid fire or just play over
+        // Ideally for overlapping sounds allow multiple players or mode lowLatency
+        await _audioPlayer.stop();
+        await _audioPlayer.play(AssetSource('audio/correct-sfx.wav'));
+      } else {
+        await _audioPlayer.stop();
+        await _audioPlayer.play(AssetSource('audio/wrong-sfx.wav'));
+      }
+    } catch (e) {
+      debugPrint('Error playing sound: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +123,7 @@ class _GameView extends StatelessWidget {
                 if (state.currentRound == 1) {
                   // Sync UI tokens count after consumption
                   context.read<ProfileBloc>().add(
-                    LoadProfile(userId, showLoading: false),
+                    LoadProfile(widget.userId, showLoading: false),
                   );
                 }
               }
@@ -95,9 +138,9 @@ class _GameView extends StatelessWidget {
                     ? AppLocalizations.of(context)!.unableToRetrieveTokens
                     : state.message == 'notEnoughTokens'
                     ? AppLocalizations.of(context)!.notEnoughTokens(
-                        rounds,
+                        widget.rounds,
                         0,
-                        GameCostCalculator.calculateCost(rounds),
+                        GameCostCalculator.calculateCost(widget.rounds),
                       ) // tokens count is tricky here, maybe just generic
                     : state.message;
                 return Center(
@@ -178,7 +221,7 @@ class _GameView extends StatelessWidget {
                 }
 
                 // Get the color for the current category, fallback to purple if not found
-                final categoryColor = categoryColors?[q.category] ??
+                final categoryColor = widget.categoryColors?[q.category] ??
                     const Color(0xFFD300F9);
 
                 return Stack(
@@ -510,6 +553,8 @@ class _GameView extends StatelessWidget {
                                                         state is AnswerSubmitted
                                                         ? null
                                                         : () {
+                                                            final isCorrect = (index == q.correctAnswerIndex);
+                                                            _playSound(isCorrect);
                                                             context
                                                                 .read<
                                                                   GameBloc
@@ -651,7 +696,7 @@ class _GameView extends StatelessWidget {
                                   end: BoxShadow(
                                     color: const Color(
                                       0xFF6200EA,
-                                    ).withValues(alpha: 0.8),
+                                    ).withValues(alpha: 0.5),
                                     blurRadius: 20,
                                     spreadRadius: 2,
                                   ),
