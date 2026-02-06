@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:endless_trivia/core/theme/app_theme.dart';
 import 'package:endless_trivia/l10n/app_localizations.dart';
 
+import 'package:endless_trivia/core/presentation/widgets/gradient_background.dart';
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_event.dart';
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_state.dart';
@@ -219,53 +220,8 @@ class _HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      body: Stack(
-        children: [
-          // 1. Base Gradient (Deep Cyberpunk Space)
-          Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color(0xFF1B0030), // Deepest Purple
-                  Color(0xFF0D0D15), // Darkest Grey/Black
-                  Color(0xFF001820), // Deepest Cyan
-                ],
-                stops: [0.0, 0.5, 1.0],
-              ),
-            ),
-          ),
-          // 2. Purple Glow (Top Left)
-          Container(
-            decoration: BoxDecoration(
-              gradient: RadialGradient(
-                center: const Alignment(-0.8, -0.8),
-                radius: 1.2,
-                colors: [
-                  const Color(0xFFD500F9).withOpacity(0.15),
-                  Colors.transparent,
-                ],
-                stops: const [0.0, 1.0],
-              ),
-            ),
-          ),
-          // 3. Cyan Glow (Bottom Right)
-          Container(
-            decoration: BoxDecoration(
-              gradient: RadialGradient(
-                center: const Alignment(0.8, 0.8),
-                radius: 1.2,
-                colors: [
-                  const Color(0xFF00E5FF).withOpacity(0.15),
-                  Colors.transparent,
-                ],
-                stops: const [0.0, 1.0],
-              ),
-            ),
-          ),
-          // 4. Content
-          SafeArea(
+      body: GradientBackground(
+        child: SafeArea(
             child: BlocBuilder<ProfileBloc, ProfileState>(
               builder: (context, state) {
                 if (state is ProfileLoading) {
@@ -917,8 +873,7 @@ class _HomePageState extends State<HomePage>
                 );
               },
             ),
-          ),
-        ],
+        ),
       ),
     );
   }
