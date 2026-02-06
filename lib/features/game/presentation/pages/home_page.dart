@@ -4,6 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:endless_trivia/core/theme/app_theme.dart';
 import 'package:endless_trivia/l10n/app_localizations.dart';
+import 'package:endless_trivia/core/presentation/widgets/space_background.dart';
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_event.dart';
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_state.dart';
@@ -218,18 +219,7 @@ class _HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color(0xFF100F1F), // Dark BG
-              Color(0xFF2A0045), // Deep Purple Accent
-            ],
-            stops: [0.3, 1.0],
-          ),
-        ),
+      body: SpaceBackground(
         child: SafeArea(
           child: BlocBuilder<ProfileBloc, ProfileState>(
             builder: (context, state) {
@@ -750,80 +740,99 @@ class _HomePageState extends State<HomePage>
                       bottom: 24,
                       left: 24,
                       right: 24,
-                      child:
-                          ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFF6200EA),
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 20,
-                                  ),
-                                  elevation: 12,
-                                ),
-                                onPressed: () => _startGame(
-                                  context,
-                                  profile.tokens,
-                                  profile.userId,
-                                ),
-                                child: FittedBox(
-                                  fit: BoxFit.scaleDown,
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        AppLocalizations.of(
-                                          context,
-                                        )!.startGame.toUpperCase(),
-                                        style: AppTheme.gameFont.copyWith(
-                                          fontSize: 28,
-                                          fontWeight: FontWeight.bold,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            colors: [
+                              Color(0xFF00E5FF), // Cyan
+                              Color(0xFFD500F9), // Purple
+                            ],
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                          ),
+                          borderRadius: BorderRadius.circular(30),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xFFD500F9).withValues(alpha: 0.5),
+                              blurRadius: 20,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(30),
+                            onTap: () => _startGame(
+                              context,
+                              profile.tokens,
+                              profile.userId,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 16,
+                                horizontal: 32,
+                              ),
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        const Icon(
+                                          Icons.play_arrow_rounded,
                                           color: Colors.white,
-                                          height: 1.0,
+                                          size: 32,
                                         ),
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        AppLocalizations.of(
-                                          context,
-                                        )!.costDisplay(
-                                          GameCostCalculator.calculateCost(
-                                            _rounds,
+                                        const SizedBox(width: 8),
+                                        Text(
+                                          AppLocalizations.of(
+                                            context,
+                                          )!.startGame.toUpperCase(),
+                                          style: AppTheme.gameFont.copyWith(
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                            height: 1.0,
                                           ),
                                         ),
-                                        style: GoogleFonts.outfit(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600,
-                                          color: const Color(0xFF00E5FF),
-                                          letterSpacing: 1.2,
+                                      ],
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      AppLocalizations.of(
+                                        context,
+                                      )!.costDisplay(
+                                        GameCostCalculator.calculateCost(
+                                          _rounds,
                                         ),
                                       ),
-                                    ],
-                                  ),
+                                      style: GoogleFonts.outfit(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white70,
+                                        letterSpacing: 1.2,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              )
-                              .animate(
-                                onPlay: (controller) =>
-                                    controller.repeat(reverse: true),
-                              )
-                              .boxShadow(
-                                begin: BoxShadow(
-                                  color: const Color(
-                                    0xFF6200EA,
-                                  ).withValues(alpha: 0.5),
-                                  blurRadius: 10,
-                                ),
-                                end: BoxShadow(
-                                  color: const Color(
-                                    0xFF6200EA,
-                                  ).withValues(alpha: 0.8),
-                                  blurRadius: 20,
-                                  spreadRadius: 2,
-                                ),
-                              )
-                              .scale(
-                                begin: const Offset(1, 1),
-                                end: const Offset(1.02, 1.02),
-                                duration: 1500.ms,
                               ),
+                            ),
+                          ),
+                        ),
+                      )
+                          .animate(
+                            onPlay: (controller) =>
+                                controller.repeat(reverse: true),
+                          )
+                          .scale(
+                            begin: const Offset(1.0, 1.0),
+                            end: const Offset(1.05, 1.05),
+                            duration: 1500.ms,
+                            curve: Curves.easeInOut,
+                          ),
                     ),
                   ],
                 );
