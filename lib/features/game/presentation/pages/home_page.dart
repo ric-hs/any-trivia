@@ -807,7 +807,7 @@ class _HomePageState extends State<HomePage>
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-
+          SizedBox(width: 56,),
 
           // Center Logo Title
           Flexible(
