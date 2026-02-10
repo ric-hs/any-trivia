@@ -33,7 +33,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get startGame => 'INICIAR JUEGO';
 
   @override
-  String get tokens => 'FICHAS';
+  String get tokens => 'AnyTokens';
 
   @override
   String get chooseAdventure => 'ELIGE TU AVENTURA';
@@ -51,11 +51,11 @@ class AppLocalizationsEs extends AppLocalizations {
   String get pleaseEnterCategory => '¡Elige un tema para comenzar la batalla!';
 
   @override
-  String get outOfTokens => 'Sin Fichas';
+  String get outOfTokens => 'Sin AnyTokens';
 
   @override
   String get zeroTokensMessage =>
-      'Tienes 0 fichas. ¡Espera a que se recarguen!';
+      'Tienes 0 AnyTokens. ¡Espera a que se recarguen!';
 
   @override
   String get generatingQuestion => 'Generando Pregunta con IA...';
@@ -90,7 +90,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String notEnoughTokens(int rounds, int tokens, int requiredTokens) {
-    return 'Seleccionaste $rounds rondas (Costo: $requiredTokens Fichas) pero solo tienes $tokens fichas.';
+    return 'Seleccionaste $rounds rondas (Costo: $requiredTokens AnyTokens) pero solo tienes $tokens AnyTokens.';
   }
 
   @override
@@ -125,7 +125,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get unableToRetrieveTokens =>
-      'No fue posible consumir las fichas para iniciar el juego. Por favor intenta de nuevo.';
+      'No fue posible consumir los AnyTokens para iniciar el juego. Por favor intenta de nuevo.';
 
   @override
   String get iHaveAnAccount => 'Ya tengo una cuenta';
@@ -181,7 +181,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get quitGameContent =>
-      'Esto finalizará el juego y las fichas usadas se perderán. ¿Estás seguro de que quieres continuar?';
+      'Esto finalizará el juego y los AnyTokens usados se perderán. ¿Estás seguro de que quieres continuar?';
 
   @override
   String get confirm => 'Confirmar';
@@ -206,6 +206,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String costDisplay(int amount) {
-    return 'COSTO: $amount FICHAS';
+    return 'COSTO: $amount ANYTOKENS';
   }
 }

@@ -149,7 +149,7 @@ abstract class AppLocalizations {
   /// No description provided for @tokens.
   ///
   /// In en, this message translates to:
-  /// **'TOKENS'**
+  /// **'AnyTokens'**
   String get tokens;
 
   /// No description provided for @chooseAdventure.
@@ -185,13 +185,13 @@ abstract class AppLocalizations {
   /// No description provided for @outOfTokens.
   ///
   /// In en, this message translates to:
-  /// **'Out of Tokens'**
+  /// **'Out of AnyTokens'**
   String get outOfTokens;
 
   /// No description provided for @zeroTokensMessage.
   ///
   /// In en, this message translates to:
-  /// **'You have 0 tokens. Wait for refill!'**
+  /// **'You have 0 AnyTokens. Wait for refill!'**
   String get zeroTokensMessage;
 
   /// No description provided for @generatingQuestion.
@@ -251,7 +251,7 @@ abstract class AppLocalizations {
   /// No description provided for @notEnoughTokens.
   ///
   /// In en, this message translates to:
-  /// **'You selected {rounds} rounds (Cost: {requiredTokens} Tokens) but only have {tokens} tokens.'**
+  /// **'You selected {rounds} rounds (Cost: {requiredTokens} AnyTokens) but only have {tokens} AnyTokens.'**
   String notEnoughTokens(int rounds, int tokens, int requiredTokens);
 
   /// No description provided for @roundProgress.
@@ -311,7 +311,7 @@ abstract class AppLocalizations {
   /// No description provided for @unableToRetrieveTokens.
   ///
   /// In en, this message translates to:
-  /// **'Unable to consume tokens to start the game. Please try again.'**
+  /// **'Unable to consume AnyTokens to start the game. Please try again.'**
   String get unableToRetrieveTokens;
 
   /// No description provided for @iHaveAnAccount.
@@ -419,7 +419,7 @@ abstract class AppLocalizations {
   /// No description provided for @quitGameContent.
   ///
   /// In en, this message translates to:
-  /// **'This will finish the game and the used tokens will be lost. Are you sure you want to proceed?'**
+  /// **'This will finish the game and the used AnyTokens will be lost. Are you sure you want to proceed?'**
   String get quitGameContent;
 
   /// No description provided for @confirm.
@@ -467,7 +467,7 @@ abstract class AppLocalizations {
   /// No description provided for @costDisplay.
   ///
   /// In en, this message translates to:
-  /// **'COST: {amount} TOKENS'**
+  /// **'COST: {amount} ANYTOKENS'**
   String costDisplay(int amount);
 }
 

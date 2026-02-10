@@ -33,7 +33,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get startGame => 'START GAME';
 
   @override
-  String get tokens => 'TOKENS';
+  String get tokens => 'AnyTokens';
 
   @override
   String get chooseAdventure => 'CHOOSE YOUR ADVENTURE';
@@ -51,10 +51,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pleaseEnterCategory => 'Pick a topic to start the battle!';
 
   @override
-  String get outOfTokens => 'Out of Tokens';
+  String get outOfTokens => 'Out of AnyTokens';
 
   @override
-  String get zeroTokensMessage => 'You have 0 tokens. Wait for refill!';
+  String get zeroTokensMessage => 'You have 0 AnyTokens. Wait for refill!';
 
   @override
   String get generatingQuestion => 'Generating Question with AI...';
@@ -89,7 +89,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String notEnoughTokens(int rounds, int tokens, int requiredTokens) {
-    return 'You selected $rounds rounds (Cost: $requiredTokens Tokens) but only have $tokens tokens.';
+    return 'You selected $rounds rounds (Cost: $requiredTokens AnyTokens) but only have $tokens AnyTokens.';
   }
 
   @override
@@ -124,7 +124,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get unableToRetrieveTokens =>
-      'Unable to consume tokens to start the game. Please try again.';
+      'Unable to consume AnyTokens to start the game. Please try again.';
 
   @override
   String get iHaveAnAccount => 'I have an account';
@@ -181,7 +181,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get quitGameContent =>
-      'This will finish the game and the used tokens will be lost. Are you sure you want to proceed?';
+      'This will finish the game and the used AnyTokens will be lost. Are you sure you want to proceed?';
 
   @override
   String get confirm => 'Confirm';
@@ -206,6 +206,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String costDisplay(int amount) {
-    return 'COST: $amount TOKENS';
+    return 'COST: $amount ANYTOKENS';
   }
 }
