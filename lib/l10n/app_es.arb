@@ -61,5 +61,9 @@
     "scoreLabel": "Puntaje",
     "playAgain": "Jugar de nuevo",
     "backToMenu": "Volver al Menú",
-    "costDisplay": "COSTO: {amount} ANYTOKENS"
+    "costDisplay": "COSTO: {amount} ANYTOKENS",
+    "storeTitle": "Tienda",
+    "storeComingSoon": "Próximamente",
+    "storeWorkingOnItems": "¡Estamos trabajando en cosas geniales para ti!",
+    "getTokens": "Obtener AnyTokens"
 }

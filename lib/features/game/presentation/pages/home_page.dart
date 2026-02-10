@@ -12,6 +12,7 @@ import 'package:endless_trivia/features/profile/presentation/bloc/profile_bloc.d
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_event.dart';
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_state.dart';
 import 'package:endless_trivia/features/game/presentation/pages/game_page.dart';
+import 'package:endless_trivia/features/store/presentation/pages/store_page.dart';
 import 'package:endless_trivia/features/settings/presentation/pages/settings_page.dart';
 import 'package:endless_trivia/features/game/presentation/widgets/category_suggestion_carousel.dart';
 import 'package:endless_trivia/features/game/presentation/constants/category_suggestions.dart';
@@ -195,6 +196,18 @@ class _HomePageState extends State<HomePage>
             TextButton(
               onPressed: () => Navigator.pop(context),
               child: const Text('OK'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const StorePage()),
+                );
+              },
+              child: Text(
+                AppLocalizations.of(context)!.getTokens,
+                style: const TextStyle(color: Color(0xFF00E5FF)),
+              ),
             ),
           ],
         ),
@@ -850,35 +863,42 @@ class _HomePageState extends State<HomePage>
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // Tokens Display (HUD Style)
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            decoration: BoxDecoration(
-              color: Colors.black45,
-              borderRadius: BorderRadius.circular(30),
-              border: Border.all(
-                color: const Color(0xFF00E5FF).withValues(alpha: 0.5),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const StorePage()),
+              );
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.black45,
+                borderRadius: BorderRadius.circular(30),
+                border: Border.all(
+                  color: const Color(0xFF00E5FF).withValues(alpha: 0.5),
+                ),
               ),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Image.asset(
-                  'assets/a-token_icon_small.png',
-                  width: 24,
-                  height: 24,
-                  fit: BoxFit.contain,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  '${profile.tokens}',
-                  style: AppTheme.gameFont.copyWith(
-                    fontSize: 18,
-                    color: const Color(0xFF00E5FF),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset(
+                    'assets/a-token_icon_small.png',
+                    width: 24,
+                    height: 24,
+                    fit: BoxFit.contain,
                   ),
-                ),
-              ],
-            ),
-          ).animate().fadeIn().slideX(begin: -0.5, end: 0),
+                  const SizedBox(width: 8),
+                  Text(
+                    '${profile.tokens}',
+                    style: AppTheme.gameFont.copyWith(
+                      fontSize: 18,
+                      color: const Color(0xFF00E5FF),
+                    ),
+                  ),
+                ],
+              ),
+            ).animate().fadeIn().slideX(begin: -0.5, end: 0),
+          ),
 
           // Center Logo Title
           Flexible(

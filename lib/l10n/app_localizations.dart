@@ -469,6 +469,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'COST: {amount} ANYTOKENS'**
   String costDisplay(int amount);
+
+  /// No description provided for @storeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Store'**
+  String get storeTitle;
+
+  /// No description provided for @storeComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming Soon'**
+  String get storeComingSoon;
+
+  /// No description provided for @storeWorkingOnItems.
+  ///
+  /// In en, this message translates to:
+  /// **'We are working on great items for you!'**
+  String get storeWorkingOnItems;
+
+  /// No description provided for @getTokens.
+  ///
+  /// In en, this message translates to:
+  /// **'Get AnyTokens'**
+  String get getTokens;
 }
 
 class _AppLocalizationsDelegate

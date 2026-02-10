@@ -208,4 +208,17 @@ class AppLocalizationsEs extends AppLocalizations {
   String costDisplay(int amount) {
     return 'COSTO: $amount ANYTOKENS';
   }
+
+  @override
+  String get storeTitle => 'Tienda';
+
+  @override
+  String get storeComingSoon => 'Próximamente';
+
+  @override
+  String get storeWorkingOnItems =>
+      '¡Estamos trabajando en cosas geniales para ti!';
+
+  @override
+  String get getTokens => 'Obtener AnyTokens';
 }
