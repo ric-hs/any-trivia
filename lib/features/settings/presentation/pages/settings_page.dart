@@ -156,7 +156,7 @@ class _SettingsPageState extends State<SettingsPage> {
               child: Column(
                 children: [
                   Text(
-                    '${l10n.userIdLabel}: ${_truncate(widget.userId)}',
+                    '${l10n.userIdLabel}: ${widget.userId}',
                     style: const TextStyle(fontSize: 10),
                   ),
                   Text(
