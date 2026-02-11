@@ -220,4 +220,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get getTokens => 'Get AnyTokens';
+
+  @override
+  String get sound => 'Sound';
+
+  @override
+  String get soundEffects => 'Sound Effects';
 }

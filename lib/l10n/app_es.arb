@@ -65,5 +65,7 @@
     "storeTitle": "Tienda",
     "storeComingSoon": "Próximamente",
     "storeWorkingOnItems": "¡Estamos trabajando en cosas geniales para ti!",
-    "getTokens": "Obtener AnyTokens"
+    "getTokens": "Obtener AnyTokens",
+    "sound": "Sonido",
+    "soundEffects": "Efectos de Sonido"
 }

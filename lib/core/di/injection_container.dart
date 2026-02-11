@@ -18,6 +18,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:endless_trivia/core/services/locale_service.dart';
 import 'package:endless_trivia/core/localization/bloc/locale_bloc.dart';
 
+import 'package:endless_trivia/core/services/sound_service.dart';
+import 'package:endless_trivia/features/settings/presentation/bloc/settings_bloc.dart';
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -29,6 +32,7 @@ Future<void> init() async {
   sl.registerFactory(() => ProfileBloc(profileRepository: sl()));
   sl.registerFactory(() => GameBloc(gameRepository: sl(), profileRepository: sl()));
   sl.registerFactory(() => LocaleBloc(sl()));
+  sl.registerFactory(() => SettingsBloc(sl()));
 
   // Repository
   sl.registerLazySingleton<AuthRepository>(
@@ -54,4 +58,6 @@ Future<void> init() async {
   final sharedPreferences = await SharedPreferences.getInstance();
   sl.registerLazySingleton(() => sharedPreferences);
   sl.registerLazySingleton(() => LocaleService(sl()));
+  sl.registerLazySingleton<SoundService>(() => SoundService(sl()));
+  await sl<SoundService>().init();
 }

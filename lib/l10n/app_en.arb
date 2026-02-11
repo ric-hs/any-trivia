@@ -110,5 +110,7 @@
     "storeTitle": "Store",
     "storeComingSoon": "Coming Soon",
     "storeWorkingOnItems": "We are working on great items for you!",
-    "getTokens": "Get AnyTokens"
+    "getTokens": "Get AnyTokens",
+    "sound": "Sound",
+    "soundEffects": "Sound Effects"
 }

@@ -221,4 +221,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get getTokens => 'Obtener AnyTokens';
+
+  @override
+  String get sound => 'Sonido';
+
+  @override
+  String get soundEffects => 'Efectos de Sonido';
 }

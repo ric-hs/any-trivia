@@ -17,7 +17,7 @@ import 'package:endless_trivia/features/game/presentation/widgets/particle_burst
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_event.dart';
 import 'package:endless_trivia/features/game/presentation/utils/game_cost_calculator.dart';
-import 'package:audioplayers/audioplayers.dart';
+import 'package:endless_trivia/core/services/sound_service.dart';
 
 class GamePage extends StatelessWidget {
   final List<String> categories;
@@ -69,37 +69,23 @@ class _GameView extends StatefulWidget {
 }
 
 class _GameViewState extends State<_GameView> {
-  late final AudioPlayer _audioPlayer;
-
   @override
   void initState() {
     super.initState();
-    _audioPlayer = AudioPlayer();
-    _preloadAudio();
   }
 
-  Future<void> _preloadAudio() async {
-    // Preload sounds for lower latency
-    await _audioPlayer.setSource(AssetSource('audio/correct-sfx.wav'));
-    await _audioPlayer.setSource(AssetSource('audio/wrong-sfx.wav'));
-  }
 
   @override
   void dispose() {
-    _audioPlayer.dispose();
     super.dispose();
   }
 
   Future<void> _playSound(bool isCorrect) async {
     try {
       if (isCorrect) {
-        // Stop any currently playing sound to allow rapid fire or just play over
-        // Ideally for overlapping sounds allow multiple players or mode lowLatency
-        await _audioPlayer.stop();
-        await _audioPlayer.play(AssetSource('audio/correct-sfx.wav'));
+        await sl<SoundService>().play('audio/correct-sfx.wav');
       } else {
-        await _audioPlayer.stop();
-        await _audioPlayer.play(AssetSource('audio/wrong-sfx.wav'));
+        await sl<SoundService>().play('audio/wrong-sfx.wav');
       }
     } catch (e) {
       debugPrint('Error playing sound: $e');
