@@ -35,6 +35,7 @@ class CategorySuggestions {
     "Philosophy",
     "Technology",
     "Languages",
+    "The history of London",
   ];
 
   static const List<String> specializedEn = [
@@ -71,6 +72,10 @@ class CategorySuggestions {
     "Yoga Styles",
     "Harry Potter Spells",
     "Harry Potter",
+    "Frida Kahlo",
+    "Nikola Tesla",
+    "Mario Molina",
+    "Bad Bunny",
   ];
 
   static const List<String> quirkyEn = [
@@ -104,6 +109,7 @@ class CategorySuggestions {
     "Bizarre World Records",
     "Odd Traditions",
     "Weird Inventions",
+    "Dolphins’ World Domination",
   ];
 
   static const List<String> generalEs = [
@@ -140,6 +146,7 @@ class CategorySuggestions {
     "Filosofía",
     "Tecnología",
     "Idiomas",
+    "Historia de México",
   ];
 
   static const List<String> specializedEs = [
@@ -176,6 +183,10 @@ class CategorySuggestions {
     "Estilos de Yoga",
     "Hechizos de Harry Potter",
     "Harry Potter",
+    "Frida Kahlo",
+    "Nikola Tesla",
+    "Mario Molina",
+    "Bad Bunny",
   ];
 
   static const List<String> quirkyEs = [
@@ -207,6 +218,7 @@ class CategorySuggestions {
     "Récords Mundiales Bizarros",
     "Tradiciones Extrañas",
     "Inventos Raros",
+    "El dominio mundial de los delfines",
   ];
 
   static List<String> getSuggestions(
