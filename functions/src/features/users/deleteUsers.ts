@@ -1,6 +1,8 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
+import {db} from "../../config/firebase";
+
 interface DeleteUsersRequest {
   userIds: string[];
 }
@@ -27,6 +29,18 @@ export const deleteUsers = functions.https.onCall(
 
     try {
       const deleteResult = await admin.auth().deleteUsers(validUserIds);
+
+      // Delete user documents from Firestore in batches of 500
+      const batchSize = 500;
+      for (let i = 0; i < validUserIds.length; i += batchSize) {
+        const batch = db.batch();
+        const chunk = validUserIds.slice(i, i + batchSize);
+        chunk.forEach((id) => {
+          const userRef = db.collection("users").doc(id);
+          batch.delete(userRef);
+        });
+        await batch.commit();
+      }
 
       if (deleteResult.failureCount > 0) {
           functions.logger.warn(`Failed to delete ${deleteResult.failureCount} users.`, deleteResult.errors);
