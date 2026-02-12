@@ -6,6 +6,8 @@ interface GrantInitialTokensRequest {
   deviceId: string;
 }
 
+const INITIAL_TOKENS_AMOUNT = 20;
+
 export const grantInitialTokens = functions.https.onCall(
   async (data: GrantInitialTokensRequest, context) => {
     const {deviceId} = data;
@@ -62,7 +64,7 @@ export const grantInitialTokens = functions.https.onCall(
         transaction.set(
           userRef,
           {
-            tokens: 10,
+            tokens: INITIAL_TOKENS_AMOUNT,
             hasClaimedInitialTokens: true,
           },
           {merge: true},
