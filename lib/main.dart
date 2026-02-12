@@ -14,12 +14,14 @@ import 'package:endless_trivia/features/profile/presentation/bloc/profile_event.
 import 'package:endless_trivia/core/localization/bloc/locale_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:endless_trivia/features/store/data/services/revenue_cat_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await di.init();
+  await RevenueCatService().init();
 
   runApp(MultiProvider(child: const EndlessTriviaApp()));
 }
