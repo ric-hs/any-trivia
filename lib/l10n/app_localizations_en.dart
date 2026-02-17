@@ -9,7 +9,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appTitle => 'Endless Trivia';
+  String get appTitle => 'AnyTrivia';
 
   @override
   String get appSlogan => 'If you can think it, you can play it';

@@ -43,7 +43,7 @@ class EndlessTriviaApp extends StatelessWidget {
       child: BlocBuilder<LocaleBloc, LocaleState>(
         builder: (context, localeState) {
           return MaterialApp(
-            title: 'Endless Trivia',
+            title: 'AnyTrivia',
             debugShowCheckedModeBanner: false,
             theme: AppTheme.darkTheme,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -54,6 +54,7 @@ class EndlessTriviaApp extends StatelessWidget {
                 if (state.status == AuthStatus.authenticated &&
                     state.user != null) {
                   context.read<ProfileBloc>().add(LoadProfile(state.user!.id));
+                  RevenueCatService().logIn(state.user!.id);
                 }
               },
               builder: (context, state) {

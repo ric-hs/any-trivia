@@ -38,6 +38,7 @@ class RevenueCatService {
     try {
       Offerings offerings = await Purchases.getOfferings();
       if (offerings.current != null) {
+        debugPrint("Lalala");
         return offerings;
       } else {
         debugPrint("No current offerings found");
@@ -78,6 +79,16 @@ class RevenueCatService {
       _customerInfoController.add(customerInfo);
     } catch (e) {
       debugPrint("Error restoring purchases: $e");
+    }
+  }
+
+  Future<void> logIn(String userId) async {
+    try {
+      CustomerInfo customerInfo = await Purchases.logIn(userId).then((value) => value.customerInfo);
+      debugPrint("RevenueCat login successful for user: $userId");
+      _customerInfoController.add(customerInfo);
+    } catch (e) {
+      debugPrint("Error logging in to RevenueCat: $e");
     }
   }
 }

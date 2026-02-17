@@ -1,4 +1,4 @@
-# endless_trivia
+# any_trivia
 
 A new Flutter project.
 
