@@ -50,8 +50,23 @@ class RevenueCatService {
     }
   }
 
-  Future<void> purchasePackage(Package package) async {
+  Future<void> purchasePackage(Package package, String expectedUserId) async {
     try {
+      final appUserID = await Purchases.appUserID;
+      if (appUserID != expectedUserId) {
+        debugPrint("User ID mismatch detected. Auto-logging in as $expectedUserId");
+        await logIn(expectedUserId);
+        
+        final newAppUserID = await Purchases.appUserID;
+        if (newAppUserID != expectedUserId) {
+           throw PlatformException(
+            code: 'USER_ID_MISMATCH_AFTER_LOGIN',
+            message: 'User ID mismatch persists after login attempt. Purchase aborted.',
+            details: {'expected': expectedUserId, 'actual': newAppUserID},
+          );
+        }
+      }
+
       CustomerInfo customerInfo = (await Purchases.purchasePackage(package)).customerInfo;
       // Update our stream with the new info
       _customerInfoController.add(customerInfo);
@@ -91,4 +106,15 @@ class RevenueCatService {
       debugPrint("Error logging in to RevenueCat: $e");
     }
   }
+
+  Future<void> logOut() async {
+    try {
+      await Purchases.logOut();
+      debugPrint("RevenueCat logout successful");
+    } catch (e) {
+      debugPrint("Error logging out from RevenueCat: $e");
+    }
+  }
+
+  Future<String> get appUserID async => await Purchases.appUserID;
 }

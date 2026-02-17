@@ -55,6 +55,8 @@ class EndlessTriviaApp extends StatelessWidget {
                     state.user != null) {
                   context.read<ProfileBloc>().add(LoadProfile(state.user!.id));
                   RevenueCatService().logIn(state.user!.id);
+                } else if (state.status == AuthStatus.unauthenticated) {
+                  RevenueCatService().logOut();
                 }
               },
               builder: (context, state) {

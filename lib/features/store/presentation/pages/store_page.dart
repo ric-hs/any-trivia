@@ -7,6 +7,8 @@ import 'package:endless_trivia/core/presentation/widgets/glass_container.dart';
 import 'package:endless_trivia/features/store/data/services/revenue_cat_service.dart';
 import 'package:endless_trivia/l10n/app_localizations.dart';
 import 'package:endless_trivia/features/store/presentation/widgets/store_item_card.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:endless_trivia/features/auth/presentation/bloc/auth_bloc.dart';
 
 class StorePage extends StatefulWidget {
   const StorePage({super.key});
@@ -35,11 +37,30 @@ class _StorePageState extends State<StorePage> {
     }
   }
 
+
+
   Future<void> _buyPackage(Package package) async {
+    final userId = context.read<AuthBloc>().state.user?.id;
+    if (userId == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please log in to purchase')),
+      );
+      return;
+    }
+
     setState(() => _isLoading = true);
-    await RevenueCatService().purchasePackage(package);
-    if (mounted) {
-      setState(() => _isLoading = false);
+    try {
+      await RevenueCatService().purchasePackage(package, userId);
+    } catch (e) {
+      if (mounted) {
+         ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Purchase failed: $e')),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
