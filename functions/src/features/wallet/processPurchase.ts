@@ -1,6 +1,9 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+import { defineSecret } from "firebase-functions/params";
 import {db} from "../../config/firebase";
+
+const revenueCatAuthHeader = defineSecret("REVENUECAT_AUTH_HEADER");
 
 // Define the structure of the RevenueCat webhook event
 // We only need a few fields for this implementation
@@ -25,12 +28,11 @@ const PRODUCT_TOKENS: Record<string, number> = {
   "anytrivia_anytokens_200_v1": 200,
 };
 
-export const processPurchase = functions.https.onRequest(async (req, res) => {
+export const processPurchase = functions.runWith({ secrets: [revenueCatAuthHeader] }).https.onRequest(async (req, res) => {
   // 1. Verify Authorization Header
-  // Using a hardcoded value or config for now.
-  // Ideally, use functions.config().revenuecat.secret
+  // Using Google Cloud Secret REVENUECAT_AUTH_HEADER
   const authHeader = req.headers.authorization;
-  const expectedAuthHeader = functions.config().revenuecat?.secret || "YOUR_REVENUECAT_SECRET_HERE";
+  const expectedAuthHeader = revenueCatAuthHeader.value();
 
   if (!expectedAuthHeader || authHeader !== expectedAuthHeader) {
     functions.logger.warn("Unauthorized webhook attempt", {authHeader});
