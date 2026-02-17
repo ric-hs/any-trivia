@@ -16,6 +16,21 @@ class StoreItemCard extends StatelessWidget {
     required this.index,
   });
 
+  String _getImagePath(String identifier) {
+    switch (identifier) {
+      case 'anytrivia_anytokens_20_v1':
+        return 'assets/store_icons/xs_pack.png';
+      case 'anytrivia_anytokens_50_v1':
+        return 'assets/store_icons/s_pack.png';
+      case 'anytrivia_anytokens_100_v1':
+        return 'assets/store_icons/m_pack.png';
+      case 'anytrivia_anytokens_200_v1':
+        return 'assets/store_icons/l_pack.png';
+      default:
+        return 'assets/store_icons/fallback_icon.png';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -24,6 +39,13 @@ class StoreItemCard extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Row(
           children: [
+            Image.asset(
+              _getImagePath(package.storeProduct.identifier),
+              width: 60,
+              height: 60,
+              fit: BoxFit.contain,
+            ),
+            const SizedBox(width: 16),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
