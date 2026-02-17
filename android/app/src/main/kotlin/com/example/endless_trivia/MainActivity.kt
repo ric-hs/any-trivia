@@ -1,4 +1,4 @@
-package com.example.endless_trivia
+package com.ricardohs.anytrivia
 
 import io.flutter.embedding.android.FlutterActivity
 

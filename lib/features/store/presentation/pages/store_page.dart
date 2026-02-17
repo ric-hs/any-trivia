@@ -6,6 +6,7 @@ import 'package:endless_trivia/core/presentation/widgets/gradient_background.dar
 import 'package:endless_trivia/core/presentation/widgets/glass_container.dart';
 import 'package:endless_trivia/features/store/data/services/revenue_cat_service.dart';
 import 'package:endless_trivia/l10n/app_localizations.dart';
+import 'package:endless_trivia/features/store/presentation/widgets/store_item_card.dart';
 
 class StorePage extends StatefulWidget {
   const StorePage({super.key});
@@ -42,16 +43,16 @@ class _StorePageState extends State<StorePage> {
     }
   }
 
-  Future<void> _restorePurchases() async {
-    setState(() => _isLoading = true);
-    await RevenueCatService().restorePurchases();
-    if (mounted) {
-      setState(() => _isLoading = false);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Purchases restored')),
-      );
-    }
-  }
+  // Future<void> _restorePurchases() async {
+  //   setState(() => _isLoading = true);
+  //   await RevenueCatService().restorePurchases();
+  //   if (mounted) {
+  //     setState(() => _isLoading = false);
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(content: Text('Purchases restored')),
+  //     );
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -74,11 +75,11 @@ class _StorePageState extends State<StorePage> {
         ),
         centerTitle: true,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.restore, color: Colors.white),
-            onPressed: _restorePurchases,
-            tooltip: 'Restore Purchases',
-          ),
+          // IconButton(
+          //   icon: const Icon(Icons.restore, color: Colors.white),
+          //   onPressed: _restorePurchases,
+          //   tooltip: 'Restore Purchases',
+          // ),
         ],
       ),
       body: GradientBackground(
@@ -138,52 +139,10 @@ class _StorePageState extends State<StorePage> {
       itemCount: _offerings!.current!.availablePackages.length,
       itemBuilder: (context, index) {
         final package = _offerings!.current!.availablePackages[index];
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 16.0),
-          child: GlassContainer(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        package.storeProduct.title,
-                        style: GoogleFonts.outfit(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        package.storeProduct.description,
-                        style: GoogleFonts.outfit(
-                          color: Colors.white70,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () => _buyPackage(package),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF00E5FF),
-                    foregroundColor: Colors.black,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                  child: Text(
-                    package.storeProduct.priceString,
-                    style: GoogleFonts.outfit(fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ],
-            ),
-          ).animate().fadeIn(delay: (100 * index).ms).slideY(begin: 0.1, end: 0),
+        return StoreItemCard(
+          package: package,
+          onBuy: () => _buyPackage(package),
+          index: index,
         );
       },
     );

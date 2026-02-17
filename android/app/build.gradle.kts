@@ -18,7 +18,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.example.endless_trivia"
+    namespace = "com.ricardohs.anytrivia"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
