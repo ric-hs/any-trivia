@@ -12,7 +12,6 @@ class RevenueCatService {
 
   RevenueCatService._internal();
 
-  // TODO: Replace with your actual RevenueCat API Key
   // It is recommended to use separate keys for Android and iOS if they are different in RevenueCat
   final String _apiKey = Platform.isAndroid
       ? "goog_ThwLpqGEEJZZExebhWEendmSKtI"

@@ -3,6 +3,7 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:endless_trivia/core/services/device_info_service.dart';
 import 'package:endless_trivia/features/profile/domain/entities/user_profile.dart';
 import 'package:endless_trivia/features/profile/domain/repositories/profile_repository.dart';
+import 'package:flutter/foundation.dart';
 
 class ProfileRepositoryImpl implements ProfileRepository {
   final FirebaseFirestore _firestore;
@@ -70,7 +71,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
           // Log error but don't fail profile creation
           // This might happen if tokens were already claimed for this device
           // TODO: Add warning log here
-          print('Error granting initial tokens: $e');
+          debugPrint('Error granting initial tokens: $e');
         }
       }
     } catch (e) {

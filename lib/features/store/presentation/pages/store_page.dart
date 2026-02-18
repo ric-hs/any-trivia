@@ -12,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:endless_trivia/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:endless_trivia/features/profile/presentation/bloc/profile_state.dart';
+import 'package:endless_trivia/core/presentation/widgets/custom_snackbar.dart';
 
 class StorePage extends StatefulWidget {
   const StorePage({super.key});
@@ -44,11 +45,10 @@ class _StorePageState extends State<StorePage> {
     final userId = context.read<AuthBloc>().state.user?.id;
     if (userId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            AppLocalizations.of(context)?.loginToPurchase ??
-                'Please log in to purchase',
-          ),
+        CustomSnackBar.error(
+          message: AppLocalizations.of(context)?.loginToPurchase ??
+              'Please log in to purchase',
+          context: context,
         ),
       );
       return;
@@ -101,32 +101,27 @@ class _StorePageState extends State<StorePage> {
       if (mounted) {
         if (isUpdated) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                AppLocalizations.of(context)?.purchaseSuccessTokensAdded ??
-                    'Purchase successful! Tokens added.',
-              ),
-              backgroundColor: Colors.green,
+            CustomSnackBar.success(
+              message: AppLocalizations.of(context)?.purchaseSuccessTokensAdded ??
+                  'Purchase successful! Tokens added.',
+              context: context,
             ),
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                AppLocalizations.of(
-                      context,
-                    )?.purchaseSuccessTokensAddedShortly ??
-                    'Purchase successful! Tokens will be added shortly.',
-              ),
-              backgroundColor: Colors.orange,
-              duration: const Duration(seconds: 5),
+            CustomSnackBar.warning(
+              message: AppLocalizations.of(
+                    context,
+                  )?.purchaseSuccessTokensAddedShortly ??
+                  'Purchase successful! Tokens will be added shortly.',
+              context: context,
             ),
           );
         }
       }
     } catch (e) {
       if (mounted) {
-        var errorCode;
+        PurchasesErrorCode? errorCode;
         if (e is PlatformException) {
           errorCode = PurchasesErrorHelper.getErrorCode(e);
         }
@@ -137,54 +132,21 @@ class _StorePageState extends State<StorePage> {
 
         if (errorCode == PurchasesErrorCode.paymentPendingError) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                AppLocalizations.of(context)
-                        ?.purchaseFailedPaymentPendingError ??
-                    'Payment pending...',
-              ),
-              backgroundColor: Colors.orange,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              behavior: SnackBarBehavior.floating,
-              duration: const Duration(seconds: 5),
+            CustomSnackBar.warning(
+              message: AppLocalizations.of(context)
+                      ?.purchaseFailedPaymentPendingError ??
+                  'Payment pending...',
+              context: context,
             ),
           );
           return;
         }
 
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Row(
-              children: [
-                Icon(Icons.error_outline, color: Color(0xFFFF5252)), // Red Icon
-                SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    AppLocalizations.of(context)?.purchaseFailed ??
-                        'Purchase failed',
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                ),
-              ],
-            ),
-            // content: Text(
-            //   AppLocalizations.of(context)?.purchaseFailed ?? 'Purchase failed',
-            //   style: const TextStyle(color: Colors.white),
-            // ),
-            backgroundColor: const Color(0xFF323232),
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-              side: const BorderSide(
-                color: Colors.white24,
-                width: 1,
-              ), // Subtle border
-            ),
-            duration: const Duration(
-              seconds: 8,
-            ), // Longer for financial errors
+          CustomSnackBar.error(
+            message: AppLocalizations.of(context)?.purchaseFailed ??
+                'Purchase failed',
+            context: context,
           ),
         );
       }
