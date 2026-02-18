@@ -1,5 +1,5 @@
 import * as functions from "firebase-functions";
-import * as admin from "firebase-admin";
+import { FieldValue } from "firebase-admin/firestore";
 import { defineSecret } from "firebase-functions/params";
 import {db} from "../../config/firebase";
 
@@ -8,7 +8,7 @@ const revenueCatAuthHeader = defineSecret("REVENUECAT_AUTH_HEADER");
 // Define the structure of the RevenueCat webhook event
 // We only need a few fields for this implementation
 interface RevenueCatEvent {
-  event_id: string;
+  id: string;
   type: string;
   app_user_id: string;
   product_id: string;
@@ -50,7 +50,7 @@ export const processPurchase = functions.runWith({ secrets: [revenueCatAuthHeade
       return;
     }
 
-    const {event_id, type, app_user_id, product_id} = event;
+    const {id, type, app_user_id, product_id} = event;
 
     // We only care about initial purchases or renewals that give tokens
     // For consumable tokens, it's usually INITIAL_PURCHASE or NON_RENEWING_PURCHASE depending on setup
@@ -73,13 +73,13 @@ export const processPurchase = functions.runWith({ secrets: [revenueCatAuthHeade
     }
 
     // 2. Idempotency Check
-    const eventRef = db.collection("processed_events").doc(event_id);
+    const eventRef = db.collection("processed_events").doc(id);
     
     // We use a transaction to ensure atomicity of the check and the user update
     await db.runTransaction(async (transaction) => {
       const eventDoc = await transaction.get(eventRef);
       if (eventDoc.exists) {
-        functions.logger.info(`Event ${event_id} already processed.`);
+        functions.logger.info(`Event ${id} already processed.`);
         return;
       }
 
@@ -90,9 +90,10 @@ export const processPurchase = functions.runWith({ secrets: [revenueCatAuthHeade
         functions.logger.info(`User ${app_user_id} not found. Creating new user with ${tokensToAdd} tokens.`);
         transaction.set(userRef, {
           tokens: tokensToAdd,
-          createdAt: admin.firestore.FieldValue.serverTimestamp(),
+          createdAt: FieldValue.serverTimestamp(),
         }, {merge: true});
       } else {
+        functions.logger.info(`User ${app_user_id} found. Adding ${tokensToAdd} tokens.`);
         const currentTokens = userDoc.data()?.tokens || 0;
         transaction.update(userRef, {
           tokens: currentTokens + tokensToAdd,
@@ -102,7 +103,7 @@ export const processPurchase = functions.runWith({ secrets: [revenueCatAuthHeade
 
       // Mark event as processed
       transaction.set(eventRef, {
-        processedAt: admin.firestore.FieldValue.serverTimestamp(),
+        processedAt: FieldValue.serverTimestamp(),
         event_type: type,
         product_id: product_id,
         user_id: app_user_id,
