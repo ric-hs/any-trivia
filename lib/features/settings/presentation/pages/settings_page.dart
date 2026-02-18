@@ -57,7 +57,27 @@ class _SettingsPageState extends State<SettingsPage> {
     if (!await launchUrl(emailLaunchUri)) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Could not launch email app')),
+          const SnackBar(
+            content: Text(
+              "Could not launch email app, please send an email to 'contacto@ricardohs.com'",
+            ),
+            duration: Duration(seconds: 8),
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _launchCreditsUrl() async {
+    final Uri url = Uri.parse('https://ricardohs.com/');
+    if (!await launchUrl(url)) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Could not launch developer website (https://ricardohs.com/)',
+            ),
+          ),
         );
       }
     }
@@ -88,23 +108,27 @@ class _SettingsPageState extends State<SettingsPage> {
                   const SizedBox(height: 16),
                   BlocBuilder<SettingsBloc, SettingsState>(
                     builder: (context, state) {
-                    return SwitchListTile(
-                      title: Text(l10n.soundEffects),
-                      value: !state.isSoundMuted,
-                      onChanged: (bool value) {
-                        context.read<SettingsBloc>().add(ToggleMuteSounds(!value));
-                      },
-                      secondary: Icon(
-                        state.isSoundMuted ? Icons.volume_off : Icons.volume_up,
-                        color: const Color(0xFFBB86FC),
-                      ),
-                      activeThumbColor: const Color(0xFFBB86FC),
-                      contentPadding: EdgeInsets.zero,
-                    );
+                      return SwitchListTile(
+                        title: Text(l10n.soundEffects),
+                        value: !state.isSoundMuted,
+                        onChanged: (bool value) {
+                          context.read<SettingsBloc>().add(
+                            ToggleMuteSounds(!value),
+                          );
+                        },
+                        secondary: Icon(
+                          state.isSoundMuted
+                              ? Icons.volume_off
+                              : Icons.volume_up,
+                          color: const Color(0xFFBB86FC),
+                        ),
+                        activeThumbColor: const Color(0xFFBB86FC),
+                        contentPadding: EdgeInsets.zero,
+                      );
                     },
                   ),
                   const SizedBox(height: 32),
-  
+
                   // Language Selection
                   Text(
                     l10n.language,
@@ -145,7 +169,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     },
                   ),
                   const SizedBox(height: 48),
-  
+
                   // Sign Out
                   if (kDebugMode) ...[
                     const SizedBox(height: 48),
@@ -160,10 +184,12 @@ class _SettingsPageState extends State<SettingsPage> {
                         icon: const Icon(Icons.logout),
                         label: Text(l10n.signOut),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFFD300F9).withValues(alpha: 0.1),
+                          backgroundColor: Color(
+                            0xFFD300F9,
+                          ).withValues(alpha: 0.1),
                           foregroundColor: Color(0xFFD300F9),
                           side: const BorderSide(color: Color(0xFFD300F9)),
-                          elevation: 0
+                          elevation: 0,
                         ),
                       ),
                     ),
@@ -171,7 +197,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ],
               ),
             ),
-  
+
             // Contact Support
             Container(
               width: double.infinity,
@@ -199,6 +225,20 @@ class _SettingsPageState extends State<SettingsPage> {
                       style: const TextStyle(fontSize: 10),
                     ),
                   ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            // Credits
+            Center(
+              child: GestureDetector(
+                onTap: _launchCreditsUrl,
+                child: const Text(
+                  'Developed by Ricardo Huerta',
+                  style: TextStyle(
+                    fontSize: 12,
+                    decoration: TextDecoration.underline,
+                  ),
                 ),
               ),
             ),
