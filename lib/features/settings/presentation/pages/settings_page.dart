@@ -98,7 +98,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         state.isSoundMuted ? Icons.volume_off : Icons.volume_up,
                         color: const Color(0xFFBB86FC),
                       ),
-                      activeColor: const Color(0xFFBB86FC),
+                      activeThumbColor: const Color(0xFFBB86FC),
                       contentPadding: EdgeInsets.zero,
                     );
                     },
@@ -202,7 +202,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
               ),
             ),
-            SizedBox(height: 48),
+            SizedBox(height: 60),
           ],
         ),
       ),

@@ -31,7 +31,7 @@ class GradientBackground extends StatelessWidget {
               center: const Alignment(-0.8, -0.8),
               radius: 1.2,
               colors: [
-                const Color(0xFFD500F9).withOpacity(0.15),
+                const Color(0xFFD500F9).withValues(alpha: 0.15),
                 Colors.transparent,
               ],
               stops: const [0.0, 1.0],
@@ -45,7 +45,7 @@ class GradientBackground extends StatelessWidget {
               center: const Alignment(0.8, 0.8),
               radius: 1.2,
               colors: [
-                const Color(0xFF00E5FF).withOpacity(0.15),
+                const Color(0xFF00E5FF).withValues(alpha: 0.15),
                 Colors.transparent,
               ],
               stops: const [0.0, 1.0],
