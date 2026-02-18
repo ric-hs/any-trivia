@@ -117,5 +117,6 @@
     "purchaseSuccessTokensAdded": "Purchase successful! Tokens added.",
     "purchaseSuccessTokensAddedShortly": "Purchase successful! Tokens will be added shortly.",
     "purchaseFailed": "Purchase failed",
-    "purchaseFailedPaymentPendingError": "We are still processing your payment, if successful tokens will be added shortly."
+    "purchaseFailedPaymentPendingError": "We are still processing your payment, if successful tokens will be added shortly.",
+    "version": "Version"
 }

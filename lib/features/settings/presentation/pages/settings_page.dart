@@ -12,6 +12,7 @@ import 'package:endless_trivia/l10n/app_localizations.dart';
 import 'package:endless_trivia/core/services/device_info_service.dart';
 import 'package:endless_trivia/core/di/injection_container.dart' as di;
 import 'package:url_launcher/url_launcher.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class SettingsPage extends StatefulWidget {
   final String userId;
@@ -24,12 +25,22 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   String? _deviceId;
+  String? _appVersion;
 
-  @override
   @override
   void initState() {
     super.initState();
     _loadDeviceId();
+    _loadAppVersion();
+  }
+
+  Future<void> _loadAppVersion() async {
+    final packageInfo = await PackageInfo.fromPlatform();
+    if (mounted) {
+      setState(() {
+        _appVersion = packageInfo.version;
+      });
+    }
   }
 
   Future<void> _loadDeviceId() async {
@@ -224,6 +235,11 @@ class _SettingsPageState extends State<SettingsPage> {
                       '${l10n.deviceIdLabel}: ${_truncate(_deviceId)}',
                       style: const TextStyle(fontSize: 10),
                     ),
+                    if (_appVersion != null)
+                      Text(
+                        '${l10n.version}: $_appVersion',
+                        style: const TextStyle(fontSize: 10),
+                      ),
                   ],
                 ),
               ),

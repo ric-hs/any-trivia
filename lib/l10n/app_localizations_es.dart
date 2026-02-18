@@ -244,4 +244,7 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get purchaseFailedPaymentPendingError =>
       'Seguimos procesando tu pago. Si es exitoso, los tokens se agregarán en breve.';
+
+  @override
+  String get version => 'Versión';
 }

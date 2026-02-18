@@ -72,5 +72,6 @@
     "purchaseSuccessTokensAdded": "¡Compra exitosa! Tokens agregados.",
     "purchaseSuccessTokensAddedShortly": "¡Compra exitosa! Los tokens se agregarán en breve.",
     "purchaseFailed": "Compra fallida",
-    "purchaseFailedPaymentPendingError": "Seguimos procesando tu pago. Si es exitoso, los tokens se agregarán en breve."
+    "purchaseFailedPaymentPendingError": "Seguimos procesando tu pago. Si es exitoso, los tokens se agregarán en breve.",
+    "version": "Versión"
 }
