@@ -505,6 +505,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sound Effects'**
   String get soundEffects;
+
+  /// No description provided for @loginToPurchase.
+  ///
+  /// In en, this message translates to:
+  /// **'Please log in to purchase'**
+  String get loginToPurchase;
+
+  /// No description provided for @purchaseSuccessTokensAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase successful! Tokens added.'**
+  String get purchaseSuccessTokensAdded;
+
+  /// No description provided for @purchaseSuccessTokensAddedShortly.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase successful! Tokens will be added shortly.'**
+  String get purchaseSuccessTokensAddedShortly;
+
+  /// No description provided for @purchaseFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase failed'**
+  String get purchaseFailed;
+
+  /// No description provided for @purchaseFailedPaymentPendingError.
+  ///
+  /// In en, this message translates to:
+  /// **'We are still processing your payment, if successful tokens will be added shortly.'**
+  String get purchaseFailedPaymentPendingError;
 }
 
 class _AppLocalizationsDelegate

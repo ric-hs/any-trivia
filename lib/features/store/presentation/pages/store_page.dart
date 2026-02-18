@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -9,6 +10,8 @@ import 'package:endless_trivia/l10n/app_localizations.dart';
 import 'package:endless_trivia/features/store/presentation/widgets/store_item_card.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:endless_trivia/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:endless_trivia/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:endless_trivia/features/profile/presentation/bloc/profile_state.dart';
 
 class StorePage extends StatefulWidget {
   const StorePage({super.key});
@@ -37,24 +40,152 @@ class _StorePageState extends State<StorePage> {
     }
   }
 
-
-
   Future<void> _buyPackage(Package package) async {
     final userId = context.read<AuthBloc>().state.user?.id;
     if (userId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please log in to purchase')),
+        SnackBar(
+          content: Text(
+            AppLocalizations.of(context)?.loginToPurchase ??
+                'Please log in to purchase',
+          ),
+        ),
       );
       return;
     }
 
     setState(() => _isLoading = true);
+
     try {
+      // 1. Get initial tokens from ProfileBloc
+      final profileBloc = context.read<ProfileBloc>();
+      final initialTokens = profileBloc.state is ProfileLoaded
+          ? (profileBloc.state as ProfileLoaded).profile.tokens
+          : 0;
+
+      // 2. Perform purchase
       await RevenueCatService().purchasePackage(package, userId);
+
+      // 3. Wait for tokens to increase
+      // First, check if the state is already updated (race condition handling)
+      bool isUpdated = false;
+      if (profileBloc.state is ProfileLoaded) {
+        final currentTokens =
+            (profileBloc.state as ProfileLoaded).profile.tokens;
+        if (currentTokens > initialTokens) {
+          isUpdated = true;
+        }
+      }
+
+      if (!isUpdated) {
+        // We expect the backend webhook to update the user's tokens,
+        // which will then be reflected in the ProfileBloc via a stream subscription.
+        try {
+          await profileBloc.stream
+              .firstWhere((state) {
+                if (state is ProfileLoaded) {
+                  return state.profile.tokens > initialTokens;
+                }
+                return false;
+              })
+              .timeout(const Duration(seconds: 15));
+          isUpdated = true;
+        } catch (e) {
+          // Timeout or error waiting for tokens.
+          // We still consider the purchase successful (RevenueCat succeeded),
+          // but the UI update might be delayed.
+          debugPrint('Token update timed out or failed: $e');
+        }
+      }
+
+      if (mounted) {
+        if (isUpdated) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                AppLocalizations.of(context)?.purchaseSuccessTokensAdded ??
+                    'Purchase successful! Tokens added.',
+              ),
+              backgroundColor: Colors.green,
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                AppLocalizations.of(
+                      context,
+                    )?.purchaseSuccessTokensAddedShortly ??
+                    'Purchase successful! Tokens will be added shortly.',
+              ),
+              backgroundColor: Colors.orange,
+              duration: const Duration(seconds: 5),
+            ),
+          );
+        }
+      }
     } catch (e) {
       if (mounted) {
-         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Purchase failed: $e')),
+        var errorCode;
+        if (e is PlatformException) {
+          errorCode = PurchasesErrorHelper.getErrorCode(e);
+        }
+
+        if (errorCode == PurchasesErrorCode.purchaseCancelledError) {
+          return;
+        }
+
+        if (errorCode == PurchasesErrorCode.paymentPendingError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                AppLocalizations.of(context)
+                        ?.purchaseFailedPaymentPendingError ??
+                    'Payment pending...',
+              ),
+              backgroundColor: Colors.orange,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              behavior: SnackBarBehavior.floating,
+              duration: const Duration(seconds: 5),
+            ),
+          );
+          return;
+        }
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                Icon(Icons.error_outline, color: Color(0xFFFF5252)), // Red Icon
+                SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    AppLocalizations.of(context)?.purchaseFailed ??
+                        'Purchase failed',
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+            // content: Text(
+            //   AppLocalizations.of(context)?.purchaseFailed ?? 'Purchase failed',
+            //   style: const TextStyle(color: Colors.white),
+            // ),
+            backgroundColor: const Color(0xFF323232),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+              side: const BorderSide(
+                color: Colors.white24,
+                width: 1,
+              ), // Subtle border
+            ),
+            duration: const Duration(
+              seconds: 8,
+            ), // Longer for financial errors
+          ),
         );
       }
     } finally {
@@ -106,7 +237,9 @@ class _StorePageState extends State<StorePage> {
       body: GradientBackground(
         child: SafeArea(
           child: _isLoading
-              ? const Center(child: CircularProgressIndicator(color: Colors.white))
+              ? const Center(
+                  child: CircularProgressIndicator(color: Colors.white),
+                )
               : _buildBody(),
         ),
       ),
@@ -114,7 +247,9 @@ class _StorePageState extends State<StorePage> {
   }
 
   Widget _buildBody() {
-    if (_offerings == null || _offerings!.current == null || _offerings!.current!.availablePackages.isEmpty) {
+    if (_offerings == null ||
+        _offerings!.current == null ||
+        _offerings!.current!.availablePackages.isEmpty) {
       return Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
@@ -127,10 +262,14 @@ class _StorePageState extends State<StorePage> {
                     Icons.storefront_rounded,
                     size: 64,
                     color: Color(0xFF00E5FF),
-                  ).animate().scale(duration: 600.ms, curve: Curves.easeOutBack),
+                  ).animate().scale(
+                    duration: 600.ms,
+                    curve: Curves.easeOutBack,
+                  ),
                   const SizedBox(height: 16),
                   Text(
-                    AppLocalizations.of(context)?.storeComingSoon ?? 'Coming Soon',
+                    AppLocalizations.of(context)?.storeComingSoon ??
+                        'Coming Soon',
                     style: GoogleFonts.outfit(
                       color: Colors.white,
                       fontSize: 20,
@@ -140,7 +279,8 @@ class _StorePageState extends State<StorePage> {
                   ).animate().fadeIn(delay: 200.ms),
                   const SizedBox(height: 8),
                   Text(
-                    AppLocalizations.of(context)?.storeWorkingOnItems ?? 'We are working on new items!',
+                    AppLocalizations.of(context)?.storeWorkingOnItems ??
+                        'We are working on new items!',
                     style: GoogleFonts.outfit(
                       color: Colors.white70,
                       fontSize: 16,

@@ -112,5 +112,10 @@
     "storeWorkingOnItems": "We are working on great items for you!",
     "getTokens": "Get AnyTokens",
     "sound": "Sound",
-    "soundEffects": "Sound Effects"
+    "soundEffects": "Sound Effects",
+    "loginToPurchase": "Please log in to purchase",
+    "purchaseSuccessTokensAdded": "Purchase successful! Tokens added.",
+    "purchaseSuccessTokensAddedShortly": "Purchase successful! Tokens will be added shortly.",
+    "purchaseFailed": "Purchase failed",
+    "purchaseFailedPaymentPendingError": "We are still processing your payment, if successful tokens will be added shortly."
 }

@@ -14,11 +14,12 @@ class RevenueCatService {
 
   // TODO: Replace with your actual RevenueCat API Key
   // It is recommended to use separate keys for Android and iOS if they are different in RevenueCat
-  final String _apiKey = Platform.isAndroid 
-      ? "goog_ThwLpqGEEJZZExebhWEendmSKtI" 
+  final String _apiKey = Platform.isAndroid
+      ? "goog_ThwLpqGEEJZZExebhWEendmSKtI"
       : "test_ZINONBWFkkvrJOqtTGBVPbxYkon";
 
-  final StreamController<CustomerInfo> _customerInfoController = StreamController<CustomerInfo>.broadcast();
+  final StreamController<CustomerInfo> _customerInfoController =
+      StreamController<CustomerInfo>.broadcast();
   Stream<CustomerInfo> get customerInfoStream => _customerInfoController.stream;
 
   Future<void> init() async {
@@ -26,7 +27,7 @@ class RevenueCatService {
 
     PurchasesConfiguration configuration;
     configuration = PurchasesConfiguration(_apiKey);
-    
+
     await Purchases.configure(configuration);
 
     Purchases.addCustomerInfoUpdateListener((customerInfo) {
@@ -54,37 +55,39 @@ class RevenueCatService {
     try {
       final appUserID = await Purchases.appUserID;
       if (appUserID != expectedUserId) {
-        debugPrint("User ID mismatch detected. Auto-logging in as $expectedUserId");
+        debugPrint(
+          "User ID mismatch detected. Auto-logging in as $expectedUserId",
+        );
         await logIn(expectedUserId);
-        
+
         final newAppUserID = await Purchases.appUserID;
         if (newAppUserID != expectedUserId) {
-           throw PlatformException(
+          throw PlatformException(
             code: 'USER_ID_MISMATCH_AFTER_LOGIN',
-            message: 'User ID mismatch persists after login attempt. Purchase aborted.',
+            message:
+                'User ID mismatch persists after login attempt. Purchase aborted.',
             details: {'expected': expectedUserId, 'actual': newAppUserID},
           );
         }
       }
 
-      CustomerInfo customerInfo = (await Purchases.purchasePackage(package)).customerInfo;
+      final purchaseParams = PurchaseParams.package(package);
+      PurchaseResult result = await Purchases.purchase(purchaseParams);
+      CustomerInfo customerInfo = result.customerInfo;
       // Update our stream with the new info
       _customerInfoController.add(customerInfo);
-      
-      bool isPro = customerInfo.entitlements.all["premium"]?.isActive ?? false;
-      if (isPro) {
-        debugPrint("User is now premium!");
-      }
     } catch (e) {
-        // User cancelled is a common error to handle
-        if (e is PlatformException) {
-          var errorCode = PurchasesErrorHelper.getErrorCode(e);
-          if (errorCode != PurchasesErrorCode.purchaseCancelledError) {
-            debugPrint("Error purchasing package: $e");
-          }
-        } else {
-             debugPrint("Error purchasing package: $e");
+      // User cancelled is a common error to handle
+      if (e is PlatformException) {
+        var errorCode = PurchasesErrorHelper.getErrorCode(e);
+        if (errorCode != PurchasesErrorCode.purchaseCancelledError) {
+          debugPrint("Error purchasing package: $e");
         }
+        rethrow;
+      } else {
+        debugPrint("Error purchasing package: $e");
+        rethrow;
+      }
     }
   }
 
@@ -99,7 +102,9 @@ class RevenueCatService {
 
   Future<void> logIn(String userId) async {
     try {
-      CustomerInfo customerInfo = await Purchases.logIn(userId).then((value) => value.customerInfo);
+      CustomerInfo customerInfo = await Purchases.logIn(
+        userId,
+      ).then((value) => value.customerInfo);
       debugPrint("RevenueCat login successful for user: $userId");
       _customerInfoController.add(customerInfo);
     } catch (e) {

@@ -227,4 +227,21 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get soundEffects => 'Efectos de Sonido';
+
+  @override
+  String get loginToPurchase => 'Por favor inicia sesión para comprar';
+
+  @override
+  String get purchaseSuccessTokensAdded => '¡Compra exitosa! Tokens agregados.';
+
+  @override
+  String get purchaseSuccessTokensAddedShortly =>
+      '¡Compra exitosa! Los tokens se agregarán en breve.';
+
+  @override
+  String get purchaseFailed => 'Compra fallida';
+
+  @override
+  String get purchaseFailedPaymentPendingError =>
+      'Seguimos procesando tu pago. Si es exitoso, los tokens se agregarán en breve.';
 }

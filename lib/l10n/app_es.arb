@@ -67,5 +67,10 @@
     "storeWorkingOnItems": "¡Estamos trabajando en cosas geniales para ti!",
     "getTokens": "Obtener AnyTokens",
     "sound": "Sonido",
-    "soundEffects": "Efectos de Sonido"
+    "soundEffects": "Efectos de Sonido",
+    "loginToPurchase": "Por favor inicia sesión para comprar",
+    "purchaseSuccessTokensAdded": "¡Compra exitosa! Tokens agregados.",
+    "purchaseSuccessTokensAddedShortly": "¡Compra exitosa! Los tokens se agregarán en breve.",
+    "purchaseFailed": "Compra fallida",
+    "purchaseFailedPaymentPendingError": "Seguimos procesando tu pago. Si es exitoso, los tokens se agregarán en breve."
 }
