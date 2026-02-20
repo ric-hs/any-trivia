@@ -15,7 +15,7 @@ class RevenueCatService {
   // It is recommended to use separate keys for Android and iOS if they are different in RevenueCat
   final String _apiKey = Platform.isAndroid
       ? "goog_ThwLpqGEEJZZExebhWEendmSKtI"
-      : "test_ZINONBWFkkvrJOqtTGBVPbxYkon";
+      : "appl_OkcOnGtvMEbaorCiZIcRxFtoxZC";
 
   final StreamController<CustomerInfo> _customerInfoController =
       StreamController<CustomerInfo>.broadcast();
