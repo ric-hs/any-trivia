@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -12,8 +11,10 @@ class RevenueCatService {
 
   RevenueCatService._internal();
 
-  // It is recommended to use separate keys for Android and iOS if they are different in RevenueCat
-  final String _apiKey = Platform.isAndroid
+  // TEST API KEY test_ZINONBWFkkvrJOqtTGBVPbxYkon
+  final String _apiKey = (kIsWeb && kDebugMode)
+      ? "test_ZINONBWFkkvrJOqtTGBVPbxYkon"
+      : Platform.isAndroid
       ? "goog_ThwLpqGEEJZZExebhWEendmSKtI"
       : "appl_OkcOnGtvMEbaorCiZIcRxFtoxZC";
 
