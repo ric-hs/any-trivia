@@ -56,20 +56,28 @@ class ProfileRepositoryImpl implements ProfileRepository {
   @override
   Future<void> createProfile(String userId) async {
     try {
+      String? hardwareId;
+
+      try {
+        hardwareId = await _deviceInfoService.getHardwareId();
+      } catch (e) {
+        // Log error but don't fail profile creation
+        debugPrint('Error getting hardware ID: $e');
+      }
+
       await _firestore.collection('users').doc(userId).set({
         'favoriteCategories': [],
+        'createdAt': FieldValue.serverTimestamp(),
+        'deviceId': hardwareId ?? '',
       }, SetOptions(merge: true));
 
       // Grant initial tokens if on iOS or Android
-      final hardwareId = await _deviceInfoService.getHardwareId();
       if (hardwareId != null) {
         try {
           await FirebaseFunctions.instance
               .httpsCallable('grantInitialTokens')
               .call({'deviceId': hardwareId});
         } catch (e) {
-          // Log error but don't fail profile creation
-          // This might happen if tokens were already claimed for this device
           // TODO: Add warning log here
           debugPrint('Error granting initial tokens: $e');
         }

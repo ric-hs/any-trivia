@@ -261,31 +261,6 @@ class _HomePageState extends State<HomePage>
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
-                                  // const SizedBox(height: 16),
-                                  // // Hero Title or Welcome
-                                  // Padding(
-                                  //   padding: const EdgeInsets.symmetric(
-                                  //     horizontal: 24.0,
-                                  //   ),
-                                  //   child: Text(
-                                  //     "PREPARE FOR BATTLE",
-                                  //     style: AppTheme.gameFont.copyWith(
-                                  //       fontSize: 32,
-                                  //       color: Colors.white.withValues(
-                                  //         alpha: 0.9,
-                                  //       ),
-                                  //       letterSpacing: 2,
-                                  //     ),
-                                  //     textAlign: TextAlign.center,
-                                  //   )
-                                  //   .animate()
-                                  //   .fadeIn(duration: 600.ms)
-                                  //   .slideY(begin: -0.2, end: 0),
-                                  // ),
-
-                                  // const SizedBox(height: 24),
-
-                                  // Categories Subtitle
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: 24.0,
