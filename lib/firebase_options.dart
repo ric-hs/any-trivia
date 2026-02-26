@@ -58,7 +58,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyArG9swebtw1h9v5ELqBoQnRk8sRlksfus',
-    appId: '1:439123124050:android:7e545af48931b1180a248b',
+    appId: '1:439123124050:android:2f6adaff2c3077940a248b',
     messagingSenderId: '439123124050',
     projectId: 'endless-trivia-86bd4',
     storageBucket: 'endless-trivia-86bd4.firebasestorage.app',
@@ -66,10 +66,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDJurueSnPZrEfCcN8sATnoEr-5z6s6yUY',
-    appId: '1:439123124050:ios:f94781ab1d7aa26b0a248b',
+    appId: '1:439123124050:ios:e7511d71d5a8f8850a248b',
     messagingSenderId: '439123124050',
     projectId: 'endless-trivia-86bd4',
     storageBucket: 'endless-trivia-86bd4.firebasestorage.app',
-    iosBundleId: 'com.example.endlessTrivia',
+    iosBundleId: 'com.ricardohs.anytrivia',
   );
+
 }

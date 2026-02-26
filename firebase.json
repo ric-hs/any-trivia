@@ -10,9 +10,7 @@
         "*.local"
       ],
       "source": "functions",
-      "predeploy": [
-        "npm --prefix \"$RESOURCE_DIR\" run build"
-      ]
+      "predeploy": ["npm --prefix \"$RESOURCE_DIR\" run build"]
     }
   ],
   "flutter": {
@@ -20,15 +18,15 @@
       "android": {
         "default": {
           "projectId": "endless-trivia-86bd4",
-          "appId": "1:439123124050:android:7e545af48931b1180a248b",
+          "appId": "1:439123124050:android:2f6adaff2c3077940a248b",
           "fileOutput": "android/app/google-services.json"
         }
       },
       "ios": {
         "default": {
           "projectId": "endless-trivia-86bd4",
-          "appId": "1:439123124050:ios:f94781ab1d7aa26b0a248b",
-          "uploadDebugSymbols": false,
+          "appId": "1:439123124050:ios:e7511d71d5a8f8850a248b",
+          "uploadDebugSymbols": true,
           "fileOutput": "ios/Runner/GoogleService-Info.plist"
         }
       },
@@ -36,8 +34,8 @@
         "lib/firebase_options.dart": {
           "projectId": "endless-trivia-86bd4",
           "configurations": {
-            "android": "1:439123124050:android:7e545af48931b1180a248b",
-            "ios": "1:439123124050:ios:f94781ab1d7aa26b0a248b",
+            "android": "1:439123124050:android:2f6adaff2c3077940a248b",
+            "ios": "1:439123124050:ios:e7511d71d5a8f8850a248b",
             "web": "1:439123124050:web:b0872e2d90f7ad7f0a248b"
           }
         }

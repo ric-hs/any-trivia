@@ -9,6 +9,25 @@
       "client_info": {
         "mobilesdk_app_id": "1:439123124050:android:7e545af48931b1180a248b",
         "android_client_info": {
+          "package_name": "com.example.endless_trivia"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArG9swebtw1h9v5ELqBoQnRk8sRlksfus"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:439123124050:android:2f6adaff2c3077940a248b",
+        "android_client_info": {
           "package_name": "com.ricardohs.anytrivia"
         }
       },

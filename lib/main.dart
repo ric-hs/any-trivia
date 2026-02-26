@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:endless_trivia/multi_provider.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:endless_trivia/core/di/injection_container.dart' as di;
@@ -20,6 +23,15 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  FlutterError.onError = (errorDetails) {
+    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  };
+  // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
+
   await di.init();
   await RevenueCatService().init();
 
@@ -36,9 +48,7 @@ class EndlessTriviaApp extends StatelessWidget {
         BlocProvider(
           create: (_) => di.sl<AuthBloc>()..add(AuthSubscriptionRequested()),
         ),
-        BlocProvider(
-          create: (_) => di.sl<LocaleBloc>()..add(LoadLocale()),
-        ),
+        BlocProvider(create: (_) => di.sl<LocaleBloc>()..add(LoadLocale())),
       ],
       child: BlocBuilder<LocaleBloc, LocaleState>(
         builder: (context, localeState) {

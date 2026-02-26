@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.endlessTrivia</string>
+	<string>com.ricardohs.anytrivia</string>
 	<key>PROJECT_ID</key>
 	<string>endless-trivia-86bd4</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:439123124050:ios:f94781ab1d7aa26b0a248b</string>
+	<string>1:439123124050:ios:e7511d71d5a8f8850a248b</string>
 </dict>
 </plist>

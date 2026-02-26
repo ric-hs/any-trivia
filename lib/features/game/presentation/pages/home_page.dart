@@ -676,6 +676,15 @@ class _HomePageState extends State<HomePage>
                                     ),
                                   ).animate().fadeIn(delay: 900.ms).slideY(begin: 0.1, end: 0),
                                 ),
+                                TextButton(
+                                  onPressed: () => throw Exception(),
+                                  child: const Text("Throw Test Exception"),
+                                ),
+
+                                PrimaryButton(
+                                  onPressed: () => throw Exception(),
+                                  child: const Text("Throw Test Exception"),
+                                ),
 
                                 const SizedBox(
                                   height: 128,
@@ -760,8 +769,8 @@ class _HomePageState extends State<HomePage>
                         PrimaryButton(
                           onPressed: () {
                             context.read<ProfileBloc>().add(
-                                  LoadProfile(state.userId),
-                                );
+                              LoadProfile(state.userId),
+                            );
                           },
                           child: Text(
                             AppLocalizations.of(context)!.reloadButton,
