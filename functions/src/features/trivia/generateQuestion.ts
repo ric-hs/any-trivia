@@ -51,6 +51,7 @@ export const generateQuestion = functions
         "category": "The selected category"
       }
       Ensure there is exactly one correct answer and 3 incorrect ones for each question.
+      Make sure to vary the correct answer position across questions (not always index 0).
       Make the questions challenging but fun.
       RETURN ONLY THE RAW JSON. NO MARKDOWN.
     `;
@@ -67,6 +68,7 @@ export const generateQuestion = functions
       }
       Ensure there is exactly one correct answer and 3 incorrect ones.
       Make the question challenging but fun.
+      Make sure to vary the correct answer position (not always index 0).
       RETURN ONLY THE RAW JSON. NO MARKDOWN.
     `;
     }
