@@ -1,6 +1,6 @@
 import * as functions from "firebase-functions";
-import * as admin from "firebase-admin";
 import {db} from "../../config/firebase";
+import { FieldValue } from "firebase-admin/firestore";
 
 interface GrantInitialTokensRequest {
   deviceId: string;
@@ -57,7 +57,7 @@ export const grantInitialTokens = functions.https.onCall(
         // Mark device as used
         transaction.set(deviceRef, {
           userId: userId,
-          claimedAt: admin.firestore.FieldValue.serverTimestamp(),
+          claimedAt: FieldValue.serverTimestamp(),
         });
 
         // Update user profile with initial tokens

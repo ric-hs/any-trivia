@@ -1,10 +1,12 @@
 import * as functions from "firebase-functions";
 import {model} from "../../config/gemini";
+import {db} from "../../config/firebase";
 import {
   PRICE_INPUT_PER_1M,
   PRICE_OUTPUT_PER_1M,
   PRICE_CACHING_PER_1M,
 } from "../../constants/pricing";
+import {FieldValue} from "firebase-admin/firestore";
 
 interface GenerateQuestionRequest {
   categories: string[];
@@ -18,6 +20,13 @@ export const generateQuestion = functions
     timeoutSeconds: 60,
   })
   .https.onCall(async (data: GenerateQuestionRequest, context) => {
+    if (!context.auth) {
+      throw new functions.https.HttpsError(
+        "unauthenticated",
+        "The function must be called while authenticated.",
+      );
+    }
+
     const {categories, language, count = 1} = data;
 
     if (!categories || !categories.length || !language) {
@@ -107,7 +116,21 @@ export const generateQuestion = functions
         console.error("Failed to generate or calculate cost:", error);
       }
 
-      return JSON.parse(cleanText);
+      const questions = JSON.parse(cleanText);
+
+      try {
+        await db.collection("games_history").add({
+          userId: context.auth.uid,
+          categories,
+          count,
+          language,
+          date: FieldValue.serverTimestamp(),
+        });
+      } catch (error) {
+        console.error("Failed to save game history:", error);
+      }
+
+      return questions;
     } catch (e) {
       functions.logger.error("Error generating question:", e);
       functions.logger.log("Payload when error occurred:", data);
