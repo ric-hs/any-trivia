@@ -14,7 +14,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         super(ProfileInitial()) {
     on<LoadProfile>(_onLoadProfile);
     on<UpdateFavoriteCategories>(_onUpdateFavorites);
-    on<ConsumeToken>(_onConsumeToken);
     on<ProfileUpdated>(_onProfileUpdated);
   }
 
@@ -27,7 +26,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       // Ensure profile exists (creation happens here if needed)
       await _profileRepository.getProfile(event.userId);
     } catch (e) {
-      emit(ProfileError(e.toString()));
+      emit(ProfileError(e.toString(), event.userId));
       return;
     }
 
@@ -37,7 +36,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         .getProfileStream(event.userId)
         .listen(
           (profile) => add(ProfileUpdated(profile)),
-          onError: (error) => emit(ProfileError(error.toString())),
+          onError: (error) => emit(ProfileError(error.toString(), event.userId)),
         );
   }
 
@@ -66,14 +65,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       // TODO: Add error logging
        // Optional: Could emit a transient error message or snackbar event here
      }
-  }
-
-  Future<void> _onConsumeToken(ConsumeToken event, Emitter<ProfileState> emit) async {
-    try {
-      await _profileRepository.consumeTokens(event.userId, event.amount);
-    } catch (e) {
-      emit(ProfileError(e.toString()));
-    }
   }
 
   @override

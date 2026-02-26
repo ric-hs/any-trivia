@@ -28,19 +28,6 @@ final class UpdateFavoriteCategories extends ProfileEvent {
   List<Object> get props => [userId, categories];
 }
 
-final class ConsumeToken extends ProfileEvent {
-   final String userId;
-   final int amount;
-
-   const ConsumeToken({
-     required this.userId,
-     required this.amount,
-   });
-
-   @override
-   List<Object> get props => [userId, amount];
-}
-
 final class ProfileUpdated extends ProfileEvent {
   final UserProfile profile;
   const ProfileUpdated(this.profile);

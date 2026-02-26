@@ -23,9 +23,10 @@ final class ProfileLoaded extends ProfileState {
 
 final class ProfileError extends ProfileState {
   final String message;
+  final String userId;
 
-  const ProfileError(this.message);
+  const ProfileError(this.message, this.userId);
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [message, userId];
 }
