@@ -1,3 +1,6 @@
+import 'package:endless_trivia/features/game/presentation/widgets/categort_input.dart';
+import 'package:endless_trivia/features/game/presentation/widgets/selected_category_chip.dart';
+import 'package:endless_trivia/features/profile/domain/entities/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -125,6 +128,30 @@ class _HomePageState extends State<HomePage>
       _selectedCategories.remove(category);
       _categoryColors.remove(category);
     });
+  }
+
+  void _toggleFavorite(String category, bool isFavorite, UserProfile profile) {
+    final newFavorites = List<String>.from(profile.favoriteCategories);
+    if (isFavorite) {
+      newFavorites.remove(category);
+    } else {
+      newFavorites.add(category);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (_favoriteController.hasClients) {
+          _favoriteController.animateTo(
+            _favoriteController.position.maxScrollExtent,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
+        }
+      });
+    }
+    context.read<ProfileBloc>().add(
+      UpdateFavoriteCategories(
+        userId: profile.userId,
+        categories: newFavorites,
+      ),
+    );
   }
 
   void _startGame(BuildContext context, int currentTokens, String userId) {
@@ -281,56 +308,10 @@ class _HomePageState extends State<HomePage>
                                     horizontal: 24.0,
                                   ),
                                   child:
-                                      GlassContainer(
-                                            borderRadius: BorderRadius.circular(
-                                              16,
-                                            ),
-                                            color: const Color(
-                                              0xFF252538,
-                                            ).withValues(alpha: 0.5),
-                                            border: Border.all(
-                                              color: Colors.white10,
-                                            ),
-                                            child: TextField(
-                                              controller: _categoryController,
-                                              maxLength: 64,
-                                              onSubmitted: (_) =>
-                                                  _addCategory(),
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                              ),
-                                              decoration: InputDecoration(
-                                                counterText: "",
-                                                hintText: AppLocalizations.of(
-                                                  context,
-                                                )!.enterTopic,
-                                                filled: false,
-                                                border: InputBorder.none,
-                                                focusedBorder: InputBorder.none,
-                                                enabledBorder: InputBorder.none,
-                                                errorBorder: InputBorder.none,
-                                                disabledBorder:
-                                                    InputBorder.none,
-                                                prefixIcon: Icon(
-                                                  Icons.search,
-                                                  color: Color(0xFF00E5FF),
-                                                ),
-                                                suffixIcon: IconButton(
-                                                  icon: Icon(
-                                                    Icons.add_circle,
-                                                    color: Theme.of(
-                                                      context,
-                                                    ).colorScheme.primary,
-                                                  ),
-                                                  onPressed: _addCategory,
-                                                ),
-                                                contentPadding:
-                                                    const EdgeInsets.symmetric(
-                                                      horizontal: 16,
-                                                      vertical: 14,
-                                                    ),
-                                              ),
-                                            ),
+                                      CategoryInput(
+                                            addCategory: _addCategory,
+                                            categoryController:
+                                                _categoryController,
                                           )
                                           .animate(
                                             autoPlay: false,
@@ -390,71 +371,18 @@ class _HomePageState extends State<HomePage>
                                                 _categoryColors[category] ??
                                                 const Color(0xFF252538);
 
-                                            return InputChip(
-                                              backgroundColor: color.withValues(
-                                                alpha: 0.2,
-                                              ),
-                                              side: BorderSide(color: color),
-                                              label: Text(
-                                                category,
-                                                style: const TextStyle(
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                              onDeleted: () =>
-                                                  _removeCategory(category),
-                                              deleteIcon: const Icon(
-                                                Icons.close,
-                                                size: 18,
-                                                color: Colors.white70,
-                                              ),
-                                              onPressed: () {
-                                                final newFavorites =
-                                                    List<String>.from(
-                                                      profile
-                                                          .favoriteCategories,
-                                                    );
-                                                if (isFavorite) {
-                                                  newFavorites.remove(category);
-                                                } else {
-                                                  newFavorites.add(category);
-                                                  WidgetsBinding.instance
-                                                      .addPostFrameCallback((
-                                                        _,
-                                                      ) {
-                                                        if (_favoriteController
-                                                            .hasClients) {
-                                                          _favoriteController.animateTo(
-                                                            _favoriteController
-                                                                .position
-                                                                .maxScrollExtent,
-                                                            duration:
-                                                                const Duration(
-                                                                  milliseconds:
-                                                                      300,
-                                                                ),
-                                                            curve:
-                                                                Curves.easeOut,
-                                                          );
-                                                        }
-                                                      });
-                                                }
-                                                context.read<ProfileBloc>().add(
-                                                  UpdateFavoriteCategories(
-                                                    userId: profile.userId,
-                                                    categories: newFavorites,
-                                                  ),
-                                                );
-                                              },
-                                              avatar: Icon(
-                                                isFavorite
-                                                    ? Icons.star
-                                                    : Icons.star_border,
-                                                color: isFavorite
-                                                    ? Colors.amber
-                                                    : Colors.grey,
-                                                size: 18,
-                                              ),
+                                            return SelectedCategoryChip(
+                                              category: category,
+                                              isFavorite: isFavorite,
+                                              removeCategory: _removeCategory,
+                                              toggleFavorite:
+                                                  (category, isFavorite) =>
+                                                      _toggleFavorite(
+                                                        category,
+                                                        isFavorite,
+                                                        profile,
+                                                      ),
+                                              color: color,
                                             ).animate().scale();
                                           },
                                         ),
@@ -496,8 +424,6 @@ class _HomePageState extends State<HomePage>
                                   speed: 35.0,
                                 ).animate().fadeIn(delay: 600.ms),
                                 const SizedBox(height: 24),
-
-                                // Favorites Section
 
                                 // Favorites Section
                                 Padding(
