@@ -6,6 +6,7 @@ import 'package:endless_trivia/features/auth/presentation/cubit/login_cubit.dart
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:endless_trivia/core/presentation/widgets/space_background.dart';
 import 'package:endless_trivia/core/presentation/widgets/primary_button.dart';
+import 'package:endless_trivia/core/presentation/widgets/custom_snackbar.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -36,10 +37,9 @@ class _LoginFormState extends State<_LoginForm> {
         listener: (context, state) {
           if (state.status == LoginStatus.failure) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  state.errorMessage ?? AppLocalizations.of(context)!.errorAuth,
-                ),
+              CustomSnackBar.error(
+                context: context,
+                message: "Error while logging in, please check your internet connection or try again later.",
               ),
             );
           }
