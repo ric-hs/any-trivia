@@ -246,4 +246,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get version => 'Version';
+
+  @override
+  String get profileLoadingError =>
+      'Something went wrong when loading your profile, try reloading your profile.';
+
+  @override
+  String get reloadButton => 'Reload';
 }

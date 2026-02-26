@@ -743,9 +743,37 @@ class _HomePageState extends State<HomePage>
                 );
               } else if (state is ProfileError) {
                 return Center(
-                  child: Text(
-                    AppLocalizations.of(context)!.errorProfile(state.message),
-                    style: const TextStyle(color: Colors.white),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          AppLocalizations.of(context)!.profileLoadingError,
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.outfit(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        PrimaryButton(
+                          onPressed: () {
+                            context.read<ProfileBloc>().add(
+                                  LoadProfile(state.userId),
+                                );
+                          },
+                          child: Text(
+                            AppLocalizations.of(context)!.reloadButton,
+                            style: GoogleFonts.outfit(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               }

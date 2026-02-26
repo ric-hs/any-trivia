@@ -118,5 +118,7 @@
     "purchaseSuccessTokensAddedShortly": "Purchase successful! Tokens will be added shortly.",
     "purchaseFailed": "Purchase failed",
     "purchaseFailedPaymentPendingError": "We are still processing your payment, if successful tokens will be added shortly.",
-    "version": "Version"
+    "version": "Version",
+    "profileLoadingError": "Something went wrong when loading your profile, try reloading your profile.",
+    "reloadButton": "Reload"
 }

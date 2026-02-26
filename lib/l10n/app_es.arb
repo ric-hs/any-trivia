@@ -73,5 +73,7 @@
     "purchaseSuccessTokensAddedShortly": "¡Compra exitosa! Los tokens se agregarán en breve.",
     "purchaseFailed": "Compra fallida",
     "purchaseFailedPaymentPendingError": "Seguimos procesando tu pago. Si es exitoso, los tokens se agregarán en breve.",
-    "version": "Versión"
+    "version": "Versión",
+    "profileLoadingError": "Algo salió mal al cargar tu perfil, intenta recargarlo nuevamente.",
+    "reloadButton": "Recargar"
 }

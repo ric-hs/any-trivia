@@ -541,6 +541,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Version'**
   String get version;
+
+  /// No description provided for @profileLoadingError.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong when loading your profile, try reloading your profile.'**
+  String get profileLoadingError;
+
+  /// No description provided for @reloadButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Reload'**
+  String get reloadButton;
 }
 
 class _AppLocalizationsDelegate

@@ -247,4 +247,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get version => 'Versión';
+
+  @override
+  String get profileLoadingError =>
+      'Algo salió mal al cargar tu perfil, intenta recargarlo nuevamente.';
+
+  @override
+  String get reloadButton => 'Recargar';
 }
