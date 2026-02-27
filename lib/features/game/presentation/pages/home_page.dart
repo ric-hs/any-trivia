@@ -10,6 +10,7 @@ import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:endless_trivia/core/theme/app_theme.dart';
 import 'package:endless_trivia/l10n/app_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:endless_trivia/core/presentation/widgets/gradient_background.dart';
 import 'package:endless_trivia/core/presentation/widgets/primary_button.dart';
@@ -22,6 +23,7 @@ import 'package:endless_trivia/features/store/presentation/pages/store_page.dart
 import 'package:endless_trivia/features/game/presentation/widgets/category_suggestion_carousel.dart';
 import 'package:endless_trivia/features/game/presentation/constants/category_suggestions.dart';
 import 'package:endless_trivia/features/game/presentation/utils/game_cost_calculator.dart';
+import 'package:endless_trivia/features/game/presentation/widgets/how_to_play_dialog.dart';
 import 'dart:math';
 
 class HomePage extends StatefulWidget {
@@ -68,6 +70,22 @@ class _HomePageState extends State<HomePage>
       duration: const Duration(milliseconds: 500),
     );
     GetIt.instance<AnalyticsService>().logScreenView(screenName: "HomePage");
+    
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkFirstRun();
+    });
+  }
+
+  Future<void> _checkFirstRun() async {
+    final prefs = GetIt.instance<SharedPreferences>();
+    final hasSeenTutorial = prefs.getBool('has_seen_tutorial') ?? false;
+
+    if (!hasSeenTutorial) {
+      if (mounted) {
+        showHowToPlayDialog(context);
+        await prefs.setBool('has_seen_tutorial', true);
+      }
+    }
   }
 
   @override
