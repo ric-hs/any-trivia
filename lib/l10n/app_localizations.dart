@@ -164,6 +164,54 @@ abstract class AppLocalizations {
   /// **'Enter a topic'**
   String get enterTopic;
 
+  /// No description provided for @howToPlay.
+  ///
+  /// In en, this message translates to:
+  /// **'HOW TO PLAY'**
+  String get howToPlay;
+
+  /// No description provided for @howToPlayStep1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'1. Think of any topic'**
+  String get howToPlayStep1Title;
+
+  /// No description provided for @howToPlayStep1Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'From \'Taylor Swift\' to \'18th Century Pirates\'. Seriously, anything.'**
+  String get howToPlayStep1Desc;
+
+  /// No description provided for @howToPlayStep2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'2. Type it in'**
+  String get howToPlayStep2Title;
+
+  /// No description provided for @howToPlayStep2Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Or choose from our suggestions.'**
+  String get howToPlayStep2Desc;
+
+  /// No description provided for @howToPlayStep3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'3. Play it'**
+  String get howToPlayStep3Title;
+
+  /// No description provided for @howToPlayStep3Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Our AI generates unique questions instantly.'**
+  String get howToPlayStep3Desc;
+
+  /// No description provided for @gotIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Got it!'**
+  String get gotIt;
+
   /// No description provided for @favorites.
   ///
   /// In en, this message translates to:

@@ -42,6 +42,32 @@ class AppLocalizationsEn extends AppLocalizations {
   String get enterTopic => 'Enter a topic';
 
   @override
+  String get howToPlay => 'HOW TO PLAY';
+
+  @override
+  String get howToPlayStep1Title => '1. Think of any topic';
+
+  @override
+  String get howToPlayStep1Desc =>
+      'From \'Taylor Swift\' to \'18th Century Pirates\'. Seriously, anything.';
+
+  @override
+  String get howToPlayStep2Title => '2. Type it in';
+
+  @override
+  String get howToPlayStep2Desc => 'Or choose from our suggestions.';
+
+  @override
+  String get howToPlayStep3Title => '3. Play it';
+
+  @override
+  String get howToPlayStep3Desc =>
+      'Our AI generates unique questions instantly.';
+
+  @override
+  String get gotIt => 'Got it!';
+
+  @override
   String get favorites => 'FAVORITES';
 
   @override

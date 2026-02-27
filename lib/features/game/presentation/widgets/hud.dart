@@ -2,6 +2,7 @@ import 'package:endless_trivia/core/theme/app_theme.dart';
 import 'package:endless_trivia/features/profile/domain/entities/user_profile.dart';
 import 'package:endless_trivia/features/settings/presentation/pages/settings_page.dart';
 import 'package:endless_trivia/features/store/presentation/pages/store_page.dart';
+import 'package:endless_trivia/features/game/presentation/widgets/how_to_play_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -65,24 +66,45 @@ class Hud extends StatelessWidget {
             ),
           ),
 
-          // Settings Button (HUD Style)
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.black45,
-              shape: BoxShape.circle,
-              border: Border.all(color: Colors.white24),
-            ),
-            child: IconButton(
-              icon: const Icon(Icons.settings, color: Colors.white70),
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => SettingsPage(userId: profile.userId),
-                  ),
-                );
-              },
-            ),
-          ).animate().fadeIn().slideX(begin: 0.5, end: 0),
+          // Right Side Actions (Help & Settings)
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Help Button
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.black45,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.white24),
+                ),
+                child: IconButton(
+                  icon: const Icon(Icons.help_outline_rounded, color: Colors.white70),
+                  onPressed: () => showHowToPlayDialog(context),
+                ),
+              ).animate().fadeIn().slideX(begin: 0.5, end: 0),
+              
+              const SizedBox(width: 8),
+
+              // Settings Button (HUD Style)
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.black45,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.white24),
+                ),
+                child: IconButton(
+                  icon: const Icon(Icons.settings, color: Colors.white70),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => SettingsPage(userId: profile.userId),
+                      ),
+                    );
+                  },
+                ),
+              ).animate().fadeIn().slideX(begin: 0.5, end: 0),
+            ],
+          ),
         ],
       ),
     );
