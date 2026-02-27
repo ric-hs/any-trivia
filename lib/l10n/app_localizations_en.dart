@@ -42,6 +42,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get enterTopic => 'Enter a topic';
 
   @override
+  String get welcomeToAnytrivia => 'Welcome to AnyTrivia!';
+
+  @override
   String get howToPlay => 'HOW TO PLAY';
 
   @override

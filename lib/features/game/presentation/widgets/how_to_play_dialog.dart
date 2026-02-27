@@ -8,19 +8,24 @@ import 'package:endless_trivia/core/presentation/widgets/primary_button.dart';
 import 'dart:ui' show ImageFilter;
 
 class HowToPlayDialog extends StatelessWidget {
-  const HowToPlayDialog({super.key});
+  final bool isFirstRun;
+
+  const HowToPlayDialog({super.key, this.isFirstRun = false});
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     return DefaultTextStyle(
       style: const TextStyle(decoration: TextDecoration.none),
       child: Center(
         child: Material(
           color: Colors.transparent,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 48.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 24.0,
+              vertical: 48.0,
+            ),
             child: Hero(
               tag: 'how_to_play_dialog',
               child: GlassContainer(
@@ -42,6 +47,22 @@ class HowToPlayDialog extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    if (isFirstRun) ...[
+                      Text(
+                            l10n.welcomeToAnytrivia,
+                            style: GoogleFonts.outfit(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: const Color(0xFF00E5FF),
+                            ),
+                            textAlign: TextAlign.center,
+                          )
+                          .animate()
+                          .fadeIn(delay: 200.ms)
+                          .slideY(begin: -0.2, end: 0),
+                      const SizedBox(height: 24),
+                    ],
+
                     // Header
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -72,6 +93,7 @@ class HowToPlayDialog extends StatelessWidget {
                         ),
                       ],
                     ),
+
                     const SizedBox(height: 24),
 
                     // Steps
@@ -83,7 +105,7 @@ class HowToPlayDialog extends StatelessWidget {
                       delay: 100,
                     ),
                     const SizedBox(height: 20),
-                    
+
                     _buildStep(
                       icon: Icons.keyboard_alt_outlined,
                       color: const Color(0xFFFF2B5E), // Neon Pink
@@ -92,7 +114,7 @@ class HowToPlayDialog extends StatelessWidget {
                       delay: 200,
                     ),
                     const SizedBox(height: 20),
-                    
+
                     _buildStep(
                       icon: Icons.smart_toy_outlined,
                       color: const Color(0xFF00C853), // Neon Green
@@ -105,17 +127,20 @@ class HowToPlayDialog extends StatelessWidget {
 
                     // Got it button
                     PrimaryButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: Text(
-                        l10n.gotIt.toUpperCase(),
-                        textAlign: TextAlign.center,
-                        style: AppTheme.gameFont.copyWith(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ).animate().fadeIn(delay: 500.ms).slideY(begin: 0.2, end: 0),
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: Text(
+                            l10n.gotIt.toUpperCase(),
+                            textAlign: TextAlign.center,
+                            style: AppTheme.gameFont.copyWith(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        )
+                        .animate()
+                        .fadeIn(delay: 500.ms)
+                        .slideY(begin: 0.2, end: 0),
                   ],
                 ),
               ),
@@ -141,16 +166,9 @@ class HowToPlayDialog extends StatelessWidget {
           decoration: BoxDecoration(
             color: color.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: color.withValues(alpha: 0.3),
-              width: 1,
-            ),
+            border: Border.all(color: color.withValues(alpha: 0.3), width: 1),
           ),
-          child: Icon(
-            icon,
-            color: color,
-            size: 28,
-          ),
+          child: Icon(icon, color: color, size: 28),
         ),
         const SizedBox(width: 16),
         Expanded(
@@ -183,26 +201,32 @@ class HowToPlayDialog extends StatelessWidget {
 }
 
 /// Helper function to show the dialog with a customized blur effect
-void showHowToPlayDialog(BuildContext context) {
+void showHowToPlayDialog(BuildContext context, {bool isFirstRun = false}) {
   showGeneralDialog(
     context: context,
     barrierDismissible: true,
     barrierLabel: 'How to play dialog',
-    barrierColor: Colors.black.withValues(alpha: 0.6), // Slightly darker background
+    barrierColor: Colors.black.withValues(
+      alpha: 0.6,
+    ), // Slightly darker background
     pageBuilder: (context, animation, secondaryAnimation) {
-      return const HowToPlayDialog();
+      return HowToPlayDialog(isFirstRun: isFirstRun);
     },
     transitionBuilder: (context, animation, secondaryAnimation, child) {
       // Create a smooth scale and fade transition
-      final scaleTween = Tween<double>(begin: 0.9, end: 1.0)
-          .chain(CurveTween(curve: Curves.easeOutCubic));
-      final fadeTween = Tween<double>(begin: 0.0, end: 1.0)
-          .chain(CurveTween(curve: Curves.easeOut));
+      final scaleTween = Tween<double>(
+        begin: 0.9,
+        end: 1.0,
+      ).chain(CurveTween(curve: Curves.easeOutCubic));
+      final fadeTween = Tween<double>(
+        begin: 0.0,
+        end: 1.0,
+      ).chain(CurveTween(curve: Curves.easeOut));
 
       return BackdropFilter(
         filter: ImageFilter.blur(
           sigmaX: animation.value * 8, // Animate blur
-          sigmaY: animation.value * 8, 
+          sigmaY: animation.value * 8,
         ),
         child: FadeTransition(
           opacity: animation.drive(fadeTween),

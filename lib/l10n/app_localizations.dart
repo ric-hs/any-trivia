@@ -164,6 +164,12 @@ abstract class AppLocalizations {
   /// **'Enter a topic'**
   String get enterTopic;
 
+  /// No description provided for @welcomeToAnytrivia.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to AnyTrivia!'**
+  String get welcomeToAnytrivia;
+
   /// No description provided for @howToPlay.
   ///
   /// In en, this message translates to:

@@ -82,7 +82,7 @@ class _HomePageState extends State<HomePage>
 
     if (!hasSeenTutorial) {
       if (mounted) {
-        showHowToPlayDialog(context);
+        showHowToPlayDialog(context, isFirstRun: true);
         await prefs.setBool('has_seen_tutorial', true);
       }
     }
@@ -283,6 +283,18 @@ class _HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final prefs = GetIt.instance<SharedPreferences>();
+          await prefs.remove('has_seen_tutorial');
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Tutorial preference cleared!')),
+            );
+          }
+        },
+        child: const Icon(Icons.clear_all),
+      ),
       body: GradientBackground(
         child: SafeArea(
           child: BlocBuilder<ProfileBloc, ProfileState>(

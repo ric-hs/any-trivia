@@ -57,7 +57,7 @@ class Hud extends StatelessWidget {
           // Center Logo Title
           Flexible(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Image.asset(
                 'assets/logo/logo_title.png',
                 height: 28,
