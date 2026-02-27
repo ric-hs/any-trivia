@@ -1,3 +1,4 @@
+import 'package:endless_trivia/core/services/analytics_service.dart';
 import 'package:endless_trivia/features/game/presentation/widgets/category_input.dart';
 import 'package:endless_trivia/features/game/presentation/widgets/hud.dart';
 import 'package:endless_trivia/features/game/presentation/widgets/selected_category_chip.dart';
@@ -5,6 +6,7 @@ import 'package:endless_trivia/features/profile/domain/entities/user_profile.dar
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:endless_trivia/core/theme/app_theme.dart';
 import 'package:endless_trivia/l10n/app_localizations.dart';
@@ -65,6 +67,7 @@ class _HomePageState extends State<HomePage>
       vsync: this,
       duration: const Duration(milliseconds: 500),
     );
+    GetIt.instance<AnalyticsService>().logScreenView(screenName: "HomePage");
   }
 
   @override
@@ -676,16 +679,6 @@ class _HomePageState extends State<HomePage>
                                     ),
                                   ).animate().fadeIn(delay: 900.ms).slideY(begin: 0.1, end: 0),
                                 ),
-                                TextButton(
-                                  onPressed: () => throw Exception(),
-                                  child: const Text("Throw Test Exception"),
-                                ),
-
-                                PrimaryButton(
-                                  onPressed: () => throw Exception(),
-                                  child: const Text("Throw Test Exception"),
-                                ),
-
                                 const SizedBox(
                                   height: 128,
                                 ), // Spacing for floating button

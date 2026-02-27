@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:endless_trivia/core/services/analytics_service.dart';
 import 'package:endless_trivia/core/services/device_info_service.dart';
 import 'package:endless_trivia/features/profile/domain/entities/user_profile.dart';
 import 'package:endless_trivia/features/profile/domain/repositories/profile_repository.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
+import 'package:get_it/get_it.dart';
 
 class ProfileRepositoryImpl implements ProfileRepository {
   final FirebaseFirestore _firestore;
@@ -78,11 +81,14 @@ class ProfileRepositoryImpl implements ProfileRepository {
               .httpsCallable('grantInitialTokens')
               .call({'deviceId': hardwareId});
         } catch (e) {
-          // TODO: Add warning log here
-          debugPrint('Error granting initial tokens: $e');
+          GetIt.instance<AnalyticsService>().logInfo(
+            info: "Error granting initial tokens: $e",
+          );
+          debugPrint('debug: error granting initial tokens: $e');
         }
       }
-    } catch (e) {
+    } catch (e, stack) {
+      FirebaseCrashlytics.instance.recordError(e, stack);
       throw Exception('Error creating profile: $e');
     }
   }

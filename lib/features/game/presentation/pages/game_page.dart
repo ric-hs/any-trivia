@@ -1,6 +1,8 @@
+import 'package:endless_trivia/core/services/analytics_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:endless_trivia/core/theme/app_theme.dart';
 import 'package:endless_trivia/core/presentation/widgets/glass_container.dart';
@@ -48,7 +50,11 @@ class GamePage extends StatelessWidget {
             rounds: rounds,
           ),
         ),
-      child: _GameView(rounds: rounds, userId: userId, categoryColors: categoryColors),
+      child: _GameView(
+        rounds: rounds,
+        userId: userId,
+        categoryColors: categoryColors,
+      ),
     );
   }
 }
@@ -72,8 +78,8 @@ class _GameViewState extends State<_GameView> {
   @override
   void initState() {
     super.initState();
+    GetIt.instance<AnalyticsService>().logScreenView(screenName: "GamePage");
   }
-
 
   @override
   void dispose() {
@@ -209,7 +215,8 @@ class _GameViewState extends State<_GameView> {
                 }
 
                 // Get the color for the current category, fallback to purple if not found
-                final categoryColor = widget.categoryColors?[q.category] ??
+                final categoryColor =
+                    widget.categoryColors?[q.category] ??
                     const Color(0xFFD300F9);
 
                 return Stack(
@@ -537,8 +544,12 @@ class _GameViewState extends State<_GameView> {
                                                         state is AnswerSubmitted
                                                         ? null
                                                         : () {
-                                                            final isCorrect = (index == q.correctAnswerIndex);
-                                                            _playSound(isCorrect);
+                                                            final isCorrect =
+                                                                (index ==
+                                                                q.correctAnswerIndex);
+                                                            _playSound(
+                                                              isCorrect,
+                                                            );
                                                             context
                                                                 .read<
                                                                   GameBloc
@@ -619,46 +630,42 @@ class _GameViewState extends State<_GameView> {
                         left: 24,
                         right: 24,
                         child: PrimaryButton(
-                              onPressed: () {
-                                if (currentRound == totalRounds) {
-                                  // If last round, next action should trigger finishing
-                                  context.read<GameBloc>().add(
-                                        NextQuestion(),
-                                      );
-                                } else {
-                                  context.read<GameBloc>().add(
-                                        NextQuestion(),
-                                      );
-                                }
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    currentRound == totalRounds
-                                        ? AppLocalizations.of(
-                                            context,
-                                          )!.resultsTitle.toUpperCase()
-                                        : AppLocalizations.of(
-                                            context,
-                                          )!.continueBtn.toUpperCase(),
-                                    style: AppTheme.gameFont.copyWith(
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Icon(
-                                    currentRound == totalRounds
-                                        ? Icons.flag
-                                        : Icons.arrow_forward_rounded,
-                                    size: 28,
-                                    color: Colors.white,
-                                  ),
-                                ],
+                          onPressed: () {
+                            if (currentRound == totalRounds) {
+                              // If last round, next action should trigger finishing
+                              context.read<GameBloc>().add(NextQuestion());
+                            } else {
+                              context.read<GameBloc>().add(NextQuestion());
+                            }
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                currentRound == totalRounds
+                                    ? AppLocalizations.of(
+                                        context,
+                                      )!.resultsTitle.toUpperCase()
+                                    : AppLocalizations.of(
+                                        context,
+                                      )!.continueBtn.toUpperCase(),
+                                style: AppTheme.gameFont.copyWith(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
                               ),
-                            ),
+                              const SizedBox(width: 8),
+                              Icon(
+                                currentRound == totalRounds
+                                    ? Icons.flag
+                                    : Icons.arrow_forward_rounded,
+                                size: 28,
+                                color: Colors.white,
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                   ],
                 );

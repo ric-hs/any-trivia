@@ -1,3 +1,5 @@
+import 'package:endless_trivia/core/services/analytics_service.dart';
+import 'package:endless_trivia/core/services/firebase_analytics.dart';
 import 'package:get_it/get_it.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -30,7 +32,9 @@ Future<void> init() async {
   sl.registerFactory(() => LoginCubit(sl()));
   sl.registerFactory(() => SignupCubit(sl()));
   sl.registerFactory(() => ProfileBloc(profileRepository: sl()));
-  sl.registerFactory(() => GameBloc(gameRepository: sl(), profileRepository: sl()));
+  sl.registerFactory(
+    () => GameBloc(gameRepository: sl(), profileRepository: sl()),
+  );
   sl.registerFactory(() => LocaleBloc(sl()));
   sl.registerFactory(() => SettingsBloc(sl()));
 
@@ -49,12 +53,13 @@ Future<void> init() async {
   );
 
   // Data sources
-  sl.registerLazySingleton<GeminiService>(
-    () => GeminiService(),
-  );
+  sl.registerLazySingleton<GeminiService>(() => GeminiService());
 
   // External
   sl.registerLazySingleton(() => DeviceInfoService());
+  sl.registerLazySingleton(
+    () => FirebaseAnalyticsService() as AnalyticsService,
+  );
   final sharedPreferences = await SharedPreferences.getInstance();
   sl.registerLazySingleton(() => sharedPreferences);
   sl.registerLazySingleton(() => LocaleService(sl()));
